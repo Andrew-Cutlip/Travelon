@@ -50,6 +50,16 @@ Refer to https://docs.authlib.org/en/stable/client/oauth2.html for a more detail
 
 
 
+How to Use:
+Install Flask-Oauth package with pip.
+Import and define client from FLask-OAuth Client. (https://docs.authlib.org/en/latest/client/flask.html)
+Define two routes to log in and the authorized route. (use above)
+Register an OAuth authentication with OAuth register.
+Implement the login auth type into the routes. 
+Get Client ID and CLient secret.
+
+
+
 
 Other Useful Quick Links:
 
