@@ -72,3 +72,8 @@ https://docs.docker.com/language/python/
 
 https://flask-socketio.readthedocs.io/en/latest/
 
+
+## Flask QuickStart
+
+https://flask.palletsprojects.com/en/2.0.x/quickstart/
+
