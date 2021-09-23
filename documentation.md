@@ -1,3 +1,4 @@
+Python
 Installing Python Modules
 https://docs.python.org/3.9/installing/index.html#installing-python-modules
 
@@ -36,3 +37,38 @@ Python Data Structures
 
 Our team will not need any other languages or libraries to get the work done because Python 
 and its library offers all of the backend web-development tools we need for the backend such as debugging and web testing. 
+
+# Database
+
+## MongoDB
+
+https://docs.mongodb.com/manual/tutorial/getting-started/
+
+## Pymongo
+
+https://pymongo.readthedocs.io/en/stable/
+
+# FrontEnd
+
+## React
+
+https://reactjs.org/docs/getting-started.html
+
+## TypeScript
+
+https://www.typescriptlang.org/docs/
+
+## SocketIO
+
+https://socket.io/docs/v4/
+
+# BackEnd
+
+## Python Docker Container
+
+https://docs.docker.com/language/python/
+
+## Flask-SocketIO
+
+https://flask-socketio.readthedocs.io/en/latest/
+

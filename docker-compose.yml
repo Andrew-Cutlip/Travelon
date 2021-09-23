@@ -1,0 +1,16 @@
+version: 3.3
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+  app:
+    build: .
+    environment:
+      WAIT_HOSTS: mongodb:27017
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
