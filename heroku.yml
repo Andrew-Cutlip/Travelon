@@ -1,5 +1,6 @@
-setup:
-
 build:
   docker:
     web: Dockerfile
+
+run:
+  web: python ./src/main.py $PORT
