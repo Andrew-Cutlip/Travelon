@@ -34,6 +34,12 @@ def get_user(username: str) -> dict:
     return user
 
 
+def is_username_available(username: str) -> bool:
+    user = users.find_one(username)
+    if user is None:
+        return True
+    return False
+
 # run this file
 if __name__ == "__main__":
     test_username = "Steve"
