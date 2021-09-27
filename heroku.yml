@@ -3,4 +3,4 @@ build:
     web: Dockerfile
 
 run:
-  web: python ./src/main.py $PORT
+  web: python ./src/flask-server/app.py $PORT
