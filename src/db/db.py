@@ -1,8 +1,12 @@
 import pymongo
 from pymongo import MongoClient
+import os
 
 # starts to connect to db on port 27017
-client = MongoClient("0.0.0.0", 27017)
+# client = MongoClient("0.0.0.0", 27017)
+
+PASSWORD = os.getenv("db-Password")
+client = pymongo.MongoClient(f"mongodb+srv://cse442:{PASSWORD}@cluster0.zrs6a.mongodb.net/test?retryWrites=true&w=majority")
 
 db = client["test"]
 
