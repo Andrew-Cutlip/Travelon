@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE $PORT
 
-CMD python ./src/main.py $PORT
+CMD python ./src/flask-server/app.py $PORT
