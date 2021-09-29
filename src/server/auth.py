@@ -13,3 +13,8 @@ def salt_hash_password(password: str):
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password, salt)
     return hashed
+
+
+def check_password(password: str, hash) -> bool:
+    pass_check = bcrypt.checkpw(password, hash)
+    return pass_check
