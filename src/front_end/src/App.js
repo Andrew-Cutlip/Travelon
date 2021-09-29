@@ -1,10 +1,12 @@
 import './App.css';
 import Page from "./components/Page"
+import RegistrationForm from "./components/Registration";
+import Login from "./components/LoginForm"
 
 function App() {
   return (
     <div className="App">
-      <Page name={"Start"}></Page>
+      <Login></Login>
     </div>
   );
 }
