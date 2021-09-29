@@ -1,7 +1,8 @@
 import pymongo
 from pymongo import MongoClient
 import os
-
+from src.server.auth import *
+from src import *
 # starts to connect to db on port 27017
 # client = MongoClient("0.0.0.0", 27017)
 
@@ -19,10 +20,12 @@ def start_database():
     print("Getting database\n")
 
 
-def insert_user(user_id: int, username: str):
+def insert_user(user_id: int, username: str, password: str):
+    hashed = salt_hash_password(password)
     user = {
         "user_id": user_id,
-        "username": username
+        "username": username,
+        "password_hash": hashed
     }
     print(f"Inserting user {username}\n")
     users.insert_one(user)
@@ -40,9 +43,11 @@ def is_username_available(username: str) -> bool:
         return True
     return False
 
+
 # run this file
 if __name__ == "__main__":
     test_username = "Steve"
-    insert_user(0, test_username)
+    pswd = "123"
+    insert_user(0, test_username, pswd)
     user1 = get_user("Steve")
     print(user1)
