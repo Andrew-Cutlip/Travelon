@@ -31,6 +31,15 @@ def insert_user(user_id: int, username: str, password: str):
     users.insert_one(user)
 
 
+def check_user_password(username: str, password: str) -> bool:
+    user = users.find_one(username)
+    if user is None:
+        return False
+    hash = user["password_hash"]
+    pass_check = check_password(password, hash)
+    return pass_check
+    
+
 def get_user(username: str) -> dict:
     user = users.find_one(username)
     print(f"Got user {username}\n")
