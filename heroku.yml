@@ -1,6 +1,6 @@
 build:
   docker:
-    web: ./src/front-end/Dockerfile
+    web: Dockerfile
 
 #run:
   #web: python ./src/server/app.py $PORT
