@@ -2,7 +2,7 @@ import sys
 from auth import *
 
 from flask import Flask, render_template, request, send_from_directory, url_for
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./static")
 
 
 @app.route('/')
@@ -43,9 +43,9 @@ def login():
     return app.send_static_file("index.html")
 
 
-# @app.route("/static/<path:path>")
-# def send_static_file(path):
-    # return send_from_directory(url_for("static"), path)
+@app.route("/static/<path:path>")
+def send_static_file(path):
+    return send_from_directory(url_for("static"), path)
 
 
 if __name__ == '__main__':
