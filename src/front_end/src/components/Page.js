@@ -1,11 +1,9 @@
 function Page(props) {
-    let pageContent = "";
-    if (props.name == "register"){
-        pageContent = "register"
-    }
+    
     return (
         <div id="page">
-            { pageContent }
+            <h1>{props.name}</h1>
+            
         </div>
     )
 }

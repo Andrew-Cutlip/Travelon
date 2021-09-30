@@ -1,6 +1,8 @@
 import './App.css';
 import React, {useState} from React
 import Page from "./components/Page"
+import RegistrationForm from "./components/Registration";
+import Login from "./components/LoginForm"
 
 function App() {
     const [pageName, setPageName] = useState("");
