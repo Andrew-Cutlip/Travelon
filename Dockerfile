@@ -2,10 +2,10 @@ FROM node:12.18.1
 
 WORKDIR /home
 
-COPY . .
+COPY src/front_end .
 
 RUN npm install
 
-COPY . .
+COPY src/front_end .
 
 CMD npx serve build
