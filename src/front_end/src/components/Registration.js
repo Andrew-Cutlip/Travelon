@@ -3,7 +3,7 @@ import React from "react";
 function RegistrationForm(props) {
     return (
         <>
-            <label>Register</label>
+            <h1>Register</h1>
             <form id="Register-Form" method="post" name="Login">
                 <input type="text" name="name" id="logName" placeholder="Username"></input>
                 <input type="email" name="email" id="logEmail" placeholder="Email"></input>

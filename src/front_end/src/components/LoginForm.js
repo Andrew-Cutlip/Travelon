@@ -3,7 +3,7 @@ import React from "react";
 function Login(props) {
     return(
         <>
-        <tittle>Login</tittle>
+        <h1>Login</h1>
         <form id="Login-Form" method="post" name="Login">
         <input type="text" name="name" id="logName" placeholder="Username"></input>
         <input type="password" name="password" id="logPassword" placeholder="Password"></input>
