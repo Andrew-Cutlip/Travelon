@@ -1,7 +1,7 @@
 import sys
 from auth import *
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 app = Flask(__name__)
 
 
@@ -40,7 +40,12 @@ def login():
         password = request.form["password"]
         # TODO look up username and see if password matches
         pass
-    return "Login page"
+    return app.send_static_file("index.html")
+
+
+@app.route("/static/<path:path>")
+def send_static_file(path):
+    return send_from_directory("./static", path)
 
 
 if __name__ == '__main__':

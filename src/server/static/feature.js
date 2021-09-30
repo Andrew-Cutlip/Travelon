@@ -9,7 +9,7 @@ class feature extends React.Component {
   render() {
     return(
         <>
-          <button>Join Now</button>
+            <button><a href={"/login"}>Login</a></button>
         </>
     )
     }
