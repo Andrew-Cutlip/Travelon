@@ -1,8 +1,13 @@
 import sys
+import os
 from auth import *
 
 from flask import Flask, render_template, request, send_from_directory, url_for
 app = Flask(__name__)
+
+BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
+static = os.path.join(BASE_PATH, "static")
+print(static)
 
 
 @app.route('/')
@@ -45,7 +50,7 @@ def login():
 
 @app.route("/static/<path:path>")
 def send_static_file(path):
-    return send_from_directory("src/server/static", path)
+    return send_from_directory(static, path)
 
 
 if __name__ == '__main__':
