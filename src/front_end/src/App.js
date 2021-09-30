@@ -5,6 +5,7 @@ import RegistrationForm from "./components/Registration";
 import Login from "./components/LoginForm"
 
 function App() {
+
     const [pageName, setPageName] = useState("");
 
     const handlePageSwitch = (name) => {

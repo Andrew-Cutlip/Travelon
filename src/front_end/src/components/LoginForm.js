@@ -9,7 +9,7 @@ function Login(props) {
         <input type="password" name="password" id="logPassword" placeholder="Password"></input>
         <button type = "submit" placeholder = "Log In Now"></button>
         </form>
-        //Form needs css
+
         </>
 
     );
