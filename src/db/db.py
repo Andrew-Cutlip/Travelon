@@ -31,6 +31,10 @@ def insert_user(user_id: int, username: str, password: str):
     users.insert_one(user)
 
 
+def remove_user(user_id: int):
+    pass
+
+
 def check_user_password(username: str, password: str) -> bool:
     user = users.find_one(username)
     if user is None:

@@ -1,8 +1,8 @@
 
 function RedirectButton(props) {
     return (
-        <button>
-            Click Me!
+        <button onClick={props.onclick}>
+            {props.text}
         </button>
     )
 }
