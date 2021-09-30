@@ -12,6 +12,8 @@ function RegistrationForm(props) {
                 <button type="submit" placeholder="Register Now"></button>
             </form>
         </>
+        //form needs css
+
     );
 }
 export default RegistrationForm;
