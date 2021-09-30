@@ -1,5 +1,5 @@
 import React from "react";
-
+import RedirectButton from "./RedirectButton"
 function Login(props) {
     return(
         <>
@@ -10,7 +10,6 @@ function Login(props) {
         <button type = "submit" placeholder = "Log In Now"></button>
         </form>
         //Form needs css
-
         </>
 
     );

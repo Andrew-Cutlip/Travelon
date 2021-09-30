@@ -1,5 +1,5 @@
 import React from "react";
-
+import RedirectButton from "./RedirectButton"
 function RegistrationForm(props) {
     return (
         <>
@@ -11,6 +11,10 @@ function RegistrationForm(props) {
                 <input type="password" name="password" id="PasswordCheck" placeholder="Confirm Password"></input>
                 <button type="submit" placeholder="Register Now"></button>
             </form>
+           <RedirectButton text={"Already have an account: Login here"}
+           onclick={() => props.onclick("login")}>
+
+           </RedirectButton>
         </>
         //form needs css
 
