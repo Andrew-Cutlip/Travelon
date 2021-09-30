@@ -1,11 +1,11 @@
-FROM node:12.18.1
+FROM python:3.9
 
 WORKDIR /home
 
-COPY src/front_end .
+COPY . .
 
-RUN npm install
+RUN pip install -r requirements.txt
 
-COPY src/front_end .
+EXPOSE $PORT
 
-CMD npx serve build
+CMD python ./src/server/app.py $PORT
