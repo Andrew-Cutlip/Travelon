@@ -1,0 +1,1 @@
+cp ./front_end/build

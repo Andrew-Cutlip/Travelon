@@ -1,7 +1,7 @@
 import RegistrationForm from "./Registration"
 import LoginForm from "./LoginForm"
 function Page(props) {
-    let pageContent = "";
+    let pageContent = <LoginForm></LoginForm>;
     if (props.name === "register") {
         pageContent = <RegistrationForm onclick={props.onclick}></RegistrationForm>
     }
