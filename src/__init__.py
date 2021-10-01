@@ -1,2 +1,2 @@
 __all__ = ["db", "server"]
-from db import *
+from src.db import *

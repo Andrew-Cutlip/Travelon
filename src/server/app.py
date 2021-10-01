@@ -1,6 +1,7 @@
 import sys
 import os
 from auth import *
+from src.db.db import get_cities
 
 from flask import Flask, render_template, request, send_from_directory, url_for
 app = Flask(__name__)
@@ -13,7 +14,8 @@ print(static)
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    cities = get_cities()
+    return render_template('home.html', cities=cities)
 
 
 @app.route('/about')
@@ -54,6 +56,6 @@ def send_static_file(path):
 
 
 if __name__ == '__main__':
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 500
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
     host = "0.0.0.0"
     app.run(host=host, port=port)
