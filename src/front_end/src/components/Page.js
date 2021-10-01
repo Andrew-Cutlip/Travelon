@@ -1,4 +1,4 @@
-import RegistrationForm from "./Registration"
+import RegistrationForm from "./RegistrationForm"
 import LoginForm from "./LoginForm"
 function Page(props) {
     let pageContent = <LoginForm></LoginForm>;

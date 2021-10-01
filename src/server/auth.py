@@ -1,5 +1,5 @@
 import bcrypt
-from src.server import db
+from src.db import db
 
 
 def is_password_valid(password: str) -> bool:

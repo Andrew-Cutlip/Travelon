@@ -1,8 +1,8 @@
 import pymongo
 from pymongo import MongoClient
 import os
-from src.server.auth import *
-from src import *
+# from src.server.auth import *
+#from src import *
 # starts to connect to db on port 27017
 # client = MongoClient("0.0.0.0", 27017)
 
@@ -13,6 +13,21 @@ db = client["test"]
 
 # Collection (Table)
 users = db.users
+cities = db.cities
+
+
+def add_city(cityname: str):
+    city = {
+        "name": cityname
+    }
+    cities.insert_one(city)
+
+
+def get_cities():
+    ret = []
+    for city in cities.find():
+        ret.append(city)
+    return ret
 
 
 # get database
@@ -59,8 +74,6 @@ def is_username_available(username: str) -> bool:
 
 # run this file
 if __name__ == "__main__":
-    test_username = "Steve"
-    pswd = "123"
-    insert_user(0, test_username, pswd)
-    user1 = get_user("Steve")
-    print(user1)
+    name = "Miami"
+    add_city(name)
+
