@@ -6,10 +6,10 @@ import os
 # starts to connect to db on port 27017
 # client = MongoClient("0.0.0.0", 27017)
 
-PASSWORD = os.getenv("db-Password")
+PASSWORD = os.environ.get("db-password")
 print(PASSWORD)
 if PASSWORD is None:
-    with open("./password.txt") as f:
+    with open("password.txt") as f:
         line = f.readline()
         PASSWORD = line
 print(PASSWORD)
