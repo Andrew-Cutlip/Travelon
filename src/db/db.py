@@ -6,12 +6,11 @@ import os
 # starts to connect to db on port 27017
 # client = MongoClient("0.0.0.0", 27017)
 
-PASSWORD = os.environ.get("db-password")
+
+PASSWORD = os.environ.get("dbPassword")
 print(PASSWORD)
 if PASSWORD is None:
-    with open("password.txt") as f:
-        line = f.readline()
-        PASSWORD = line
+    PASSWORD = "Supersecurepassword"
 print(PASSWORD)
 client = pymongo.MongoClient(
     f"mongodb+srv://app442:{PASSWORD}@cluster0.zrs6a.mongodb.net/test?retryWrites=true&w=majority",connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1, authSource='admin')
