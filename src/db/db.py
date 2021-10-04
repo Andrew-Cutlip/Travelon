@@ -7,7 +7,14 @@ import os
 # client = MongoClient("0.0.0.0", 27017)
 
 PASSWORD = os.getenv("db-Password")
-client = pymongo.MongoClient(f"mongodb+srv://cse442:{PASSWORD}@cluster0.zrs6a.mongodb.net/test?retryWrites=true&w=majority")
+print(PASSWORD)
+if PASSWORD is None:
+    with open("./password.txt") as f:
+        line = f.readline()
+        PASSWORD = line
+print(PASSWORD)
+client = pymongo.MongoClient(
+    f"mongodb+srv://app442:{PASSWORD}@cluster0.zrs6a.mongodb.net/test?retryWrites=true&w=majority",connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1, authSource='admin')
 
 db = client["test"]
 
@@ -25,6 +32,7 @@ def add_city(cityname: str):
 
 def get_cities():
     ret = []
+    print("Getting cities")
     for city in cities.find():
         ret.append(city)
     return ret
