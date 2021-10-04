@@ -1,2 +1,2 @@
-from auth import *
-from src import *
+from . import auth
+from . import app

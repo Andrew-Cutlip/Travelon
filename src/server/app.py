@@ -1,7 +1,9 @@
 import sys
 import os
-from auth import *
-from src.db.db import get_cities
+cwd = os.getcwd()
+print(f"Current dirctory: {cwd}\n")
+#os.chdir(".../")
+import db
 
 from flask import Flask, render_template, request, send_from_directory, url_for
 app = Flask(__name__)
@@ -14,7 +16,7 @@ print(static)
 @app.route('/')
 @app.route('/home')
 def home():
-    cities = get_cities()
+    cities = db.db.get_cities()
     return render_template('home.html', cities=cities)
 
 

@@ -1,5 +1,5 @@
 import bcrypt
-from src.db import db
+#from src.db import db
 
 
 def is_password_valid(password: str) -> bool:
@@ -7,8 +7,8 @@ def is_password_valid(password: str) -> bool:
 
 
 def is_username_valid(username: str) -> bool:
-    return db.is_username_available(username)
-
+    # return db.is_username_available(username)
+    return True
 
 def salt_hash_password(password: str):
     salt = bcrypt.gensalt()
