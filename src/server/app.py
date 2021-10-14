@@ -1,10 +1,12 @@
 import os
 import main
 
+
 cwd = os.getcwd()
 print(f"Current directory: {cwd}\n")
 # os.chdir(".../")
 from flask import Flask, request, send_from_directory
+
 
 app = Flask(__name__)
 
