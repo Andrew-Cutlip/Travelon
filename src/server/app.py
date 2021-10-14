@@ -1,16 +1,11 @@
-import sys
 import os
 cwd = os.getcwd()
 print(f"Current dirctory: {cwd}\n")
 #os.chdir(".../")
-from db import db
-from .auth import is_username_valid, is_password_valid
-
 from flask import Flask, render_template, request, send_from_directory, url_for
-
-from src.db.db import check_user_password, get_user
 from src.server.auth import is_username_valid, is_password_valid, salt_hash_password, check_password
 from src.server.models import User
+from main import db
 app = Flask(__name__)
 
 BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
@@ -55,9 +50,9 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         # TODO look up username and see if password matches
-        if check_user_password(username, password):
+        if db.check_user_password(username, password):
             new_user = User()
-            new_user.start_session(get_user(username))
+            new_user.start_session(db.get_user(username))
     return app.send_static_file("index.html")
 
 
