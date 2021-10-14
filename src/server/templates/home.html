@@ -21,6 +21,9 @@
         <p>Why not share your experience to the world?</p>
         <button class="btn">Join Now</button>
     </section>
+    {% for city in cities %}
+        <p>{{ city.name }}</p>
+    {% endfor %}
 
     <div id="feature-container"></div>
 
