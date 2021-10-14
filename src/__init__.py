@@ -1,2 +1,1 @@
-__all__ = ["db", "server"]
-from db import *
+from . import server, db

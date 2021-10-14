@@ -1,1 +1,2 @@
-from auth import *
+from . import auth
+from . import app

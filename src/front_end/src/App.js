@@ -1,10 +1,11 @@
 import './App.css';
 import React, {useState} from "react"
 import Page from "./components/Page"
-import RegistrationForm from "./components/Registration";
+import RegistrationForm from "./components/RegistrationForm";
 import Login from "./components/LoginForm"
 
 function App() {
+
     const [pageName, setPageName] = useState("");
 
     const handlePageSwitch = (name) => {
