@@ -1,6 +1,11 @@
 import sys
 import os
-from auth import *
+cwd = os.getcwd()
+print(f"Current dirctory: {cwd}\n")
+#os.chdir(".../")
+from db import db
+from .auth import is_username_valid, is_password_valid
+
 
 from flask import Flask, render_template, request, send_from_directory, url_for
 
@@ -58,7 +63,7 @@ def login():
 
 @app.route("/static/<path:path>")
 def send_static_file(path):
-    return send_from_directory(static, path)
+    return send_from_directory("./static", path)
 
 
 if __name__ == '__main__':
