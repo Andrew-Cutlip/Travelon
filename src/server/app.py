@@ -3,7 +3,7 @@ import os
 from auth import *
 
 from flask import Flask, render_template, request, send_from_directory, url_for
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../templates')
 
 BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
 static = os.path.join(BASE_PATH, "static")
@@ -13,12 +13,12 @@ print(static)
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return app.send_static_file("templates/home.html")
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return app.send_static_file("templates/about.html")
 
 
 @app.route("/register")
