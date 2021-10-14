@@ -1,3 +1,5 @@
+import uuid
+
 import pymongo
 from pymongo import MongoClient
 import os
@@ -102,19 +104,32 @@ class RealDatabase(Database):
         print(f"Inserting user {username}\n")
         self.users.insert_one(user)
 
+# get database
+def start_database():
+    print("Getting database\n")
+
+
+def insert_user(user):
+    username = user["username"]
+    print(f"Inserting user {username}\n")
+    users.insert_one(user)
+
     def remove_user(self, user_id: int):
         pass
 
     def check_user_password(self,username: str, password: str) -> bool:
-        user = self.users.find_one(username)
+        user = self.get_user(username)
         if user is None:
             return False
         hashed = user["password_hash"]
         pass_check = check_password(password, hashed)
         return pass_check
 
+
+
+
     def get_user(self,username: str) -> dict:
-        user = self.users.find_one(username)
+        user = self.users.find_one({"username": username})
         print(f"Got user {username}\n")
         return user
 
