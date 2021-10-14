@@ -21,13 +21,13 @@ print(static)
 @app.route('/')
 @app.route('/home')
 def home():
-    cities = db.get_cities()
-    return render_template('home.html', cities=cities)
+
+    return send_from_directory("./static", "index.html")
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return "About"
 
 
 @app.route("/register")
@@ -66,8 +66,3 @@ def send_static_file(path):
     return send_from_directory("./static", path)
 
 
-if __name__ == '__main__':
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
-    host = "0.0.0.0"
-    app.run(host=host, port=port)
-    db = db.Database()
