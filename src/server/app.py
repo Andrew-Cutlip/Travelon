@@ -8,8 +8,8 @@ from flask import Flask, request, send_from_directory
 
 app = Flask(__name__)
 
-import server.auth as auth
-import server.models as models
+from . import auth
+from . import models
 
 BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
 static = os.path.join(BASE_PATH, "static")
@@ -34,7 +34,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if auth.is_username_valid(username) and is_password_valid(password):
+        if auth.is_username_valid(username) and auth.is_password_valid(password):
             # TODO register user
             hashed = auth.salt_hash_password(password)
             new_user = models.User()
