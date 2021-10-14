@@ -2,3 +2,4 @@ pymongo==3.11
 pymongo[srv]==3.11
 flask~=2.0.1
 bcrypt~=3.2.0
+passlib

@@ -1,2 +1,7 @@
 node_modules
 venv
+*/front_end*
+.git
+.idea
+__pycache__
+npm-debug.log

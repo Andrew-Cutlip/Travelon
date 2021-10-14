@@ -1,12 +1,15 @@
 import os
+import main
+
 cwd = os.getcwd()
-print(f"Current dirctory: {cwd}\n")
-#os.chdir(".../")
-from flask import Flask, render_template, request, send_from_directory, url_for
-from src.server.auth import is_username_valid, is_password_valid, salt_hash_password, check_password
-from src.server.models import User
-from main import db
+print(f"Current directory: {cwd}\n")
+# os.chdir(".../")
+from flask import Flask, request, send_from_directory
+
 app = Flask(__name__)
+
+import server.auth as auth
+import server.models as models
 
 BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
 static = os.path.join(BASE_PATH, "static")
@@ -16,7 +19,6 @@ print(static)
 @app.route('/')
 @app.route('/home')
 def home():
-
     return send_from_directory("./static", "index.html")
 
 
@@ -32,10 +34,10 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if is_username_valid(username) and is_password_valid(password):
+        if auth.is_username_valid(username) and is_password_valid(password):
             # TODO register user
-            hashed = salt_hash_password(password)
-            new_user = User()
+            hashed = auth.salt_hash_password(password)
+            new_user = models.User()
             new_user.CreateUser(username, hashed)
         else:
             error = "Invalid username / password"
@@ -50,14 +52,12 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         # TODO look up username and see if password matches
-        if db.check_user_password(username, password):
-            new_user = User()
-            new_user.start_session(db.get_user(username))
+        if main.db.check_user_password(username , password):
+            new_user = models.User()
+            new_user.start_session(main.db.get_user(username))
     return app.send_static_file("index.html")
 
 
 @app.route("/static/<path:path>")
 def send_static_file(path):
     return send_from_directory("./static", path)
-
-
