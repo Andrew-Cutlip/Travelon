@@ -6,6 +6,7 @@ print(f"Current dirctory: {cwd}\n")
 from db import db
 from .auth import is_username_valid, is_password_valid
 
+
 from flask import Flask, render_template, request, send_from_directory, url_for
 
 from src.db.db import check_user_password, get_user
