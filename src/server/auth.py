@@ -1,14 +1,16 @@
 import bcrypt
 
-from src.db.db import is_username_available
+from main import db
 
 
+# will want to add more validation here later
 def is_password_valid(password: str) -> bool:
     return True
 
 
+# will want to add more validation here later
 def is_username_valid(username: str) -> bool:
-    return is_username_available(username)
+    return db.is_username_available(username)
 
 
 def salt_hash_password(password: str):
@@ -17,6 +19,6 @@ def salt_hash_password(password: str):
     return hashed
 
 
-def check_password(password: str, hash) -> bool:
-    pass_check = bcrypt.checkpw(password.encode('utf8'), hash)
+def check_password(password: str, hashed) -> bool:
+    pass_check = bcrypt.checkpw(password.encode('utf8'), hashed)
     return pass_check

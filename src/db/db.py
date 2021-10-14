@@ -1,10 +1,8 @@
 import uuid
 
 import pymongo
-from pymongo import MongoClient
 import os
-from server.auth import *
-
+import server.auth as auth
 
 class Database:
     def __init__(self):
@@ -41,7 +39,7 @@ class DBStub(Database):
         return self.cities
 
     def insert_user(self, user_id: int, username: str, password: str):
-        hashed = salt_hash_password(password)
+        hashed = auth.salt_hash_password(password)
         user = {
             "user_id": user_id ,
             "username": username ,
@@ -60,7 +58,7 @@ class DBStub(Database):
 
     def is_username_available(self,username: str) -> bool:
         usernames = [user["username"] for user in self.users]
-        return  username not in usernames
+        return username not in usernames
 
 
 class RealDatabase(Database):
@@ -104,16 +102,6 @@ class RealDatabase(Database):
         print(f"Inserting user {username}\n")
         self.users.insert_one(user)
 
-# get database
-def start_database():
-    print("Getting database\n")
-
-
-def insert_user(user):
-    username = user["username"]
-    print(f"Inserting user {username}\n")
-    users.insert_one(user)
-
     def remove_user(self, user_id: int):
         pass
 
@@ -122,7 +110,7 @@ def insert_user(user):
         if user is None:
             return False
         hashed = user["password_hash"]
-        pass_check = check_password(password, hashed)
+        pass_check = auth.check_password(password, hashed)
         return pass_check
 
 
