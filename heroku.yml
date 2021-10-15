@@ -3,6 +3,6 @@ build:
     web: Dockerfile
 
 run:
-  web: python ./src/server/app.py $PORT
+  web: python ./src/server/main.py $PORT
 
 
