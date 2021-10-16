@@ -4,18 +4,18 @@ import LoginForm from "./LoginForm"
 import HomePage from "./HomePage";
 import AccountPage from "./AccountPage";
 const Page = (props) => {
-    let pageContent = <LoginForm></LoginForm>;
+    let pageContent;
     if (props.name === "register") {
-        pageContent = <RegistrationForm onclick={props.onclick}></RegistrationForm>
+        pageContent = <RegistrationForm onclick={props.onclick} />
     }
     else if (props.name === "login"){
-        pageContent = <LoginForm></LoginForm>
+        pageContent = <LoginForm onclick={props.onclick} />;
     }
     else if (props.name === "account"){
-        pageContent = <AccountPage></AccountPage>
+        pageContent = <AccountPage />
     }
     else {
-        pageContent = <HomePage></HomePage>
+        pageContent = <HomePage />
     }
     return (
         <div id="page">

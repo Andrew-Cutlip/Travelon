@@ -38,10 +38,10 @@ function Login(props) {
     return(
         <div>
         <h1>Login</h1>
-        <form id="Login-Form" onSubmit={handleSubmit} name="Login">
+        <form id="Login-Form" name="Login">
         <input type="text" name="username" id="username" placeholder="Username" onChange={handleUsername}/>
         <input type="password" name="password" id="logPassword" placeholder="Password" onChange={handlePassword}/>
-        <input type="submit" name="submit" />
+        <input type="submit" name="submit" value="Submit" onSubmit={handleSubmit}/>
         </form>
             <RedirectButton text={"Create an account"}
            onclick={() => props.onclick("register")}>
