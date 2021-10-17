@@ -1,5 +1,3 @@
-import bcrypt
-
 from main import db
 
 
@@ -14,11 +12,10 @@ def is_username_valid(username: str) -> bool:
 
 
 def salt_hash_password(password: str):
-    salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(password.encode('utf8'), salt)
+    hashed = db.salt_hash_password(password)
     return hashed
 
 
-def check_password(password: str, hashed) -> bool:
-    pass_check = bcrypt.checkpw(password.encode('utf8'), hashed)
+def check_password(username: str, password: str, hashed) -> bool:
+    pass_check = db.check_user_password(username, password, hashed)
     return pass_check
