@@ -30,6 +30,7 @@ def about():
 @app.route("/register")
 def register():
     # got stuff!
+    print("Got a register request!")
     error = []
     if request.method == "POST":
         username = request.form["username"]
@@ -48,6 +49,7 @@ def register():
 def login():
     # got stuff!
     error = []
+    print("Got a login Request!")
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
