@@ -1,8 +1,7 @@
-import uuid
-
+import bcrypt
 import pymongo
 import os
-import server.auth as auth
+
 
 class Database:
     def __init__(self):
@@ -27,6 +26,12 @@ class Database:
     def remove_user(self, user_id: int):
         pass
 
+    def salt_hash_password(self, password: str):
+        pass
+
+    def check_user_password(self, username: str, password: str) -> bool:
+        pass
+
 
 class DBStub(Database):
     def __init__(self):
@@ -39,7 +44,7 @@ class DBStub(Database):
         return self.cities
 
     def insert_user(self, user_id: int, username: str, password: str):
-        hashed = auth.salt_hash_password(password)
+        hashed = self.salt_hash_password(password)
         user = {
             "user_id": user_id ,
             "username": username ,
@@ -50,7 +55,7 @@ class DBStub(Database):
     def remove_user(self, user_id: int):
         pass
 
-    def get_user(self,username: str) -> dict:
+    def get_user(self, username: str) -> dict:
         for user in self.users:
             if username == user["username"]:
                 return user
@@ -59,6 +64,16 @@ class DBStub(Database):
     def is_username_available(self,username: str) -> bool:
         usernames = [user["username"] for user in self.users]
         return username not in usernames
+
+    def salt_hash_password(self, password: str):
+        return password
+
+    def check_user_password(self, username: str, password: str) -> bool:
+        user = self.get_user(username)
+        if user is None:
+            return False
+        hashed = user["password_hash"]
+        return hashed == password
 
 
 class RealDatabase(Database):
@@ -93,7 +108,7 @@ class RealDatabase(Database):
         return ret
 
     def insert_user(self, user_id: int, username: str, password: str):
-        hashed = salt_hash_password(password)
+        hashed = self.salt_hash_password(password)
         user = {
             "user_id": user_id,
             "username": username,
@@ -105,26 +120,32 @@ class RealDatabase(Database):
     def remove_user(self, user_id: int):
         pass
 
-    def check_user_password(self,username: str, password: str) -> bool:
+    def check_user_password(self, username: str, password: str) -> bool:
         user = self.get_user(username)
         if user is None:
             return False
         hashed = user["password_hash"]
-        pass_check = auth.check_password(password, hashed)
+        pass_check = self.compare_password(password, hashed)
         return pass_check
 
+    def compare_password(self, password, hashed) -> bool:
+        pass_check = bcrypt.checkpw(password.encode('utf8'), hashed)
+        return pass_check
 
-
-
-    def get_user(self,username: str) -> dict:
+    def get_user(self, username: str) -> dict:
         user = self.users.find_one({"username": username})
         print(f"Got user {username}\n")
         return user
 
-    def is_username_available(self,username: str) -> bool:
+    def is_username_available(self, username: str) -> bool:
         user = self.users.find_one(username)
         if user is None:
             return True
         return False
+
+    def salt_hash_password(self, password: str):
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password.encode('utf8'), salt)
+        return hashed
 
 
