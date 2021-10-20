@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import RedirectButton from "./RedirectButton"
-import {GoogleLogin, GoogleLogout} from 'react-google-login';
+import {GoogleLogin, GoogleLogout} from 'react-google-login'
+import "./Form.css"
 
 function RegistrationForm(props) {
 
@@ -66,9 +67,9 @@ function RegistrationForm(props) {
         setEmail(e.target.value);
     };
     return (
-        <>
+        <div>
             <h1>Register</h1>
-                <form id="Register" name="Register" onSubmit={handleSubmit}>
+                <form id="Register" name="Register"  className = "Register"  align = "Center" onSubmit={handleSubmit}>
 
                         <label>
                             UserName:
@@ -79,13 +80,11 @@ function RegistrationForm(props) {
                             <input name="password" type="password" placeholder="Password" required onChange={handlePassword}/>
                         </label>
                         <label>
-                            Email
+                            Email:
                             <input name="email" type="email" placeholder="example@ex.com" required onChange={handleEmail}/>
                         </label>
                         <input type="submit" value="Submit" onClick={handleSubmit}/>
-
-                </form>
-           <RedirectButton text={"Already have an account: Login here"}
+                        <RedirectButton type = "Submit" className = "RedirectButton" text={"Already have an account: Login here"}
            onclick={() => props.onclick("login")}>
 
            </RedirectButton>
@@ -97,7 +96,7 @@ function RegistrationForm(props) {
                     onSuccess={onLogInSuccess}
                     onFailure={onFailureSuccess}
                     cookiePolicy={'single_host_origin'}
-                    className="g-signin"
+                    className="gsignin"
                     />
                     : null
 
@@ -111,7 +110,9 @@ function RegistrationForm(props) {
                 >
                 </GoogleLogout> : null
             }
-        </>
+                </form>
+
+        </div>
 
 
     );
