@@ -1,12 +1,10 @@
 import os
 import main
 
-
 cwd = os.getcwd()
 print(f"Current directory: {cwd}\n")
 # os.chdir(".../")
 from flask import Flask, request, send_from_directory
-
 
 app = Flask(__name__)
 
@@ -29,7 +27,7 @@ def about():
     return "About"
 
 
-@app.route("/register")
+@app.route("/register", methods=["POST"])
 def register():
     # got stuff!
     print("Got a register request!")
@@ -47,7 +45,7 @@ def register():
     return "Registration page"
 
 
-@app.route("/login")
+@app.route("/login", methods=["POST"])
 def login():
     # got stuff!
     error = []

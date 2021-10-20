@@ -22,7 +22,9 @@ function RegistrationForm(props) {
            })
        };
            if (Submit) {
-            fetch("/register", requestOptions)
+               console.log("Sending a registration\n");
+               setSubmit(false);
+               fetch("/register", requestOptions)
                 .then(response => response.json)
                 .then(data => console.log(data))
                 .then(() => setSubmit(false))
@@ -32,6 +34,7 @@ function RegistrationForm(props) {
 
     let handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Handling Submit")
         setSubmit(true);
     };
 
@@ -73,13 +76,13 @@ function RegistrationForm(props) {
                         </label>
                         <label>
                             Password:
-                            <input name="password" type="password" required onChange={handlePassword}/>
+                            <input name="password" type="password" placeholder="Password" required onChange={handlePassword}/>
                         </label>
                         <label>
                             Email
-                            <input name="email" type="email" required onChange={handleEmail}/>
+                            <input name="email" type="email" placeholder="example@ex.com" required onChange={handleEmail}/>
                         </label>
-                        <input type="submit" value="Submit"/>
+                        <input type="submit" value="Submit" onClick={handleSubmit}/>
 
                 </form>
            <RedirectButton text={"Already have an account: Login here"}
@@ -88,13 +91,15 @@ function RegistrationForm(props) {
            </RedirectButton>
 
             {showLoginButton ?
-                <GoogleLogin
+                    <GoogleLogin
                     clientId={clientId}
                     buttonText="Login"
                     onSuccess={onLogInSuccess}
                     onFailure={onFailureSuccess}
                     cookiePolicy={'single_host_origin'}
-                /> : null
+                    className="g-signin"
+                    />
+                    : null
 
             }
 
