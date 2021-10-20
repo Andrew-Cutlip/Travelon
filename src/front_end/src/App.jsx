@@ -40,6 +40,18 @@ function App() {
             path: "account",
             key: 2
         },
+        {
+            onclick: handlePageSwitch,
+            text: "About",
+            path:"about",
+            key:4
+        },
+        {
+            onclick: handlePageSwitch,
+            text: "Contact",
+            path: "contact",
+            key:5
+        }
     ];
   return (
       <>
