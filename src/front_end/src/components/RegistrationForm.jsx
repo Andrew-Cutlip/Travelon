@@ -3,6 +3,7 @@ import RedirectButton from "./RedirectButton"
 import {GoogleLogin, GoogleLogout} from 'react-google-login'
 import "./Form.css";
 
+
 function RegistrationForm(props) {
 
     const [Password, setPassword] = useState("");
