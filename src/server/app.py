@@ -1,5 +1,5 @@
 import os
-import main
+import src.main
 
 cwd = os.getcwd()
 print(f"Current directory: {cwd}\n")
@@ -33,8 +33,9 @@ def register():
     print("Got a register request!")
     error = []
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        json_data = request.json
+        username = json_data["username"]
+        password = json_data["password"]
         if auth.is_username_valid(username) and auth.is_password_valid(password):
             # TODO register user
             hashed = auth.salt_hash_password(password)
@@ -51,7 +52,8 @@ def login():
     error = []
     print("Got a login Request!")
     if request.method == "POST":
-        username = request.form["username"]
+        json_data = flask.request.json
+        username = request.body["username"]
         password = request.form["password"]
         # TODO look up username and see if password matches
         if main.db.check_user_password(username , password):

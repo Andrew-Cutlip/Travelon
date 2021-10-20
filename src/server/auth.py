@@ -1,4 +1,4 @@
-from main import db
+from src.main import db
 
 
 # will want to add more validation here later

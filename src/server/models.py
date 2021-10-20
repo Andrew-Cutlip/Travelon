@@ -29,15 +29,5 @@ class User:
 
     def signout(self):
         session.clear()
-        return redirect('/')
+        return redirect('/home')
 
-    def viewUser(self):
-
-        user = db.users.find_one({
-            "email": request.form.get('email')
-        })
-
-        if user and pbkdf2_sha256.verify(request.form.get('password'), user['password']):
-            return self.start_session(user)
-
-        return jsonify({"error": "Invalid login credentials"}), 401
