@@ -14,7 +14,7 @@ class Database:
     def get_cities(self) -> list:
         pass
 
-    def insert_user(self, user_id: int, username: str, password: str):
+    def insert_user(self, user: dict):
         pass
 
     def get_user(self, username: str) -> dict:
@@ -43,13 +43,7 @@ class DBStub(Database):
     def get_cities(self) -> list:
         return self.cities
 
-    def insert_user(self, user_id: int, username: str, password: str):
-        hashed = self.salt_hash_password(password)
-        user = {
-            "user_id": user_id ,
-            "username": username ,
-            "password_hash": hashed
-        }
+    def insert_user(self, user: dict):
         self.users.append(user)
 
     def remove_user(self, user_id: int):
@@ -107,14 +101,7 @@ class RealDatabase(Database):
             ret.append(city)
         return ret
 
-    def insert_user(self, user_id: int, username: str, password: str):
-        hashed = self.salt_hash_password(password)
-        user = {
-            "user_id": user_id,
-            "username": username,
-            "password_hash": hashed
-        }
-        print(f"Inserting user {username}\n")
+    def insert_user(self, user: dict):
         self.users.insert_one(user)
 
     def remove_user(self, user_id: int):
