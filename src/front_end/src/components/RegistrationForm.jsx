@@ -88,7 +88,6 @@ function RegistrationForm(props) {
            onclick={() => props.onclick("login")}>
 
            </RedirectButton>
-
             {showLoginButton ?
                     <GoogleLogin
                     clientId={clientId}

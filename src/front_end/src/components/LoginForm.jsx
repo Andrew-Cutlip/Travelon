@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import RedirectButton from "./RedirectButton"
 import {GoogleLogin, GoogleLogout} from 'react-google-login';
-import "./Form.css"; 
+import "./Form.css";
+
+
 
 function Login(props) {
     const clientId = "891542752976-2b518b2l45tl0foe8c17pjm1h76pcf79.apps.googleusercontent.com"
@@ -82,9 +84,7 @@ function Login(props) {
                     onFailure={onFailureSuccess}
                     cookiePolicy={'single_host_origin'}
                 /> : null
-
             }
-
             {showLogoutButton ?
                 <GoogleLogout
                     clientId={clientId}
