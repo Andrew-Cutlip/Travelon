@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import RedirectButton from "./RedirectButton"
 import {GoogleLogin, GoogleLogout} from 'react-google-login'
-import "./Form.css"
+import "./Form.css";
 
 function RegistrationForm(props) {
 
