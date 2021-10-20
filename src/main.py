@@ -1,6 +1,6 @@
 import sys
 from db import db
-import server.app as app
+import src.server.app as app
 
 if __name__ == '__main__':
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
