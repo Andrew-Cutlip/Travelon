@@ -116,6 +116,7 @@ function RegistrationForm(props) {
         </div>
 
 
+
     );
 }
 export default RegistrationForm;
