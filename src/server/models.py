@@ -1,6 +1,6 @@
 from flask import jsonify, request, session, redirect
 from passlib.hash import pbkdf2_sha256
-from main import db
+import main
 import uuid
 
 
@@ -22,7 +22,7 @@ class User:
             "password_hash": hashed
         }
 
-        if db.insert_user(user):
+        if main.database.insert_user(user):
             return self.start_session(user)
 
         return jsonify({"error": "Signup failed"}), 400

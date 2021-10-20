@@ -1,5 +1,5 @@
 import os
-import src.main
+import main as main
 
 cwd = os.getcwd()
 print(f"Current directory: {cwd}\n")
@@ -52,13 +52,13 @@ def login():
     error = []
     print("Got a login Request!")
     if request.method == "POST":
-        json_data = flask.request.json
-        username = request.body["username"]
-        password = request.form["password"]
+        json_data = request.json
+        username = json_data["username"]
+        password = json_data["password"]
         # TODO look up username and see if password matches
-        if main.db.check_user_password(username , password):
+        if main.database.check_user_password(username , password):
             new_user = models.User()
-            new_user.start_session(main.db.get_user(username))
+            new_user.start_session(main.database.get_user(username))
     return app.send_static_file("index.html")
 
 
