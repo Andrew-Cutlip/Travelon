@@ -83,5 +83,14 @@ h1{
   background-color: #A2D9cE;
 }
 
+Register{
+border: thin solid Black;
+  padding: 2rem;
+  margin: 2rem;
+  display: flex;
+}
+
+
+
 
 

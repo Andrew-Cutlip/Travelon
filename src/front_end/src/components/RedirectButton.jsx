@@ -1,4 +1,5 @@
 import React from "react";
+import "./Form.css";
 function RedirectButton(props) {
     return (
         <button onClick={props.onclick}>
