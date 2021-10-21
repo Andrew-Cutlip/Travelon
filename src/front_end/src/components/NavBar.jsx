@@ -1,5 +1,6 @@
 import React from "react";
 import RedirectButton from "./RedirectButton";
+import LogoutButton from "./LogoutButton";
 const NavBar = (props) => {
     let links = props.links.map((link) => {
         return (
@@ -15,6 +16,7 @@ const NavBar = (props) => {
             <ul className="nav-links">
                 {links}
             </ul>
+            <LogoutButton changeLoginStatus={props.changeLoginStatus}/>
         </nav>
     );
 };

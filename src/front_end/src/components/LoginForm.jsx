@@ -39,11 +39,13 @@ function Login(props) {
            })
        };
            if (Submit) {
-            fetch("/register", requestOptions)
-                .then(response => response.json)
-                .then(data => console.log(data))
-                .then(() => setSubmit(false))
-            }
+               setSubmit(false);
+                fetch("/register", requestOptions)
+                    .then(response => response.json)
+                    .then(data => console.log(data))
+                    .then(() => props.setAccount(Username))
+                    .then(() => props.setLoginStatus())
+                }
     }, [Submit, Password, Username]);
 
     let handleSubmit = (e) => {

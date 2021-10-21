@@ -9,7 +9,7 @@ const Page = (props) => {
         pageContent = <RegistrationForm onclick={props.onclick} />
     }
     else if (props.name === "login"){
-        pageContent = <LoginForm onclick={props.onclick} setAccount={props.setAccount}/>;
+        pageContent = <LoginForm onclick={props.onclick} setAccount={props.setAccount} setLoginStatus={props.setLoginStatus}/>;
     }
     else if (props.name === "account"){
         pageContent = <AccountPage accountName={props.accountName}/>
