@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import RedirectButton from "./RedirectButton"
 import {GoogleLogin, GoogleLogout} from 'react-google-login';
-import "./Form.css";
 
 function Login(props) {
     const clientId = "891542752976-2b518b2l45tl0foe8c17pjm1h76pcf79.apps.googleusercontent.com"
@@ -10,6 +9,7 @@ function Login(props) {
 
     const onLogInSuccess = (res) => {
         console.log('Login Success:', res.profileObj);
+        //user = res.profileObj;
         setShowLoginButton(false);
         setShowLogoutButton(true);
     }
@@ -39,13 +39,12 @@ function Login(props) {
            })
        };
            if (Submit) {
-               setSubmit(false);
-                fetch("/register", requestOptions)
-                    .then(response => response.json)
-                    .then(data => console.log(data))
-                    .then(() => props.setAccount(Username))
-                    .then(() => props.setLoginStatus())
-                }
+            fetch("/register", requestOptions)
+                .then(response => response.json)
+                .then(data => console.log(data))
+                .then(() => props.setAccount(Username))
+                .then(() => setSubmit(false))
+            }
     }, [Submit, Password, Username]);
 
     let handleSubmit = (e) => {
@@ -62,15 +61,11 @@ function Login(props) {
     return(
         <div>
         <h1>Login</h1>
-        <form id="Login-Form" className = "Login" name="Login">
-        <label> Username:
+        <form id="Login-Form" name="Login">
         <input type="text" name="username" id="username" placeholder="Username" onChange={handleUsername}/>
-        </label>
-        <label> Password:
         <input type="password" name="password" id="logPassword" placeholder="Password" onChange={handlePassword}/>
-        </label>
         <input type="submit" name="submit" value="Submit" onSubmit={handleSubmit}/>
-
+        </form>
             <RedirectButton text={"Create an account"}
            onclick={() => props.onclick("register")}>
 
@@ -95,7 +90,6 @@ function Login(props) {
                 >
                 </GoogleLogout> : null
             }
-            </form>
         </div>
 
     );
