@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import RedirectButton from "./RedirectButton"
-import {GoogleLogin, GoogleLogout} from 'react-google-login';
+import {GoogleLogin, GoogleLogout} from 'react-google-login'
+import "./Form.css";
+
 
 function RegistrationForm(props) {
 
@@ -22,7 +24,9 @@ function RegistrationForm(props) {
            })
        };
            if (Submit) {
-            fetch("/register", requestOptions)
+               console.log("Sending a registration\n");
+               setSubmit(false);
+               fetch("/register", requestOptions)
                 .then(response => response.json)
                 .then(data => console.log(data))
                 .then(() => setSubmit(false))
@@ -32,6 +36,7 @@ function RegistrationForm(props) {
 
     let handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Handling Submit")
         setSubmit(true);
     };
 
@@ -63,9 +68,9 @@ function RegistrationForm(props) {
         setEmail(e.target.value);
     };
     return (
-        <>
+        <div>
             <h1>Register</h1>
-                <form id="Register" name="Register" onSubmit={handleSubmit}>
+                <form id="Register" name="Register"  className = "Register"  align = "Center" onSubmit={handleSubmit}>
 
                         <label>
                             UserName:
@@ -73,28 +78,28 @@ function RegistrationForm(props) {
                         </label>
                         <label>
                             Password:
-                            <input name="password" type="password" required onChange={handlePassword}/>
+                            <input name="password" type="password" placeholder="Password" required onChange={handlePassword}/>
                         </label>
                         <label>
-                            Email
-                            <input name="email" type="email" required onChange={handleEmail}/>
+                            Email:
+                            <input name="email" type="email" placeholder="example@ex.com" required onChange={handleEmail}/>
                         </label>
-                        <input type="submit" value="Submit"/>
-
-                </form>
-           <RedirectButton text={"Already have an account: Login here"}
+                        <input type="submit" value="Submit" onClick={handleSubmit}/>
+                        <RedirectButton type = "Submit" className = "RedirectButton" text={"Already have an account: Login here"}
            onclick={() => props.onclick("login")}>
 
            </RedirectButton>
 
             {showLoginButton ?
-                <GoogleLogin
+                    <GoogleLogin
                     clientId={clientId}
                     buttonText="Login"
                     onSuccess={onLogInSuccess}
                     onFailure={onFailureSuccess}
                     cookiePolicy={'single_host_origin'}
-                /> : null
+                    className="gsignin"
+                    />
+                    : null
 
             }
 
@@ -106,7 +111,10 @@ function RegistrationForm(props) {
                 >
                 </GoogleLogout> : null
             }
-        </>
+                </form>
+
+        </div>
+
 
 
     );

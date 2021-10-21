@@ -1,13 +1,15 @@
 import sys
 from db import db
-from server.app import app
+import server.app as app
+database = db.RealDatabase()
 
 if __name__ == '__main__':
+
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
     host = "0.0.0.0"
-    app.run(host=host, port=port)
+    app.app.run(host=host, port=port)
     mode = "production"
     if mode == "development":
-        db = db.DBStub()
+        database = db.DBStub()
     else:
-        db = db.RealDatabase()
+        database = db.RealDatabase()

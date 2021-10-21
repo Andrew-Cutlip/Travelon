@@ -7,10 +7,18 @@ import Header from "./components/Header";
 function App() {
 
     const [pageName, setPageName] = useState("");
+    const [accountName, setAccountName] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
 
     const handlePageSwitch = (name) => {
         setPageName(name);
     };
+    const changeLoginStatus = () => {
+        setLoggedIn(! loggedIn);
+    };
+    const setAccount = (name) => {
+        setAccountName(name);
+    }
     // Changes page title
     useEffect(() => {
             document.title = "Travelon " + pageName;
@@ -56,8 +64,8 @@ function App() {
   return (
       <>
         <div className="App">
-            <Header links={links}></Header>
-          <Page name={pageName} onclick={handlePageSwitch}></Page>
+            <Header links={links} log={changeLoginStatus}/>
+          <Page name={pageName} onclick={handlePageSwitch} setAccount={setAccount} accountName={accountName}/>
         </div>
       </>
   );

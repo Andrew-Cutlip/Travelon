@@ -1,0 +1,47 @@
+.Register{
+    display: block;
+    background-color: lightgrey;
+    width: 300px;
+    border: 10px solid Black;
+    padding-top: 25px;
+    padding-right: 50px;
+    padding-left: 20px;
+    padding-bottom: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+}
+.Login{
+    display: block;
+    background-color: lightgrey;
+    width: 300px;
+    border: 10px solid Black;
+    padding-top: 25px;
+    padding-right: 50px;
+    padding-left: 20px;
+    padding-bottom: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+
+input, label, .RedirectButton{
+align: center;
+text-align:center;
+display: block;
+width: 300px;
+padding: 5px;
+margin: 5px;
+}
+
+.gsignin{
+    padding: 20px;
+}
+
+
+
+
+
+
