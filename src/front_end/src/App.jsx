@@ -7,14 +7,41 @@ import Header from "./components/Header";
 function App() {
 
     const [pageName, setPageName] = useState("");
+    const [accountName, setAccountName] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
 
     const handlePageSwitch = (name) => {
         setPageName(name);
     };
+    const changeLoginStatus = () => {
+        console.log("changed login status");
+        setLoggedIn(! loggedIn);
+    };
+    const setAccount = (name) => {
+        setAccountName(name);
+    }
     // Changes page title
     useEffect(() => {
             document.title = "Travelon " + pageName;
             }, [pageName]);
+    const login =  {
+            onclick: handlePageSwitch,
+            text: "Login",
+            path: "login",
+            key: 1
+        };
+    const register =         {
+            onclick: handlePageSwitch,
+            text: "Register",
+            path: "register",
+            key: 2
+        };
+    const account = {
+            onclick: handlePageSwitch,
+            text: "Account",
+            path: "account",
+            key: 3
+        };
     const links = [
         {
             onclick: handlePageSwitch,
@@ -24,28 +51,29 @@ function App() {
         },
         {
             onclick: handlePageSwitch,
-            text: "Login",
-            path: "login",
-            key: 1
+            text: "About",
+            path:"about",
+            key:4
         },
         {
             onclick: handlePageSwitch,
-            text: "Register",
-            path: "register",
-            key: 2
-        },
-        {
-            onclick: handlePageSwitch,
-            text: "Account",
-            path: "account",
-            key: 2
+            text: "Contact",
+            path: "contact",
+            key:5
         },
     ];
+    if (! loggedIn) {
+        links.push(login);
+        links.push(register);
+    }
+    else {
+        links.push(account);
+    }
   return (
       <>
         <div className="App">
-            <Header links={links}></Header>
-          <Page name={pageName} onclick={handlePageSwitch}></Page>
+            <Header links={links} loggedIn={loggedIn} changeLoginStatus={changeLoginStatus}/>
+          <Page name={pageName} onclick={handlePageSwitch} setAccount={setAccount}  accountName={accountName} changeLoginStatus={changeLoginStatus}/>
         </div>
       </>
   );
