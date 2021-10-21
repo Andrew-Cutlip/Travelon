@@ -52,8 +52,8 @@ function App() {
   return (
       <>
         <div className="App">
-            <Header links={links} log={changeLoginStatus}/>
-          <Page name={pageName} onclick={handlePageSwitch} setAccount={setAccount} accountName={accountName}/>
+            <Header links={links} log={changeLoginStatus} changeLoginStatus={changeLoginStatus}/>
+          <Page name={pageName} onclick={handlePageSwitch} setAccount={setAccount}  accountName={accountName}/>
         </div>
       </>
   );

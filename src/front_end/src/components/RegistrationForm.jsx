@@ -29,7 +29,6 @@ function RegistrationForm(props) {
                fetch("/register", requestOptions)
                 .then(response => response.json)
                 .then(data => console.log(data))
-                .then(() => setSubmit(false))
             }
     }, [Submit, Password, Username, Email]);
 
