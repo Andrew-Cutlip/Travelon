@@ -3,13 +3,13 @@ import React, {useEffect, useState} from "react"
 import Page from "./components/Page"
 import Header from "./components/Header";
 
+var user = "";
 
 function App() {
-
     const [pageName, setPageName] = useState("");
     const [accountName, setAccountName] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
-
+    
     const handlePageSwitch = (name) => {
         setPageName(name);
     };
@@ -21,8 +21,8 @@ function App() {
     }
     // Changes page title
     useEffect(() => {
-            document.title = "Travelon " + pageName;
-            }, [pageName]);
+        document.title = "Travelon " + pageName;
+    }, [pageName]);
     const links = [
         {
             onclick: handlePageSwitch,
@@ -46,7 +46,7 @@ function App() {
             onclick: handlePageSwitch,
             text: "Account",
             path: "account",
-            key: 2
+            key: 3
         },
         {
             onclick: handlePageSwitch,
@@ -62,12 +62,12 @@ function App() {
         }
     ];
   return (
-      <>
-        <div className="App">
-            <Header links={links} log={changeLoginStatus} changeLoginStatus={changeLoginStatus}/>
-          <Page name={pageName} onclick={handlePageSwitch} setAccount={setAccount}  accountName={accountName}/>
-        </div>
-      </>
+    <>
+    <div className="App">
+        <Header links={links} log={changeLoginStatus} changeLoginStatus={changeLoginStatus}/>
+      <Page name={pageName} onclick={handlePageSwitch} setAccount={setAccount}  accountName={accountName}/>
+    </div>
+  </>
   );
 }
 

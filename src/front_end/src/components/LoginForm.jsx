@@ -10,6 +10,7 @@ function Login(props) {
     const onLogInSuccess = (res) => {
         console.log('Login Success:', res.profileObj);
         //user = res.profileObj;
+        props.setAccount(res.profileObj);
         setShowLoginButton(false);
         setShowLogoutButton(true);
     }
@@ -39,6 +40,7 @@ function Login(props) {
            })
        };
            if (Submit) {
+            setSubmit(false);
             fetch("/register", requestOptions)
                 .then(response => response.json)
                 .then(data => console.log(data))

@@ -26,6 +26,10 @@ def home():
 def about():
     return "About"
 
+@app.route('/contact')
+def about():
+    return "Contact"
+
 
 @app.route("/register", methods=["POST"])
 def register():

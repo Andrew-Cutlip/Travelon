@@ -44,12 +44,14 @@ function RegistrationForm(props) {
         console.log('Login Success:', res.profileObj);
         setShowLoginButton(false);
         setShowLogoutButton(true);
+        props.setAccount(res.profileObj);
     }
     const onFailureSuccess = (res) => {
         console.log('Login Failed:', res);
     }
     const onSignoutSuccess = (res) => {
         alert("You have been signed out successfully.")
+        //props.setAccount("");
         setShowLoginButton(true);
         setShowLogoutButton(false);
     }
