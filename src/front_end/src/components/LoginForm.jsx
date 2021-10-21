@@ -43,12 +43,18 @@ function Login(props) {
                setSubmit(false);
                 fetch("/register", requestOptions)
                     .then(response => response.json)
-                    .then(data => console.log(data))
+                    .then(data => {
+                        console.log(data);
+                        let loggedIn = data.loggedIn;
+                        if (loggedIn) {
+                            console.log("Changed to logged in");
+                            props.changeLoginStatus();
+                        }
+                    })
                     .then(() => {
                         console.log("Got Username");
                         props.setAccount(Username);
                     })
-                    .then(() => props.setLoginStatus())
                 }
     }, [Submit, Password, Username]);
 
@@ -66,7 +72,7 @@ function Login(props) {
     return(
         <div>
         <h1>Login</h1>
-        <form id="Login-Form" className = "Login" name="Login">
+        <form id="Login-Form" className = "Login" name="Login" onSubmit={handleSubmit}>
         <label> Username:
         <input type="text" name="username" id="username" placeholder="Username" onChange={handleUsername}/>
         </label>

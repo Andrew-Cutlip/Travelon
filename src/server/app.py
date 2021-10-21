@@ -35,6 +35,7 @@ def register():
     json = {
         "loggedIn": False,
         "errors": [],
+        "success": False ,
     }
     if request.method == "POST":
         json_data = request.json
@@ -45,6 +46,7 @@ def register():
             hashed = auth.salt_hash_password(password)
             new_user = models.User()
             new_user.CreateUser(username, hashed)
+            json["success"] = True
         else:
             error = "Invalid username / password"
             json["errors"].append(error)
@@ -58,6 +60,7 @@ def login():
     json = {
         "loggedIn": False ,
         "errors": [],
+        "success": False,
     }
     print("Got a login Request!")
     if request.method == "POST":
@@ -69,6 +72,7 @@ def login():
             new_user = models.User()
             new_user.start_session(main.database.get_user(username))
             json["loggedIn"] = True
+            json["success"] = True
         else:
             error = "Invalid username / password"
             json["errors"].append(error)

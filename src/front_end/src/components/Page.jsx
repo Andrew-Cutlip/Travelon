@@ -9,10 +9,10 @@ import Contact from "./Contact"
 const Page = (props) => {
     let pageContent;
     if (props.name === "register") {
-        pageContent = <RegistrationForm onclick={props.onclick} />
+        pageContent = <RegistrationForm onclick={props.onclick} changeLoginStatus={props.changeLoginStatus}/>
     }
     else if (props.name === "login"){
-        pageContent = <LoginForm onclick={props.onclick} setAccount={props.setAccount} setLoginStatus={props.setLoginStatus}/>;
+        pageContent = <LoginForm onclick={props.onclick} setAccount={props.setAccount} changeLoginStatus={props.changeLoginStatus}/>;
     }
     else if (props.name === "account"){
         pageContent = <AccountPage accountName={props.accountName}/>
