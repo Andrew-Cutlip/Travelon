@@ -1,10 +1,11 @@
 import os
+
 import main as main
 
 cwd = os.getcwd()
 print(f"Current directory: {cwd}\n")
 # os.chdir(".../")
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, jsonify
 
 app = Flask(__name__)
 
@@ -31,7 +32,10 @@ def about():
 def register():
     # got stuff!
     print("Got a register request!")
-    error = []
+    json = {
+        "loggedIn": False,
+        "errors": [],
+    }
     if request.method == "POST":
         json_data = request.json
         username = json_data["username"]
@@ -43,13 +47,18 @@ def register():
             new_user.CreateUser(username, hashed)
         else:
             error = "Invalid username / password"
-    return "Registration page"
+            json["errors"].append(error)
+
+    return jsonify(json)
 
 
 @app.route("/login", methods=["POST"])
 def login():
     # got stuff!
-    error = []
+    json = {
+        "loggedIn": False ,
+        "errors": [],
+    }
     print("Got a login Request!")
     if request.method == "POST":
         json_data = request.json
@@ -59,7 +68,11 @@ def login():
         if main.database.check_user_password(username , password):
             new_user = models.User()
             new_user.start_session(main.database.get_user(username))
-    return app.send_static_file("index.html")
+            json["loggedIn"] = True
+        else:
+            error = "Invalid username / password"
+            json["errors"].append(error)
+    return jsonify(json)
 
 
 @app.route("/static/<path:path>")

@@ -39,11 +39,15 @@ function Login(props) {
            })
        };
            if (Submit) {
+               console.log("Logging in!")
                setSubmit(false);
                 fetch("/register", requestOptions)
                     .then(response => response.json)
                     .then(data => console.log(data))
-                    .then(() => props.setAccount(Username))
+                    .then(() => {
+                        console.log("Got Username");
+                        props.setAccount(Username);
+                    })
                     .then(() => props.setLoginStatus())
                 }
     }, [Submit, Password, Username]);

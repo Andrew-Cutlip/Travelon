@@ -1,9 +1,10 @@
 import React from "react";
 
-const AccountPage = () => {
+const AccountPage = (props) => {
     return (
      <div id="account">
-        <h2>My Account</h2>
+        <h2>My Account:</h2>
+         <p>Welcome {props.accountName}!</p>
      </div>
     );
 };

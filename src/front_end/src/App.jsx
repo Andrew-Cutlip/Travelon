@@ -46,7 +46,7 @@ function App() {
             onclick: handlePageSwitch,
             text: "Account",
             path: "account",
-            key: 2
+            key: 3
         },
         {
             onclick: handlePageSwitch,
@@ -64,7 +64,7 @@ function App() {
   return (
       <>
         <div className="App">
-            <Header links={links} log={changeLoginStatus} changeLoginStatus={changeLoginStatus}/>
+            <Header links={links} loggedIn={loggedIn} changeLoginStatus={changeLoginStatus}/>
           <Page name={pageName} onclick={handlePageSwitch} setAccount={setAccount}  accountName={accountName}/>
         </div>
       </>

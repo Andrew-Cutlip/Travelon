@@ -10,13 +10,14 @@ const NavBar = (props) => {
             </RedirectButton>
         </li>
         )});
+    let Logout = props.loggedIn ? <LogoutButton changeLoginStatus={props.changeLoginStatus}/> : ""
     return (
         <nav>
             <h1>Travelon</h1>
             <ul className="nav-links">
                 {links}
             </ul>
-            <LogoutButton changeLoginStatus={props.changeLoginStatus}/>
+            {Logout}
         </nav>
     );
 };
