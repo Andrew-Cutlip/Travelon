@@ -41,12 +41,24 @@ function Login(props) {
            if (Submit) {
                setSubmit(false);
                 fetch("/register", requestOptions)
-                    .then(response => response.json)
-                    .then(data => console.log(data))
-                    .then(() => props.setAccount(Username))
-                    .then(() => props.setLoginStatus())
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("LoggedIn!");
+                        console.log(data);
+                        let loggedIn = data.loggedIn;
+                        if (loggedIn) {
+                            console.log("Changed to logged in");
+                            props.changeLoginStatus();
+                        }
+                        console.log(Username);
+                        props.setAccount(Username);
+                        let success = data.success;
+                        console.log(success);
+                        setPassword("");
+                        setUsername("");
+                    })
                 }
-    }, [Submit, Password, Username]);
+    }, [Submit, Password, Username, props]);
 
     let handleSubmit = (e) => {
         e.preventDefault();
@@ -62,12 +74,12 @@ function Login(props) {
     return(
         <div>
         <h1>Login</h1>
-        <form id="Login-Form" className = "Login" name="Login">
+        <form id="Login-Form" className = "Login" name="Login" onSubmit={handleSubmit}>
         <label> Username:
-        <input type="text" name="username" id="username" placeholder="Username" onChange={handleUsername}/>
+        <input type="text" name="username" id="username" placeholder="Username" onChange={handleUsername} value={Username}/>
         </label>
         <label> Password:
-        <input type="password" name="password" id="logPassword" placeholder="Password" onChange={handlePassword}/>
+        <input type="password" name="password" id="logPassword" placeholder="Password" onChange={handlePassword} value={Password}/>
         </label>
         <input type="submit" name="submit" value="Submit" onSubmit={handleSubmit}/>
 
