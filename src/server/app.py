@@ -27,7 +27,7 @@ def about():
     return "About"
 
 @app.route('/contact')
-def about():
+def contact():
     return "Contact"
 
 
