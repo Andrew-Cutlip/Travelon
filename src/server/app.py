@@ -35,7 +35,7 @@ def register():
     json = {
         "loggedIn": False,
         "errors": [],
-        "success": False ,
+        "success": False,
     }
     if request.method == "POST":
         json_data = request.json
@@ -50,7 +50,7 @@ def register():
         else:
             error = "Invalid username / password"
             json["errors"].append(error)
-
+    print(json)
     return jsonify(json)
 
 
@@ -76,6 +76,7 @@ def login():
         else:
             error = "Invalid username / password"
             json["errors"].append(error)
+    print(json)
     return jsonify(json)
 
 
