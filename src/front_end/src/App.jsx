@@ -65,6 +65,7 @@ function App() {
     if (! loggedIn) {
         links.push(login);
         links.push(register);
+        links.push(account);
     }
     else {
         links.push(account);
