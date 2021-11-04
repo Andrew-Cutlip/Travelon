@@ -19,7 +19,9 @@ class User:
         user = {
             "user_id": uuid.uuid4().hex,
             "username": username,
-            "password_hash": hashed
+            "password_hash": hashed,
+            "friends": [],
+            "friendrequests":[]
         }
 
         if main.database.insert_user(user):

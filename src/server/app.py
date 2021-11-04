@@ -83,3 +83,9 @@ def login():
 @app.route("/static/<path:path>")
 def send_static_file(path):
     return send_from_directory("./static", path)
+
+@app.route("/friends")
+def friends():
+    json = request.json
+    friend = json["friends"]
+    
