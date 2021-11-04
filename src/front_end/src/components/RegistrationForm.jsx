@@ -24,13 +24,21 @@ function RegistrationForm(props) {
            })
        };
            if (Submit) {
-               console.log("Sending a registration\n");
                setSubmit(false);
                fetch("/register", requestOptions)
-                .then(response => response.json)
-                .then(data => console.log(data))
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Registered!");
+                    console.log(data);
+                    setPassword("");
+                    setUsername("");
+                    setEmail("");
+                    let success = data.success;
+                    console.log(success);
+                    console.log(Password);
+                })
             }
-    }, [Submit, Password, Username, Email]);
+    }, [Submit, Password, Username, Email, props]);
 
 
     let handleSubmit = (e) => {
@@ -73,15 +81,15 @@ function RegistrationForm(props) {
 
                         <label>
                             UserName:
-                            <input name="username" type="text" placeholder="Username" required onChange={handleUsername}/>
+                            <input name="username" type="text" placeholder="Username" required onChange={handleUsername} value={Username}/>
                         </label>
                         <label>
                             Password:
-                            <input name="password" type="password" placeholder="Password" required onChange={handlePassword}/>
+                            <input name="password" type="password" placeholder="Password" required onChange={handlePassword} value={Password}/>
                         </label>
                         <label>
                             Email:
-                            <input name="email" type="email" placeholder="example@ex.com" required onChange={handleEmail}/>
+                            <input name="email" type="email" placeholder="example@ex.com" required onChange={handleEmail} value={Email}/>
                         </label>
                         <input type="submit" value="Submit" onClick={handleSubmit}/>
                         <RedirectButton type = "Submit" className = "RedirectButton" text={"Already have an account: Login here"}
