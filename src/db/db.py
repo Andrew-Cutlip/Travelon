@@ -36,6 +36,12 @@ class Database:
     def add_post(self, post: dict):
         pass
 
+    def get_posts_for_user(self, user_id):
+        pass
+
+    def get_posts_for_location(self, location: str):
+        pass
+
 
 class DBStub(Database):
     def __init__(self):
@@ -75,6 +81,20 @@ class DBStub(Database):
 
     def add_post(self, post: dict):
         self.posts.append(post)
+
+    def get_posts_for_user(self, user_id):
+        posts = [
+            post for post in self.posts
+            if post["user_id"] == user_id
+        ]
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = [
+            post for post in self.posts
+            if post["location"] == location
+        ]
+        return posts
 
 
 class RealDatabase(Database):
@@ -145,3 +165,11 @@ class RealDatabase(Database):
 
     def add_post(self, post: dict):
         self.posts.insert_one(post)
+
+    def get_posts_for_user(self, user_id):
+        posts = self.posts.find({"user_id": user_id})
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = self.posts.find({"location": location})
+        return posts
