@@ -7,6 +7,7 @@ class Database:
     def __init__(self):
         self.users = []
         self.cities = []
+        self.posts = []
 
     def add_city(self, city_name: str):
         pass
@@ -30,6 +31,9 @@ class Database:
         pass
 
     def check_user_password(self, username: str, password: str) -> bool:
+        pass
+
+    def add_post(self, post: dict):
         pass
 
 
@@ -69,6 +73,9 @@ class DBStub(Database):
         hashed = user["password_hash"]
         return hashed == password
 
+    def add_post(self, post: dict):
+        self.posts.append(post)
+
 
 class RealDatabase(Database):
     def __init__(self):
@@ -87,6 +94,7 @@ class RealDatabase(Database):
         # Collection (Table)
         self.users = self.db.users
         self.cities = self.db.cities
+        self.posts = self.db.posts
 
     def add_city(self, cityname: str):
         city = {
@@ -135,4 +143,5 @@ class RealDatabase(Database):
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
         return hashed
 
-
+    def add_post(self, post: dict):
+        self.posts.insert_one(post)
