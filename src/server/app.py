@@ -83,3 +83,12 @@ def login():
 @app.route("/static/<path:path>")
 def send_static_file(path):
     return send_from_directory("./static", path)
+
+
+@app.route("/make-post", methods=["POST"])
+def post():
+    json = request.json
+    # need to check authentication for user
+    title = json["title"]
+    body = json["body"]
+    location = json["location"]
