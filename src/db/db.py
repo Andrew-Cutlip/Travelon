@@ -87,6 +87,8 @@ class RealDatabase(Database):
         # Collection (Table)
         self.users = self.db.users
         self.cities = self.db.cities
+        # add ratings function
+        self.ratings = self.db.ratings
 
     def add_city(self, cityname: str):
         city = {
