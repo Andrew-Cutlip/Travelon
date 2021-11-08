@@ -40,7 +40,7 @@ function Login(props) {
        };
            if (Submit) {
                setSubmit(false);
-                fetch("/register", requestOptions)
+                fetch("/login", requestOptions)
                     .then(response => response.json())
                     .then(data => {
                         console.log("LoggedIn!");
