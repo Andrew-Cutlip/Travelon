@@ -7,6 +7,7 @@ class Database:
     def __init__(self):
         self.users = []
         self.cities = []
+        self.posts = []
 
     def add_city(self, city_name: str):
         pass
@@ -30,6 +31,15 @@ class Database:
         pass
 
     def check_user_password(self, username: str, password: str) -> bool:
+        pass
+
+    def add_post(self, post: dict):
+        pass
+
+    def get_posts_for_user(self, user_id):
+        pass
+
+    def get_posts_for_location(self, location: str):
         pass
 
 
@@ -69,6 +79,23 @@ class DBStub(Database):
         hashed = user["password_hash"]
         return hashed == password
 
+    def add_post(self, post: dict):
+        self.posts.append(post)
+
+    def get_posts_for_user(self, user_id):
+        posts = [
+            post for post in self.posts
+            if post["user_id"] == user_id
+        ]
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = [
+            post for post in self.posts
+            if post["location"] == location
+        ]
+        return posts
+
 
 class RealDatabase(Database):
     def __init__(self):
@@ -87,6 +114,10 @@ class RealDatabase(Database):
         # Collection (Table)
         self.users = self.db.users
         self.cities = self.db.cities
+
+        self.posts = self.db.posts
+        # add ratings function
+        self.ratings = self.db.ratings
 
     def add_city(self, cityname: str):
         city = {
@@ -135,4 +166,13 @@ class RealDatabase(Database):
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
         return hashed
 
+    def add_post(self, post: dict):
+        self.posts.insert_one(post)
 
+    def get_posts_for_user(self, user_id):
+        posts = self.posts.find({"user_id": user_id})
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = self.posts.find({"location": location})
+        return posts
