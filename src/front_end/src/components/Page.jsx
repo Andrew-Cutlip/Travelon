@@ -5,6 +5,7 @@ import HomePage from "./HomePage";
 import AccountPage from "./AccountPage";
 import About from "./About"
 import Contact from "./Contact"
+import StarRatings from "./StarRatings";
 
 const Page = (props) => {
     let pageContent;
@@ -22,6 +23,9 @@ const Page = (props) => {
     }
     else if (props.name === "contact"){
         pageContent = <Contact />
+    }
+    else if (props.name === "starRatings"){
+        pageContent = <StarRatings />
     }
     else {
         pageContent = <HomePage />

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import '../App.css';
+import '../StarRatings.css';
 import { FaStar } from "react-icons/fa";
 
 const colors = {
-    orange: "#FFBA5A",
-    grey: "#a9a9a9"
+    orange: "#FFD700",
+    white: "#FFFAFA"
 
 };
 
-function Ratings() {
+function StarRatings() {
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0)
@@ -27,7 +27,6 @@ function Ratings() {
 
   return (
     <div style={styles.container}>
-      <h2> React Ratings </h2>
       <div style={styles.stars}>
         {stars.map((_, index) => {
           return (
@@ -39,7 +38,7 @@ function Ratings() {
               onMouseLeave={handleMouseLeave}
               color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
               style={{
-                marginRight: 10,
+                marginRight: 30,
                 cursor: "pointer"
               }}
             />
@@ -47,19 +46,14 @@ function Ratings() {
         })}
       </div>
       <textarea
-        placeholder="What's your experience?"
+        placeholder="Please share your own experience at this place"
         style={styles.textarea}
       />
 
-      <button
-        style={styles.button}
-      >
-        Submit
-      </button>
-
+      <button style={styles.button}>Post</button>
     </div>
   );
-};
+}
 
 
 const styles = {
@@ -73,20 +67,21 @@ const styles = {
     flexDirection: "row",
   },
   textarea: {
-    border: "1px solid #a9a9a9",
-    borderRadius: 5,
-    padding: 10,
+    border: "2px solid #a9a9a9",
+    borderRadius: 0,
+    padding: 50,
     margin: "20px 0",
-    minHeight: 100,
-    width: 300
+    minHeight: 160,
+    width: 400
   },
   button: {
     border: "1px solid #a9a9a9",
-    borderRadius: 5,
-    width: 300,
+    borderRadius: 0,
+    width: 100,
     padding: 10,
+    cursor: "pointer"
   }
 
 };
 
-export default Ratings;
+export default StarRatings;
