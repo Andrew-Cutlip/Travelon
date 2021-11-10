@@ -22,7 +22,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_restaurant(self):
         database = db.RealDatabase()
-        db.RealDatabase.insert_user(database, {"field": "value"})
+        db.RealDatabase.add_restaurants_rating(database, "China Taste1", 5, "bad!", "Jac")
+        # db.RealDatabase.add_restaurants(database, "Woo Chon")
 
 
 if __name__ == '__main__':

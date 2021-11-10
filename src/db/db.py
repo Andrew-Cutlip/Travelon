@@ -178,8 +178,8 @@ class RealDatabase(Database):
         self.restaurant.insert_one(restaurant)
 
     def add_restaurants_rating(self, restaurant_name, num_star_filled, comments, user):
-        self.db.restaurants.update({"restaurant": restaurant_name},
-                                   {"$push": {"user_Id": {user: {num_star_filled, comments}}}})
+        self.db.restaurant.update_one({"name": restaurant_name},
+                                      {"$push": {"user_Id": user, "rating": num_star_filled, "comment": comments}})
 
     def get_restaurants(self):
         restaurants = []
