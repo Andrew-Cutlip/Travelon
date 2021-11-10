@@ -61,6 +61,12 @@ function App() {
             path: "contact",
             key:5
         },
+                {
+            onclick: handlePageSwitch,
+            text: "StarRatings",
+            path: "starRatings",
+            key:6
+        },
     ];
     if (! loggedIn) {
         links.push(login);

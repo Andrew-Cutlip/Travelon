@@ -15,7 +15,7 @@ const About = () =>{
             <h3>Goals</h3>
             <p>
              Our goal is to bring people together. Those who travel hundreds of miles can stay in cantact with
-                each other and share their traveling expirences with other people.
+                each other and share their traveling experiences with other people.
             </p>
         </div>
             
