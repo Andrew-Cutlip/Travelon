@@ -84,8 +84,25 @@ def login():
 def send_static_file(path):
     return send_from_directory("./static", path)
 
-@app.route("/friends")
+@app.route("/friends", methods=["POST"])
 def friends():
-    json = request.json
-    friend = json["friends"]
+        # got stuff!
+    json = {
+        "errors": [],
+        "friend added": False
+    }
+    print("Add friend Request!")
+    if request.method == "POST":
+        json_data = request.json
+        username = json_data["username"]
+        friend = json_data["friend"]
+        # TODO look up username and see if password matches
+        if main.database.is_username_available(friend):
+            main.database.add_friend(username,friend)
+            json["friend added"] = True
+        else:
+            error = "User does not exit"
+            json["errors"].append(error)
+    print(json)
+    return jsonify(json)
     

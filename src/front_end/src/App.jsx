@@ -42,6 +42,13 @@ function App() {
             path: "account",
             key: 3
         };
+
+    const friendslist = {
+        onclick: handlePageSwitch,
+        text: "Friends",
+        path: "friends",
+        key: 7
+    }
     const links = [
         {
             onclick: handlePageSwitch,

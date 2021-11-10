@@ -7,7 +7,6 @@ class Database:
     def __init__(self):
         self.users = []
         self.cities = []
-        self.friends = []
 
     def add_city(self, city_name: str):
         pass
@@ -159,8 +158,8 @@ class RealDatabase(Database):
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
         return hashed
 
-    def add_friend(self, username:str):
-        self.friends.insert_one(self.get_user(username))
+    def add_friend(self, username:str, friend:str):
+        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
 
     def get_all_friends(self):
         allfriends = []
