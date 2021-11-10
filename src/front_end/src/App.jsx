@@ -42,13 +42,6 @@ function App() {
             path: "account",
             key: 3
         };
-
-    const friendslist = {
-        onclick: handlePageSwitch,
-        text: "Friends",
-        path: "friends",
-        key: 7
-    }
     const links = [
         {
             onclick: handlePageSwitch,
@@ -68,6 +61,13 @@ function App() {
             path: "contact",
             key:5
         },
+        {
+            onclick: handlePageSwitch,
+            text: "Friendslist",
+            path: "friendslist",
+            key:6
+        },
+        
     ];
     if (! loggedIn) {
         links.push(login);

@@ -21,7 +21,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(not now_available)
 
     def test_friends(self):
-        database = db.DBStub()
+        database = db.RealDatabase()
         available = database.is_username_available("Bob")
         self.assertTrue(available)
         psw = "123"
@@ -42,6 +42,9 @@ class MyTestCase(unittest.TestCase):
 
         friend = "Charles"
         database.add_friend("Bob",friend)
+
+    def test_friends2(self):
+        db.RealDatabase().add_friend("Bob", "Charles")
 
 
 if __name__ == '__main__':
