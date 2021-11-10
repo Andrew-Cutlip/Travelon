@@ -80,6 +80,26 @@ def login():
     return jsonify(json)
 
 
+@app.route("/rating", methods=["POST"])
+def rating():
+    json = {
+        "post": False,
+        "success": False,
+    }
+    print("Got a post Request!")
+    if request.method == "POST":
+        json_data = request.json
+        rating = json_data["rating"]
+        comment = json_data["comment"]
+        if main.database.star_rating(rating, comment):
+            new_user = models.User()
+            new_user.start_session(main.database.get_user(rating))
+            json["post"] = True
+            json["success"] = True
+    print(json)
+    return jsonify(json)
+
+
 @app.route("/static/<path:path>")
 def send_static_file(path):
     return send_from_directory("./static", path)

@@ -7,6 +7,7 @@ class Database:
     def __init__(self):
         self.users = []
         self.cities = []
+        self.restaurant = []
 
     def add_city(self, city_name: str):
         pass
@@ -20,7 +21,7 @@ class Database:
     def get_user(self, username: str) -> dict:
         pass
 
-    def is_username_available(self,username: str) -> bool:
+    def is_username_available(self, username: str) -> bool:
         pass
 
     def remove_user(self, user_id: int):
@@ -30,6 +31,15 @@ class Database:
         pass
 
     def check_user_password(self, username: str, password: str) -> bool:
+        pass
+
+    def star_rating(self, num_star_filled: int, comment: str, username: str):
+        pass
+
+    def add_restaurants(self, restaurant_name):
+        pass
+
+    def get_restaurants(self) -> list:
         pass
 
 
@@ -55,7 +65,7 @@ class DBStub(Database):
                 return user
         return {}
 
-    def is_username_available(self,username: str) -> bool:
+    def is_username_available(self, username: str) -> bool:
         usernames = [user["username"] for user in self.users]
         return username not in usernames
 
@@ -68,6 +78,21 @@ class DBStub(Database):
             return False
         hashed = user["password_hash"]
         return hashed == password
+
+    def star_rating(self, num_star_filled: int, comment: str, username: str):
+        user_comment = self.get_user(username)
+        if num_star_filled <= 5:
+            return num_star_filled, user_comment
+
+    def add_restaurants(self, restaurant_name):
+        restaurant = {
+            "name": restaurant_name,
+            "user_Id": []
+        }
+        self.restaurant.append(restaurant)
+
+    def get_restaurants(self) -> list:
+        return self.restaurant
 
 
 class RealDatabase(Database):
@@ -89,6 +114,7 @@ class RealDatabase(Database):
         self.cities = self.db.cities
         # add ratings function
         self.ratings = self.db.ratings
+        self.restaurant = self.db.restaurant
 
     def add_city(self, cityname: str):
         city = {
@@ -137,4 +163,27 @@ class RealDatabase(Database):
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
         return hashed
 
+    def star_rating(self, num_star_filled: int, comment: str, username: str):
+        user = self.get_user(username)
+        if user is None:
+            return False
+        if num_star_filled <= 5:
+            return num_star_filled, comment
 
+    def add_restaurants(self, restaurant_name):
+        restaurant = {
+            "name": restaurant_name,
+            "user_Id": []
+        }
+        self.restaurant.insert_one(restaurant)
+
+    def add_restaurants_rating(self, restaurant_name, num_star_filled, comments, user):
+        self.db.restaurants.update({"restaurant": restaurant_name},
+                                   {"$push": {"user_Id": {user: {num_star_filled, comments}}}})
+
+    def get_restaurants(self):
+        restaurants = []
+        print("Getting restaurants")
+        for restaurant in self.restaurant.find():
+            restaurants.append(restaurant)
+        return restaurants

@@ -20,6 +20,10 @@ class MyTestCase(unittest.TestCase):
         now_available = database.is_username_available("Bob")
         self.assertTrue(not now_available)
 
+    def test_restaurant(self):
+        database = db.RealDatabase()
+        db.RealDatabase.insert_user(database, {"field": "value"})
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { FaStar } from "react-icons/fa";
 import '../StarRatings.css';
 
@@ -12,6 +12,9 @@ const colors = {
 const AccountPage = (props) => {
   const [hoverValue, setHoverValue] = useState(undefined);
   const [currentValue, setCurrentValue] = useState(0);
+  const [Rating, setRating] = useState("");
+  const [Comment, setComment] = useState("");
+  const [Post, setPost] = useState(false)
   const stars = Array(5).fill(0)
 
   const handleClick = value => {
@@ -25,6 +28,32 @@ const AccountPage = (props) => {
   const handleMouseLeave = () => {
     setHoverValue(undefined)
   }
+
+  useEffect(() => {
+    const requestOptions = {
+           method: 'POST',
+           headers: {
+               "Content-Type": "application/json"
+           },
+           body: JSON.stringify({
+               rating: Rating,
+               comment: Comment
+           })
+       };
+    if(Post) {
+               setPost(false);
+                fetch("/rating", requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(Rating);
+                        props.setAccount(Rating);
+                        let success = data.success;
+                        console.log(success);
+                        setComment("");
+                        setRating("");
+                    })
+                }
+    }, [Post, Comment, Rating, props]);
 
   return (
     <div style={styles.container}>
@@ -53,11 +82,7 @@ const AccountPage = (props) => {
         style={styles.text}
       />
 
-      <button
-        style={styles.button}
-      >
-        Post
-      </button>
+      <button style={styles.button}>Post</button>
     </div>
   );
 };
@@ -86,6 +111,7 @@ const styles = {
     borderRadius: 0,
     width: 100,
     padding: 10,
+      cursor: "pointer"
   }
 };
 

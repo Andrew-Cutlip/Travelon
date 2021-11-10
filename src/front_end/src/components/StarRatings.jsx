@@ -1,5 +1,5 @@
 import { useState } from "react";
-import '../App.css';
+import '../StarRatings.css';
 import { FaStar } from "react-icons/fa";
 
 const colors = {
@@ -27,7 +27,6 @@ function Ratings() {
 
   return (
     <div style={styles.container}>
-      <h2> React Ratings </h2>
       <div style={styles.stars}>
         {stars.map((_, index) => {
           return (
@@ -51,15 +50,10 @@ function Ratings() {
         style={styles.textarea}
       />
 
-      <button
-        style={styles.button}
-      >
-        Submit
-      </button>
-
+      <button style={styles.button}>Post</button>
     </div>
   );
-};
+}
 
 
 const styles = {
@@ -85,6 +79,7 @@ const styles = {
     borderRadius: 5,
     width: 300,
     padding: 10,
+    cursor: "pointer"
   }
 
 };
