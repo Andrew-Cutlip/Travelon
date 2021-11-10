@@ -21,7 +21,6 @@ class User:
             "username": username,
             "password_hash": hashed,
             "friends": [],
-            "friendrequests":[]
         }
 
         if main.database.insert_user(user):

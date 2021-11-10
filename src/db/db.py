@@ -79,11 +79,11 @@ class DBStub(Database):
         hashed = user["password_hash"]
         return hashed == password
 
-    def add_friend(self, username:str):
+    def add_friend(self, username:str, friend:str):
         user = self.get_user(username)
         if user is None:
             return False
-        self.friends.append(user)
+        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
 
     def get_all_friends(self):
         return self.friends
