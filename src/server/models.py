@@ -31,3 +31,4 @@ class User:
         session.clear()
         return redirect('/home')
 
+
