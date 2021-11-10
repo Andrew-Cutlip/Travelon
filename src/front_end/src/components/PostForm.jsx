@@ -1,6 +1,22 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 const PostForm = (props) => {
+    const [Submit, setSubmit] = useState(false);
+    useEffect(() => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+        };
+        if (Submit) {
+            setSubmit(false);
+            fetch("/make-post", requestOptions)
+                .then(response => response.json())
+                .then(data => console.log(data))
+        }
+    }, [Submit]);
+
     return (
         <div>
             <form>
