@@ -104,3 +104,31 @@ def rating():
 @app.route("/static/<path:path>")
 def send_static_file(path):
     return send_from_directory("./static", path)
+
+
+@app.route("/make-post", methods=["POST"])
+def post():
+    json = request.json
+    # need to check authentication for user
+    authenticated = True
+    response = {
+        "error": False,
+        "message": "Post added successfully"
+    }
+    if authenticated:
+        title = json["title"]
+        body = json["body"]
+        location = json["location"]
+    else:
+        response["error"] = True
+        response["message"] = "Error: Not authenticated user"
+
+    return jsonify(response)
+
+
+@app.route("/get-posts", methods=["GET"])
+def get_post():
+    json = request.json
+    user = json["user"]
+    location = json["location"]
+

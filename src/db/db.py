@@ -8,6 +8,7 @@ class Database:
         self.users = []
         self.cities = []
         self.restaurant = []
+        self.posts = []
 
     def add_city(self, city_name: str):
         pass
@@ -33,6 +34,7 @@ class Database:
     def check_user_password(self, username: str, password: str) -> bool:
         pass
 
+
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
 
@@ -43,6 +45,16 @@ class Database:
         pass
 
     def display_restaurant(self, restaurants: str):
+        pass
+
+    def add_post(self, post: dict):
+        pass
+
+    def get_posts_for_user(self, user_id):
+        pass
+
+    def get_posts_for_location(self, location: str):
+
         pass
 
 
@@ -102,6 +114,24 @@ class DBStub(Database):
         print(f"Got restaurant {restaurants}\n")
         return get_restaurant
 
+    def add_post(self, post: dict):
+        self.posts.append(post)
+
+    def get_posts_for_user(self, user_id):
+        posts = [
+            post for post in self.posts
+            if post["user_id"] == user_id
+        ]
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = [
+            post for post in self.posts
+            if post["location"] == location
+        ]
+        return posts
+
+
 class RealDatabase(Database):
     def __init__(self):
         super().__init__()
@@ -119,6 +149,8 @@ class RealDatabase(Database):
         # Collection (Table)
         self.users = self.db.users
         self.cities = self.db.cities
+
+        self.posts = self.db.posts
         # add ratings function
         self.ratings = self.db.ratings
         self.restaurant = self.db.restaurant
@@ -199,3 +231,14 @@ class RealDatabase(Database):
         get_restaurant = self.restaurant.find_one({"name": restaurants})
         print(f"Got restaurant {restaurants}\n")
         return get_restaurant
+
+    def add_post(self, post: dict):
+        self.posts.insert_one(post)
+
+    def get_posts_for_user(self, user_id):
+        posts = self.posts.find({"user_id": user_id})
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = self.posts.find({"location": location})
+        return posts
