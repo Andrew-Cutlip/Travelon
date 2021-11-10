@@ -58,7 +58,7 @@ def register():
 def login():
     # got stuff!
     json = {
-        "loggedIn": False ,
+        "loggedIn": False,
         "errors": [],
         "success": False,
     }
@@ -83,19 +83,20 @@ def login():
 @app.route("/rating", methods=["POST"])
 def rating():
     json = {
-        "post": False,
+        "errors": [],
+        "restaurant": [],
         "success": False,
     }
     print("Got a post Request!")
     if request.method == "POST":
         json_data = request.json
-        rating = json_data["rating"]
-        comment = json_data["comment"]
-        if main.database.star_rating(rating, comment):
-            new_user = models.User()
-            new_user.start_session(main.database.get_user(rating))
-            json["post"] = True
+        restaurant = json_data["restaurant"]
+        if main.database.display_restaurant(restaurant):
+            json["restaurant"].append(main.database.display_restaurant(restaurant))
             json["success"] = True
+        else:
+            error = "Incorrect restaurant name entered"
+            json["errors"].append(error)
     print(json)
     return jsonify(json)
 

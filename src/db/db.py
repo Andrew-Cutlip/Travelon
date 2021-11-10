@@ -42,6 +42,9 @@ class Database:
     def get_restaurants(self) -> list:
         pass
 
+    def display_restaurant(self, restaurants: str):
+        pass
+
 
 class DBStub(Database):
     def __init__(self):
@@ -94,6 +97,10 @@ class DBStub(Database):
     def get_restaurants(self) -> list:
         return self.restaurant
 
+    def display_restaurant(self, restaurants: str):
+        get_restaurant = self.restaurant.find_one({"name": restaurants})
+        print(f"Got restaurant {restaurants}\n")
+        return get_restaurant
 
 class RealDatabase(Database):
     def __init__(self):
@@ -187,3 +194,8 @@ class RealDatabase(Database):
         for restaurant in self.restaurant.find():
             restaurants.append(restaurant)
         return restaurants
+
+    def display_restaurant(self, restaurants: str):
+        get_restaurant = self.restaurant.find_one({"name": restaurants})
+        print(f"Got restaurant {restaurants}\n")
+        return get_restaurant
