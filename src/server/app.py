@@ -58,9 +58,10 @@ def register():
 def login():
     # got stuff!
     json = {
-        "loggedIn": False ,
+        "loggedIn": False,
         "errors": [],
         "success": False,
+
     }
     print("Got a login Request!")
     if request.method == "POST":
