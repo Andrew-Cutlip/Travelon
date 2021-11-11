@@ -106,6 +106,26 @@ def rating():
 def send_static_file(path):
     return send_from_directory("./static", path)
 
+@app.route("/friends", methods=["POST"])
+def friends():
+        # got stuff!
+    json = {
+        "friends": []
+    }
+    print("Add friend Request!")
+    if request.method == "POST":
+        json_data = request.json
+        username = json_data["username"]
+        friend = json_data["friend"]
+        # TODO look up username and see if password matches
+        if main.database.is_username_available(friend):
+            main.database.add_friend(username,friend)
+            json["friends"] = main.database.get_user(username)["friends"]
+        else:
+            error = "User does not exit"
+    print(json)
+    return jsonify(json)
+    
 
 @app.route("/make-post", methods=["POST"])
 def post():

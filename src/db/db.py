@@ -34,6 +34,16 @@ class Database:
     def check_user_password(self, username: str, password: str) -> bool:
         pass
 
+    def add_friend(self, username:str):
+        pass
+
+    def get_all_friends(self):
+        pass
+
+    def get_a_friend(self, username:str):
+        pass
+
+
 
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
@@ -94,6 +104,17 @@ class DBStub(Database):
         hashed = user["password_hash"]
         return hashed == password
 
+    def add_friend(self, username:str, friend:str):
+        user = self.get_user(username)
+        if user is None:
+            return False
+        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
+
+    def get_all_friends(self):
+        return self.friends
+
+    def get_a_friend(self, username:str):
+        return self.friends
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user_comment = self.get_user(username)
         if num_star_filled <= 5:
@@ -149,6 +170,7 @@ class RealDatabase(Database):
         # Collection (Table)
         self.users = self.db.users
         self.cities = self.db.cities
+        self.friends = self.db.friends
 
         self.posts = self.db.posts
         # add ratings function
@@ -193,6 +215,7 @@ class RealDatabase(Database):
 
     def is_username_available(self, username: str) -> bool:
         user = self.users.find_one(username)
+        print("user is:", user)
         if user is None:
             return True
         return False
@@ -201,6 +224,22 @@ class RealDatabase(Database):
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
         return hashed
+
+    def add_friend(self, username:str, friend:str):
+        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
+
+    def get_all_friends(self):
+        allfriends = []
+        for f in self.friends.find():
+            allfriends.append(f)
+        return allfriends
+
+    def get_a_friend(self,username:str):
+        allfriends = []
+        for f in self.friends.find({"username": username}):
+            allfriends.append(f)
+        return allfriends
+
 
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user = self.get_user(username)
