@@ -149,6 +149,7 @@ class RealDatabase(Database):
 
     def is_username_available(self, username: str) -> bool:
         user = self.users.find_one(username)
+        print("user is:", user)
         if user is None:
             return True
         return False

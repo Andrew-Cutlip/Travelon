@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./Form.css";
 
+let friends = [];
 const Friendslist = (props) => {
 
     const [Friend, setFriend] = useState("")
@@ -25,8 +26,8 @@ const Friendslist = (props) => {
                     .then(data => {
                         console.log("Added friend!");
                         console.log(data);
-                        let success = data.success;
-                        console.log(success);
+                        friends =  (JSON.stringify(data));
+
                         setUsername("");
                         setFriend("");
                     })
@@ -57,6 +58,9 @@ const Friendslist = (props) => {
         <input type="submit" name="submit" value="Submit" onSubmit={handleSubmit}/>
 
             </form>
+            <div> <h1> "My FriendsList" </h1>
+                <h2> {friends} </h2>
+            </div>
         </div>
 
     );

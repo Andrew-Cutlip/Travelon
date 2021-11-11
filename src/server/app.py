@@ -88,8 +88,7 @@ def send_static_file(path):
 def friends():
         # got stuff!
     json = {
-        "errors": [],
-        "friend added": False
+        "friends": []
     }
     print("Add friend Request!")
     if request.method == "POST":
@@ -99,10 +98,9 @@ def friends():
         # TODO look up username and see if password matches
         if main.database.is_username_available(friend):
             main.database.add_friend(username,friend)
-            json["friend added"] = True
+            json["friends"] = main.database.get_user(username)["friends"]
         else:
             error = "User does not exit"
-            json["errors"].append(error)
     print(json)
     return jsonify(json)
     
