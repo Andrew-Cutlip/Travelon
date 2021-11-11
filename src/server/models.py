@@ -19,7 +19,8 @@ class User:
         user = {
             "user_id": uuid.uuid4().hex,
             "username": username,
-            "password_hash": hashed
+            "password_hash": hashed,
+            "friends": [],
         }
 
         if main.database.insert_user(user):
@@ -30,4 +31,5 @@ class User:
     def signout(self):
         session.clear()
         return redirect('/home')
+
 
