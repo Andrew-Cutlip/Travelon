@@ -7,6 +7,8 @@ class Database:
     def __init__(self):
         self.users = []
         self.cities = []
+        self.restaurant = []
+        self.posts = []
 
     def add_city(self, city_name: str):
         pass
@@ -20,7 +22,7 @@ class Database:
     def get_user(self, username: str) -> dict:
         pass
 
-    def is_username_available(self,username: str) -> bool:
+    def is_username_available(self, username: str) -> bool:
         pass
 
     def remove_user(self, user_id: int):
@@ -41,6 +43,29 @@ class Database:
     def get_a_friend(self, username:str):
         pass
 
+
+
+    def star_rating(self, num_star_filled: int, comment: str, username: str):
+        pass
+
+    def add_restaurants(self, restaurant_name):
+        pass
+
+    def get_restaurants(self) -> list:
+        pass
+
+    def display_restaurant(self, restaurants: str):
+        pass
+
+    def add_post(self, post: dict):
+        pass
+
+    def get_posts_for_user(self, user_id):
+        pass
+
+    def get_posts_for_location(self, location: str):
+
+        pass
 
 
 class DBStub(Database):
@@ -65,7 +90,7 @@ class DBStub(Database):
                 return user
         return {}
 
-    def is_username_available(self,username: str) -> bool:
+    def is_username_available(self, username: str) -> bool:
         usernames = [user["username"] for user in self.users]
         return username not in usernames
 
@@ -90,6 +115,42 @@ class DBStub(Database):
 
     def get_a_friend(self, username:str):
         return self.friends
+    def star_rating(self, num_star_filled: int, comment: str, username: str):
+        user_comment = self.get_user(username)
+        if num_star_filled <= 5:
+            return num_star_filled, user_comment
+
+    def add_restaurants(self, restaurant_name):
+        restaurant = {
+            "name": restaurant_name,
+            "user_Id": []
+        }
+        self.restaurant.append(restaurant)
+
+    def get_restaurants(self) -> list:
+        return self.restaurant
+
+    def display_restaurant(self, restaurants: str):
+        get_restaurant = self.restaurant.find_one({"name": restaurants})
+        print(f"Got restaurant {restaurants}\n")
+        return get_restaurant
+
+    def add_post(self, post: dict):
+        self.posts.append(post)
+
+    def get_posts_for_user(self, user_id):
+        posts = [
+            post for post in self.posts
+            if post["user_id"] == user_id
+        ]
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = [
+            post for post in self.posts
+            if post["location"] == location
+        ]
+        return posts
 
 
 class RealDatabase(Database):
@@ -110,6 +171,11 @@ class RealDatabase(Database):
         self.users = self.db.users
         self.cities = self.db.cities
         self.friends = self.db.friends
+
+        self.posts = self.db.posts
+        # add ratings function
+        self.ratings = self.db.ratings
+        self.restaurant = self.db.restaurant
 
     def add_city(self, cityname: str):
         city = {
@@ -175,4 +241,43 @@ class RealDatabase(Database):
         return allfriends
 
 
+    def star_rating(self, num_star_filled: int, comment: str, username: str):
+        user = self.get_user(username)
+        if user is None:
+            return False
+        if num_star_filled <= 5:
+            return num_star_filled, comment
 
+    def add_restaurants(self, restaurant_name):
+        restaurant = {
+            "name": restaurant_name,
+            "user_Id": []
+        }
+        self.restaurant.insert_one(restaurant)
+
+    def add_restaurants_rating(self, restaurant_name, num_star_filled, comments, user):
+        self.db.restaurant.update_one({"name": restaurant_name},
+                                      {"$push": {"user_Id": user, "rating": num_star_filled, "comment": comments}})
+
+    def get_restaurants(self):
+        restaurants = []
+        print("Getting restaurants")
+        for restaurant in self.restaurant.find():
+            restaurants.append(restaurant)
+        return restaurants
+
+    def display_restaurant(self, restaurants: str):
+        get_restaurant = self.restaurant.find_one({"name": restaurants})
+        print(f"Got restaurant {restaurants}\n")
+        return get_restaurant
+
+    def add_post(self, post: dict):
+        self.posts.insert_one(post)
+
+    def get_posts_for_user(self, user_id):
+        posts = self.posts.find({"user_id": user_id})
+        return posts
+
+    def get_posts_for_location(self, location: str):
+        posts = self.posts.find({"location": location})
+        return posts

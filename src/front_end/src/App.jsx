@@ -65,14 +65,19 @@ function App() {
             onclick: handlePageSwitch,
             text: "Friendslist",
             path: "friendslist",
-            key:6
+            key:7
         },
         
+                {
+            onclick: handlePageSwitch,
+            text: "StarRatings",
+            path: "starRatings",
+            key:6
+        },
     ];
     if (! loggedIn) {
         links.push(login);
         links.push(register);
-        links.push(account);
     }
     else {
         links.push(account);
