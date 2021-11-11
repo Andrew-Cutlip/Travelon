@@ -281,3 +281,14 @@ class RealDatabase(Database):
     def get_posts_for_location(self, location: str):
         posts = self.posts.find({"location": location})
         return posts
+    def change_username(self, username: str, newusername: str) -> bool:
+        if self.is_username_available(newusername):
+            self.users.update_one({"username": username}, {"$set": {"username": newusername}})
+            return True
+        return False
+
+    def change_password(self, username: str, newpassword: str) -> bool:
+        if self.is_username_available(newpassword):
+            self.users.update_one({"username": username}, {"$set": {"password_hash": newpassword}})
+            return True
+        return False

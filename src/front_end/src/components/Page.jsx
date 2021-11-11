@@ -4,12 +4,10 @@ import LoginForm from "./LoginForm"
 import HomePage from "./HomePage";
 import AccountPage from "./AccountPage";
 import About from "./About"
-import Contact from "./Contact"
-<<<<<<< HEAD
+import Contact from "./Contact";
 import Friendslist from "./Friendslist";
-=======
 import StarRatings from "./StarRatings";
->>>>>>> develop
+import Change from "./Change"
 
 const Page = (props) => {
     let pageContent;
@@ -28,13 +26,14 @@ const Page = (props) => {
     else if (props.name === "contact"){
         pageContent = <Contact />
     }
-<<<<<<< HEAD
     else if (props.name === "friendslist"){
         pageContent = <Friendslist />
-=======
+        }
     else if (props.name === "starRatings"){
         pageContent = <StarRatings />
->>>>>>> develop
+    }
+    else if (props.name === "change"){
+        pageContent = <Change onclick={props.onclick}/>
     }
     else {
         pageContent = <HomePage />
