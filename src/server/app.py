@@ -163,6 +163,7 @@ def get_post():
     }
     return jsonify(response)
 
+
 @app.route("/change", methods=["POST"])
 def usernameChange():
     # got stuff!
