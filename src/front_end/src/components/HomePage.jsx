@@ -5,9 +5,7 @@ import Post from "./Post"
 const containerStyle = {
     width: '400px',
     height: '400px'
-};
-const [Posts, setPosts] = useState([]);
-
+}
 const center = {
     lat: -3.745,
     lng: -30.523
@@ -18,16 +16,20 @@ const requestOptions = {
                "Content-Type": "application/json"
            },
        };
-useEffect(() => {
+
+const HomePage = () => {
+    const [Posts, setPosts] = useState([]);
+
+    useEffect(() => {
         fetch("/get-posts", requestOptions)
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .then(data => setPosts(data.posts))
-}, []);
+    }, []);
 
-const HomePage = () => {
-    let posts = posts.map(post => {
-        <Post title={post.title} />
+    let postsDisplay = Posts.map(post => {return (
+        <Post title={post.title} summary={post.summary} location={post.location}/>
+    )
     })
     return (
 
@@ -51,7 +53,7 @@ const HomePage = () => {
             <p>If you love to travel,
                 Why not share your experience to the world?
             </p>
-
+            {postsDisplay}
             <PostForm />
         </div>
     );
