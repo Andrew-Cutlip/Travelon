@@ -7,7 +7,7 @@ import uuid
 class User:
 
     def start_session(self, user):
-        del user['password']
+        # del user['password']
         session['logged_in'] = True
         session['user'] = user
         return jsonify(user), 200
@@ -19,7 +19,8 @@ class User:
         user = {
             "user_id": uuid.uuid4().hex,
             "username": username,
-            "password_hash": hashed
+            "password_hash": hashed,
+            "friends": [],
         }
 
         if main.database.insert_user(user):
