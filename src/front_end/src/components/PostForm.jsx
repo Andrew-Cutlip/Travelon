@@ -11,6 +11,12 @@ const PostForm = (props) => {
             headers: {
                 "Content-Type": "application/json"
             },
+            body: JSON.stringify({
+                title: Title,
+                summary: Summary,
+                location: Location,
+                }
+            )
         };
         if (Submit) {
             setSubmit(false);
@@ -37,21 +43,25 @@ const PostForm = (props) => {
     }
 
     return (
-        <div>
+        <div id="post-form">
+            <h2>Make a Post</h2>
             <form>
                 <label htmlFor="title">
+                    Title:
                     <input type="text" name="title" id="title" placeholder="Title" value={Title}
                            onChange={handleTitle}/>
                 </label>
                 <label htmlFor="summary">
+                    Summary:
                     <textarea name="summary" id="summary" placeholder="Summarize your trip here."
                               value={Summary} onChange={handleSummary}/>
                 </label>
                 <label htmlFor="location">
+                    Location:
                     <input type="text" name="location" id="location" placeholder="Location" value={Location}
                            onChange={handleLocation}/>
                 </label>
-                <btn  type="submit" onclick={handleSubmit}>Add Post</btn>
+                <input type="submit" onClick={handleSubmit} value="Add Post"/>
             </form>
 
         </div>

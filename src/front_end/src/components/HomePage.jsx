@@ -1,5 +1,6 @@
 import React from "react";
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import PostForm from "./PostForm"
 const containerStyle = {
     width: '400px',
     height: '400px'
@@ -32,6 +33,8 @@ const HomePage = () => {
             <p>If you love to travel,
                 Why not share your experience to the world?
             </p>
+
+            <PostForm />
         </div>
     );
 };
