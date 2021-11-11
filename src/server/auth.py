@@ -19,3 +19,9 @@ def salt_hash_password(password: str):
 def check_password(username: str, password: str, hashed) -> bool:
     pass_check = main.database.check_user_password(username , password , hashed)
     return pass_check
+
+def changeuser(username: str, new: str ) -> bool:
+    return main.database.change_username(username, new)
+
+def changepassword(username: str, new: str ) -> bool:
+    return main.database.change_password(username, new)
