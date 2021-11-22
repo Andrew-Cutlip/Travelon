@@ -22,9 +22,9 @@ class MyTestCase(unittest.TestCase):
 
     def test_restaurant(self):
         database = db.RealDatabase()
-        db.RealDatabase.display_restaurant(database, "China Taste1")
-        print(db.RealDatabase.display_restaurant(database, "China Taste1"))
-        # db.RealDatabase.add_restaurants_rating(database, "China Taste1", 5, "bad!", "Jac")
+        # db.RealDatabase.display_restaurant(database, "China Taste1")
+        # print(db.RealDatabase.display_restaurant(database, "China Taste1"))
+        db.RealDatabase.add_restaurants_rating(database, "China Taste1", "112 West Ave, Amherst, NY 14226", 5, "bad!", "Jac")
         # db.RealDatabase.add_restaurants(database, "Woo Chon")
 
 

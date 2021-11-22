@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, {useEffect, useState} from "react";
 import '../StarRatings.css';
 import { FaStar } from "react-icons/fa";
 
@@ -27,6 +27,14 @@ function StarRatings() {
 
   return (
     <div style={styles.container}>
+      <div style={styles.restaurant}>
+          <label style={{color: 'white'}}>Restaurant Name:
+            <textarea placeholder="Name of the restaurant" style={styles.restaurants} required/>
+          </label>
+          <label style={{color: 'white'}}>Restaurant Address:
+            <textarea placeholder="Address" style={styles.restaurants} required/>
+          </label>
+      </div>
       <div style={styles.stars}>
         {stars.map((_, index) => {
           return (
@@ -48,9 +56,10 @@ function StarRatings() {
       <textarea
         placeholder="Please share your own experience at this place"
         style={styles.textarea}
+        required
       />
 
-      <button style={styles.button}>Post</button>
+      <input type="submit" name="submit" value="Submit"/>
     </div>
   );
 }
@@ -66,21 +75,29 @@ const styles = {
     display: "flex",
     flexDirection: "row",
   },
+  restaurant: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  restaurants: {
+    border: "2px solid #a9a9a9",
+    borderRadius: 0,
+    padding: 5,
+    margin: " 20px 0",
+    minHeight: 60,
+    width: 200,
+    textAlign: "center",
+  },
   textarea: {
     border: "2px solid #a9a9a9",
     borderRadius: 0,
     padding: 50,
     margin: "20px 0",
-    minHeight: 160,
-    width: 400
+    minHeight: 150,
+    width: 400,
+    textAlign: "center",
   },
-  button: {
-    border: "1px solid #a9a9a9",
-    borderRadius: 0,
-    width: 100,
-    padding: 10,
-    cursor: "pointer"
-  }
 
 };
 

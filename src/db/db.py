@@ -34,11 +34,10 @@ class Database:
     def check_user_password(self, username: str, password: str) -> bool:
         pass
 
-
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
 
-    def add_restaurants(self, restaurant_name):
+    def add_restaurants(self, restaurant_name, restaurant_location):
         pass
 
     def get_restaurants(self) -> list:
@@ -54,7 +53,6 @@ class Database:
         pass
 
     def get_posts_for_location(self, location: str):
-
         pass
 
 
@@ -209,15 +207,16 @@ class RealDatabase(Database):
         if num_star_filled <= 5:
             return num_star_filled, comment
 
-    def add_restaurants(self, restaurant_name):
+    def add_restaurants(self, restaurant_name, restaurant_location):
         restaurant = {
             "name": restaurant_name,
+            "location": restaurant_location,
             "user_Id": []
         }
         self.restaurant.insert_one(restaurant)
 
-    def add_restaurants_rating(self, restaurant_name, num_star_filled, comments, user):
-        self.db.restaurant.update_one({"name": restaurant_name},
+    def add_restaurants_rating(self, restaurant_name, restaurant_location, num_star_filled, comments, user):
+        self.db.restaurant.update_one({"name": restaurant_name}, {"location": restaurant_location},
                                       {"$push": {"user_Id": user, "rating": num_star_filled, "comment": comments}})
 
     def get_restaurants(self):
