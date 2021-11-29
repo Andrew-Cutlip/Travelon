@@ -1,6 +1,7 @@
 import os
 
 import main as main
+from validation import validate_post
 
 cwd = os.getcwd()
 print(f"Current directory: {cwd}\n")
@@ -106,6 +107,7 @@ def rating():
 def send_static_file(path):
     return send_from_directory("./static", path)
 
+
 @app.route("/friends", methods=["POST"])
 def friends():
         # got stuff!
@@ -141,13 +143,26 @@ def post():
         summary = json["summary"]
         location = json["location"]
         # check for images selected
+        images = json.get("images")
         # check for ratings selected
+        ratings = json.get("ratings")
+
         post = {
             title: title,
             summary: summary,
             location: location
         }
-        main.database.add_post(post)
+        if images is not None:
+            post["images"] = images
+        if ratings is not None:
+            post["ratings"] = ratings
+
+        valid = validate_post(post)
+        if valid:
+            main.database.add_post(post)
+        else:
+            response["error"] = True
+            response["message"] = "Error: Post not valid, ratings and images ccan only be used for one post."
     else:
         response["error"] = True
         response["message"] = "Error: Not authenticated user"
@@ -189,6 +204,7 @@ def usernameChange():
             json["errors"].append(error)
     print(json)
     return jsonify(json)
+
 
 @app.route("/change", methods=["POST"])
 def passwordChange():
