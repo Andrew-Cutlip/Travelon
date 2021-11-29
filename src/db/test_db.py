@@ -20,7 +20,7 @@ class MyTestCase(unittest.TestCase):
         now_available = database.is_username_available("Bob")
         self.assertTrue(not now_available)
 
-<<<<<<< HEAD
+
     def test_friends(self):
         database = db.RealDatabase()
         available = database.is_username_available("Bob")

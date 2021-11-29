@@ -43,8 +43,6 @@ class Database:
     def get_a_friend(self, username:str):
         pass
 
-
-
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
 
@@ -153,7 +151,10 @@ class DBStub(Database):
         return posts
 
     def get_all_posts(self):
-        return self.posts
+        posts = [
+            post for post in self.posts
+        ]
+        return posts
 
 
 class RealDatabase(Database):
@@ -286,7 +287,9 @@ class RealDatabase(Database):
         return posts
 
     def get_all_posts(self):
-        return self.posts.find({})
+        posts = self.posts.find({})
+        ret = [post for post in posts]
+        return ret
 
     def change_username(self, username: str, newusername: str) -> bool:
         if self.is_username_available(newusername):

@@ -140,6 +140,8 @@ def post():
         title = json["title"]
         summary = json["summary"]
         location = json["location"]
+        # check for images selected
+        # check for ratings selected
         post = {
             title: title,
             summary: summary,
