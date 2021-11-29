@@ -5,6 +5,7 @@ const PostForm = (props) => {
     const [Title, setTitle] = useState("");
     const [Summary, setSummary] = useState("");
     const [Location, setLocation] = useState("");
+    const [ServerError, setServerError] = useState("");
     useEffect(() => {
         const requestOptions = {
             method: 'POST',
@@ -22,9 +23,16 @@ const PostForm = (props) => {
             setSubmit(false);
             fetch("/make-post", requestOptions)
                 .then(response => response.json())
+                .then(json => {
+                    let error = json["error"]
+                    if (error) {
+                        let errorMessage = json["message"];
+                        setServerError(errorMessage);
+                    }
+                })
                 .then(data => console.log(data))
         }
-    }, [Submit]);
+    }, [Submit, Location, setSubmit, Title, Summary]);
 
     const handleSubmit = () => {
         setSubmit(true);
@@ -46,6 +54,9 @@ const PostForm = (props) => {
         <div id="post-form">
             <h2>Make a Post</h2>
             <form>
+                <div id="server-error">
+                    {ServerError}
+                </div>
                 <label htmlFor="title">
                     Title:
                     <input type="text" name="title" id="title" placeholder="Title" value={Title}

@@ -139,6 +139,7 @@ def post():
         "message": "Post added successfully"
     }
     if authenticated:
+        # need a way to get user_id
         title = json["title"]
         summary = json["summary"]
         location = json["location"]

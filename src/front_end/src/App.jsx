@@ -67,8 +67,7 @@ function App() {
             path: "friendslist",
             key:7
         },
-        
-                {
+        {
             onclick: handlePageSwitch,
             text: "StarRatings",
             path: "starRatings",

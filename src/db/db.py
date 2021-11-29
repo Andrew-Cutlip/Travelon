@@ -62,7 +62,6 @@ class Database:
         pass
 
     def get_posts_for_location(self, location: str):
-
         pass
 
 
@@ -106,13 +105,14 @@ class DBStub(Database):
         user = self.get_user(username)
         if user is None:
             return False
-        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
+        self.users.update({'username': username}, {'$push' : {'friends': friend}})
 
     def get_all_friends(self):
         return self.friends
 
-    def get_a_friend(self, username:str):
+    def get_a_friend(self, username: str):
         return self.friends
+
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user_comment = self.get_user(username)
         if num_star_filled <= 5:
@@ -243,7 +243,6 @@ class RealDatabase(Database):
         for f in self.friends.find({"username": username}):
             allfriends.append(f)
         return allfriends
-
 
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user = self.get_user(username)
