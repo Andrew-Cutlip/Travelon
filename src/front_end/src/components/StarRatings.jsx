@@ -12,6 +12,30 @@ function StarRatings() {
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0)
+    const [Submit, setSubmit] = useState(false);
+    const [Comment, setComment] = useState("");
+    const [Location, setLocation] = useState("");
+    const [Name, setName] = useState("");
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                comment: Comment,
+                location: Location,
+                }
+            )
+        };
+        if (Submit) {
+            setSubmit(false);
+            fetch("/make-post", requestOptions)
+                .then(response => response.json())
+                .then(data => console.log(data))
+        }
+    }, [Comment, Location, Submit]);
 
   const handleClick = value => {
     setCurrentValue(value)
@@ -25,14 +49,30 @@ function StarRatings() {
     setHoverValue(undefined)
   }
 
+  const handleSubmit = () => {
+        setSubmit(true);
+    };
+
+  const handleComment = (e) => {
+      setComment(e.target.value);
+    };
+
+    const handleLocation = (e) => {
+        setLocation(e.target.value);
+    }
+
+    const handleName = (e) => {
+        setName(e.target.value);
+    }
+
   return (
     <div style={styles.container}>
       <div style={styles.restaurant}>
-          <label style={{color: 'white'}}>Restaurant Name:
-            <textarea placeholder="Name of the restaurant" style={styles.restaurants} required/>
+          <label style={{color: 'white'}}>Venue:
+            <textarea placeholder="Name" style={styles.restaurants}  value={Name} onChange={handleName} required/>
           </label>
-          <label style={{color: 'white'}}>Restaurant Address:
-            <textarea placeholder="Address" style={styles.restaurants} required/>
+          <label style={{color: 'white'}}>Location:
+            <textarea placeholder="City" style={styles.restaurants}  value={Location} onChange={handleLocation} required/>
           </label>
       </div>
       <div style={styles.stars}>
@@ -56,10 +96,10 @@ function StarRatings() {
       <textarea
         placeholder="Please share your own experience at this place"
         style={styles.textarea}
+         value={Comment} onChange={handleComment}
         required
       />
-
-      <input type="submit" name="submit" value="Submit"/>
+        <input type="submit" onClick={handleSubmit} value="Post"/>
     </div>
   );
 }

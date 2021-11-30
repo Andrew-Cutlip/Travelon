@@ -4,8 +4,11 @@ import LoginForm from "./LoginForm"
 import HomePage from "./HomePage";
 import AccountPage from "./AccountPage";
 import About from "./About"
-import Contact from "./Contact"
+import Contact from "./Contact";
+import Friendslist from "./Friendslist";
 import StarRatings from "./StarRatings";
+import Change from "./Change"
+import Reviews from "./Review";
 
 const Page = (props) => {
     let pageContent;
@@ -24,8 +27,17 @@ const Page = (props) => {
     else if (props.name === "contact"){
         pageContent = <Contact />
     }
+    else if (props.name === "friendslist"){
+        pageContent = <Friendslist />
+        }
     else if (props.name === "starRatings"){
         pageContent = <StarRatings />
+    }
+    else if (props.name === "change"){
+        pageContent = <Change onclick={props.onclick}/>
+    }
+    else if (props.name === "reviews"){
+        pageContent = <Reviews onclick={props.onclick}/>
     }
     else {
         pageContent = <HomePage />

@@ -61,12 +61,31 @@ function App() {
             path: "contact",
             key:5
         },
-                {
+        {
+            onclick: handlePageSwitch,
+            text: "Friendslist",
+            path: "friendslist",
+            key:7
+        },
+        
+        {
             onclick: handlePageSwitch,
             text: "StarRatings",
             path: "starRatings",
             key:6
         },
+        {
+            onclick: handlePageSwitch,
+            text: "Change",
+            path:"change",
+            key:8
+        },
+        {
+            onclick: handlePageSwitch,
+            text: "Reviews",
+            path: "review",
+            key:9
+        }
     ];
     if (! loggedIn) {
         links.push(login);
