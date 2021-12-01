@@ -1,7 +1,6 @@
 import os
 
 import main as main
-from validation import validate_post
 
 cwd = os.getcwd()
 print(f"Current directory: {cwd}\n")
@@ -12,6 +11,7 @@ app = Flask(__name__)
 
 from . import auth
 from . import models
+from . import validation
 
 BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
 static = os.path.join(BASE_PATH, "static")
@@ -158,7 +158,7 @@ def post():
         if ratings is not None:
             post["ratings"] = ratings
 
-        valid = validate_post(post)
+        valid = validation.validate_post(post)
         if valid:
             main.database.add_post(post)
         else:
