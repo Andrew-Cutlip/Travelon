@@ -149,9 +149,9 @@ def post():
         ratings = json.get("ratings")
 
         post = {
-            title: title,
-            summary: summary,
-            location: location
+            "title": title,
+            "summary": summary,
+            "location": location
         }
         if images is not None:
             post["images"] = images
