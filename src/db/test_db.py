@@ -55,6 +55,5 @@ class MyTestCase(unittest.TestCase):
         # db.RealDatabase.add_restaurants(database, "Woo Chon")
 
 
-
 if __name__ == '__main__':
     unittest.main()
