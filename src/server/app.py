@@ -211,4 +211,17 @@ def passwordChange():
     print(json)
     return jsonify(json)
 
+@app.route("/rankings", methods=["POST"])
+def rankings():
+    # got stuff!
+    json = []
+    print("Got a Ranking request!")
+    if request.method == "POST":
+        json_data = request.json
+        location = json_data["location"]
+        print(location)
+        json = (main.database.show_all_locations(location))
+
+    print(json)
+    return jsonify(json)
 

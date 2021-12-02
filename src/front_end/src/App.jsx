@@ -80,6 +80,12 @@ function App() {
             path:"change",
             key:8
         },
+        {
+            onclick: handlePageSwitch,
+            text: "Rankings",
+            path:"rankings",
+            key:9
+        },
     ];
     if (! loggedIn) {
         links.push(login);
