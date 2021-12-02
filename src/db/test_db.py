@@ -47,8 +47,9 @@ class MyTestCase(unittest.TestCase):
         db.RealDatabase().add_friend("Bob", "Charles")
 
     def test_get_locations(self):
+        name = "Buffalo"
         database = db.RealDatabase()
-        db.RealDatabase.show_all_locations(database)
+        db.RealDatabase.show_all_locations(database, name)
 
     def test_restaurant(self):
         database = db.RealDatabase()

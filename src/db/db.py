@@ -1,3 +1,5 @@
+from statistics import mean
+
 import bcrypt
 import pymongo
 import os
@@ -68,7 +70,7 @@ class Database:
     def get_posts_for_location(self, location: str):
 
         pass
-    def show_all_locations(self):
+    def show_all_locations(self, location: str):
         pass
 
 
@@ -299,11 +301,15 @@ class RealDatabase(Database):
             return True
         return False
 
-    def show_all_locations(self):
+    def show_all_locations(self, location: str):
         list = []
         all = []
-        for x in self.restaurant.find({}, {"_id":0 }):
+        for x in self.restaurant.find( {"location":{ "$eq" : [location]}}):
             list.append(x)
+            print(list)
+        for i in list:
+            i['_id'] = 0
+        list = sorted(list, key=lambda x: mean(x['rating']))
         for i in reversed(list):
             newlist = []
             newlist.append(i)

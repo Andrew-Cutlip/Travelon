@@ -3,7 +3,7 @@ import "./Form.css";
 
 let rankings = [];
 const Rankings = (props) => {
-
+    const [Friend, setFriend] = useState("")
     const [Submit, setSubmit] = useState(false)
 
     useEffect(() => {
@@ -13,6 +13,7 @@ const Rankings = (props) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                location: Friend
             })
         };
         if (Submit) {
@@ -23,26 +24,29 @@ const Rankings = (props) => {
                     console.log("Show all venues!");
                     console.log(data);
                     rankings =  JSON.parse((JSON.stringify(data)));
-
-
+                    setFriend("");
 
                 })
         }
-    }, [Submit, props]);
+    }, [Submit, Friend,props]);
 
     let handleSubmit = (e) => {
         e.preventDefault();
         setSubmit(true);
     };
-
+    let handleFriend = (e) => {
+        setFriend(e.target.value);
+    }
 
 
     return(
         <div>
-            <h1>All Venues</h1>
+            <h1>VENUE RANKINGS</h1>
             <center>
             <form id="Rankings-Form" className = "Rankings" name="Rankings" onSubmit={handleSubmit}>
-
+                <label>
+                    <input type="friend" name="friend" id="logFriend" placeholder="Enter Location" onChange={handleFriend} value={Friend}/>
+                </label>
                 <input type="submit" name="submit" value="See Venue Rankings" onSubmit={handleSubmit}/>
 
             </form>
