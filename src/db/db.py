@@ -47,8 +47,6 @@ class Database:
     def get_a_friend(self, username:str):
         pass
 
-
-
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
 
@@ -68,7 +66,6 @@ class Database:
         pass
 
     def get_posts_for_location(self, location: str):
-
         pass
     def show_all_locations(self, location: str):
         pass
@@ -114,13 +111,14 @@ class DBStub(Database):
         user = self.get_user(username)
         if user is None:
             return False
-        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
+        self.users.update({'username': username}, {'$push' : {'friends': friend}})
 
     def get_all_friends(self):
         return self.friends
 
-    def get_a_friend(self, username:str):
+    def get_a_friend(self, username: str):
         return self.friends
+
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user_comment = self.get_user(username)
         if num_star_filled <= 5:
@@ -159,7 +157,10 @@ class DBStub(Database):
         return posts
 
     def get_all_posts(self):
-        return self.posts
+        posts = [
+            post for post in self.posts
+        ]
+        return posts
 
 
 
@@ -251,7 +252,6 @@ class RealDatabase(Database):
             allfriends.append(f)
         return allfriends
 
-
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user = self.get_user(username)
         if user is None:
@@ -294,7 +294,17 @@ class RealDatabase(Database):
         return posts
 
     def get_all_posts(self):
-        return self.posts.find({})
+        posts = self.posts.find({})
+        print(posts)
+        ret = []
+        for post in posts:
+            new = {
+                "title": post["title"],
+                "summary": post["summary"],
+                "location": post["location"]
+            }
+            ret.append(new)
+        return ret
 
     def change_username(self, username: str, newusername: str) -> bool:
         if self.is_username_available(newusername):
