@@ -2,6 +2,8 @@ import bcrypt
 import pymongo
 import os
 
+from flask import jsonify
+
 
 class Database:
     def __init__(self):
@@ -65,6 +67,8 @@ class Database:
 
     def get_posts_for_location(self, location: str):
 
+        pass
+    def show_all_locations(self):
         pass
 
 
@@ -151,6 +155,8 @@ class DBStub(Database):
             if post["location"] == location
         ]
         return posts
+
+
 
 
 class RealDatabase(Database):
@@ -292,3 +298,16 @@ class RealDatabase(Database):
             self.users.update_one({"username": username}, {"$set": {"password_hash": newpassword}})
             return True
         return False
+
+    def show_all_locations(self):
+        list = []
+        all = []
+        for x in self.restaurant.find({}, {"_id":0 }):
+            list.append(x)
+        for i in reversed(list):
+            newlist = []
+            newlist.append(i)
+            all.append(newlist)
+        print(all)
+        return all
+
