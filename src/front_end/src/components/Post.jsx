@@ -2,14 +2,14 @@ import React from "react";
 
 const Post = (props) => {
     let images = props.images;
-    if (images !== null ){
+    if (images){
         images = images.map((img) => {
             return (<img src={img.src} alt={img.alt} />);
         })
     }
     // Need rating component to add here
     let ratings = props.ratings;
-    if (ratings !== null){
+    if (ratings){
         ratings = ratings.map((rating) => {
             return (<div className="rating">{rating.score}</div>);
         })

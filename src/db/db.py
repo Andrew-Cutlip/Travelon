@@ -287,7 +287,15 @@ class RealDatabase(Database):
 
     def get_all_posts(self):
         posts = self.posts.find({})
-        ret = [post for post in posts]
+        print(posts)
+        ret = []
+        for post in posts:
+            new = {
+                "title": post["title"],
+                "summary": post["summary"],
+                "location": post["location"]
+            }
+            ret.append(new)
         return ret
 
     def change_username(self, username: str, newusername: str) -> bool:

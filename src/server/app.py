@@ -70,7 +70,7 @@ def login():
         username = json_data["username"]
         password = json_data["password"]
         # TODO look up username and see if password matches
-        if main.database.check_user_password(username , password):
+        if main.database.check_user_password(username, password):
             new_user = models.User()
             new_user.start_session(main.database.get_user(username))
             json["loggedIn"] = True
@@ -172,12 +172,14 @@ def post():
 
 
 @app.route("/get-posts", methods=["GET"])
-def get_post():
-    json = request.json
+def get_posts():
+    print("Got Request for posts")
+    # json = request.json
     # get all posts at first
     posts = main.database.get_all_posts()
+    print(posts)
     response = {
-        posts: posts
+        "posts": posts
     }
     return jsonify(response)
 
