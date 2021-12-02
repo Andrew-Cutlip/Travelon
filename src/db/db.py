@@ -22,6 +22,9 @@ class Database:
     def get_user(self, username: str) -> dict:
         pass
 
+    def get_user_by_id(self, user_id: str)-> dict:
+        pass
+
     def is_username_available(self, username: str) -> bool:
         pass
 
@@ -87,6 +90,12 @@ class DBStub(Database):
     def get_user(self, username: str) -> dict:
         for user in self.users:
             if username == user["username"]:
+                return user
+        return {}
+
+    def get_user_by_id(self, user_id:str) ->dict:
+        for user in self.users:
+            if user_id == user["user_id"]:
                 return user
         return {}
 

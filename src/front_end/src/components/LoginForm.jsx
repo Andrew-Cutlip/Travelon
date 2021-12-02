@@ -30,9 +30,10 @@ function Login(props) {
     useEffect(() => {
        const requestOptions = {
            method: 'POST',
-           headers: {
-               "Content-Type": "application/json"
-           },
+           headers: new Headers({
+               "Content-Type": "application/json",
+               "Accept": "application/json"
+           }),
            body: JSON.stringify({
                username: Username,
                password: Password
@@ -40,8 +41,8 @@ function Login(props) {
        };
            if (Submit) {
                setSubmit(false);
-                fetch("/login", requestOptions)
-                    .then(response => response.json())
+                fetch(`${window.origin}/login`, requestOptions)
+                    .then(response => response.json)
                     .then(data => {
                         console.log("LoggedIn!");
                         console.log(data);
@@ -54,8 +55,11 @@ function Login(props) {
                         props.setAccount(Username);
                         let success = data.success;
                         console.log(success);
-                        setPassword("");
-                        setUsername("");
+                        //setPassword("");
+                        //setUsername("");
+                    })
+                    .catch(function(error){
+                        console.log("Fetch error " + error )
                     })
                 }
     }, [Submit, Password, Username, props]);
