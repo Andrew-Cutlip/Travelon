@@ -1,6 +1,10 @@
+from statistics import mean
+
 import bcrypt
 import pymongo
 import os
+
+from flask import jsonify
 
 
 class Database:
@@ -62,6 +66,8 @@ class Database:
         pass
 
     def get_posts_for_location(self, location: str):
+        pass
+    def show_all_locations(self, location: str):
         pass
 
 
@@ -155,6 +161,8 @@ class DBStub(Database):
             post for post in self.posts
         ]
         return posts
+
+
 
 
 class RealDatabase(Database):
@@ -309,3 +317,20 @@ class RealDatabase(Database):
             self.users.update_one({"username": username}, {"$set": {"password_hash": newpassword}})
             return True
         return False
+
+    def show_all_locations(self, location: str):
+        list = []
+        all = []
+        for x in self.restaurant.find( {"location":{ "$eq" : [location]}}):
+            list.append(x)
+            print(list)
+        for i in list:
+            i['_id'] = 0
+        list = sorted(list, key=lambda x: mean(x['rating']))
+        for i in reversed(list):
+            newlist = []
+            newlist.append(i)
+            all.append(newlist)
+        print(all)
+        return all
+
