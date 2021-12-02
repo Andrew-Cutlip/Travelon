@@ -153,3 +153,64 @@ def get_post():
     user = json["user"]
     location = json["location"]
 
+@app.route("/change", methods=["POST"])
+def usernameChange():
+    # got stuff!
+    json = {
+        "loggedIn": False ,
+        "errors": [],
+        "success": False,
+    }
+    print("Got a username change Request!")
+    if request.method == "POST":
+        json_data = request.json
+        username = json_data["username"]
+        new_username = json_data["newusername"]
+        password = json_data["password"]
+        # TODO look up username and see if password matches
+        if main.database.check_user_password(username, password) and new_username != "":
+            auth.changeuser(username, new_username)
+
+        else:
+            error = "Invalid username / password"
+            json["errors"].append(error)
+    print(json)
+    return jsonify(json)
+
+@app.route("/change", methods=["POST"])
+def passwordChange():
+    # got stuff!
+    json = {
+        "loggedIn": False ,
+        "errors": [],
+        "success": False,
+    }
+    print("Got a password change Request!")
+    if request.method == "POST":
+        json_data = request.json
+        username = json_data["username"]
+        password = json_data["password"]
+        new_password = json_data["newpassword"]
+        # TODO look up username and see if password matches
+        if main.database.check_user_password(username, password) and new_password != "":
+            auth.changepassword(username, new_password)
+        else:
+            error = "Invalid username / password"
+            json["errors"].append(error)
+    print(json)
+    return jsonify(json)
+
+@app.route("/rankings", methods=["POST"])
+def rankings():
+    # got stuff!
+    json = []
+    print("Got a Ranking request!")
+    if request.method == "POST":
+        json_data = request.json
+        location = json_data["location"]
+        print(location)
+        json = (main.database.show_all_locations(location))
+
+    print(json)
+    return jsonify(json)
+
