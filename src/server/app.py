@@ -138,8 +138,14 @@ def post():
     }
     if authenticated:
         title = json["title"]
-        body = json["body"]
+        summary = json["summary"]
         location = json["location"]
+        post = {
+            title: title,
+            summary: summary,
+            location: location
+        }
+        main.database.add_post(post)
     else:
         response["error"] = True
         response["message"] = "Error: Not authenticated user"
@@ -150,8 +156,13 @@ def post():
 @app.route("/get-posts", methods=["GET"])
 def get_post():
     json = request.json
-    user = json["user"]
-    location = json["location"]
+    # get all posts at first
+    posts = main.database.get_all_posts()
+    response = {
+        posts: posts
+    }
+    return jsonify(response)
+
 
 @app.route("/change", methods=["POST"])
 def usernameChange():
