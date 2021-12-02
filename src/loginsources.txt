@@ -1,0 +1,24 @@
+Cookie related:
+https://stackoverflow.com/questions/739654/how-to-make-function-decorators-and-chain-them-together/1594484#1594484
+https://pythonbasics.org/flask-cookies/
+https://stackoverflow.com/questions/22463939/demystify-flask-app-secret-key
+
+Login help:
+https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
+https://flask-login.readthedocs.io/en/latest/
+https://stackoverflow.com/questions/62654072/displaying-logout-button-after-user-is-logged-in-using-flask-python
+https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login
+https://towardsdatascience.com/talking-to-python-from-javascript-flask-and-the-fetch-api-e0ef3573c451
+https://pythonise.com/series/learning-flask/flask-and-fetch-api
+https://stackoverflow.com/questions/63502630/how-to-use-fetch-to-get-post-data-from-flask
+https://stackoverflow.com/questions/13081532/return-json-response-from-flask-view
+https://stackoverflow.com/questions/57891275/simple-fetch-get-request-in-javascript-to-a-flask-server
+
+
+Errors:
+https://stackoverflow.com/questions/37269808/react-js-uncaught-in-promise-syntaxerror-unexpected-token-in-json-at-posit
+https://stackoverflow.com/questions/19180684/failed-to-load-resource-the-server-responded-with-a-status-of-500-internal-ser
+https://flutterq.com/react-js-uncaught-in-promise-syntaxerror-unexpected-token-in-json-at-position-0/
+https://stackoverflow.com/questions/56783829/500-internal-server-errorflask-post-request-is-causing-the-server-error-flas
+https://stackoverflow.com/questions/46472945/idpiframe-initialization-failed-in-google-sign-in-from-localhost
+
