@@ -7,7 +7,6 @@ import { TextField} from "@material-ui/core";
 const colors = {
     orange: "#FFD700",
     white: "#FFFAFA"
-
 };
 
 function StarRatings() {
@@ -75,24 +74,45 @@ function StarRatings() {
     }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.venue}>
-          <label style={{color: 'white'}}>Venue:
-            <TextField required label="Venue" style={styles.venues} value={Name} onChange={handleName} color={"secondary"}/>
+
+    <div style={styles_s.container}>
+      <div style={styles_s.venue}>
+          <label style={{color: 'white'}}>Venue(required)
+            <TextField required
+                       color={"secondary"}
+                       //style={styles_s.venues}
+                       value={Name} onChange={handleName}
+                       variant="outlined"
+                       fullWidth={100}
+            />
           </label>
-          <label style={{color: 'white'}}>Location:
-            <TextField required label="City" style={styles.venues}  value={Location} onChange={handleLocation} color="secondary"/>
+          <label style={{color: 'white'}}>Location(required)
+            <TextField required
+                       color={"secondary"}
+                       //style={styles_s.venues}
+                       value={Location}
+                       onChange={handleLocation}
+                       variant="outlined"
+                       fullWidth={100}
+            />
           </label>
-          <label style={{color: 'white'}}>Rating:
-            <TextField required label="Stars" style={styles.venues}  value={Star} onChange={handleStar} color="secondary"/>
+          <label style={{color: 'white'}}>Number of stars(1 to 5; required)
+            <TextField required
+                       color={"secondary"}
+                       //style={styles_s.venues}
+                       value={Star}
+                       onChange={handleStar}
+                       variant="outlined"
+                       fullWidth={100}
+            />
           </label>
       </div>
-      <div style={styles.stars}>
+      <div style={styles_s.stars}>
         {stars.map((_, index) => {
           return (
             <FaStar
               key={index}
-              size={24}
+              size={35}
               onClick={() => handleClick(index + 1)}
               onMouseOver={() => handleMouseOver(index + 1)}
               onMouseLeave={handleMouseLeave}
@@ -100,27 +120,32 @@ function StarRatings() {
               //onChange={handleStar}
               color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
               style={{
-                marginRight: 30,
+                marginRight: 50,
                 cursor: "pointer"
               }}
             />
           )
         })}
       </div>
+        <form style={{color: 'white'}}>Comment(required)
       <TextField
         placeholder="Please share your own experience at this place"
-        required label="Comment"
-        style={styles.textarea}
-         value={Comment} onChange={handleComment}
-        color="secondary"
+        required
+        color={"secondary"}
+        //style={styles_s.textarea}
+        value={Comment} onChange={handleComment}
+        //color="secondary"
+        variant="outlined"
+        fullWidth={100}
       />
+        </form>
         <input type="submit" onClick={handleSubmit} value="Post"/>
     </div>
   );
 }
 
 
-const styles = {
+const styles_s = {
   container: {
     display: "flex",
     flexDirection: "column",
