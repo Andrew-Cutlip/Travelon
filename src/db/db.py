@@ -55,6 +55,9 @@ class Database:
     def get_posts_for_location(self, location: str):
         pass
 
+    def add_restaurants_rating(self, restaurant_name, restaurant_location, num_star_filled, comments):
+        pass
+
 
 class DBStub(Database):
     def __init__(self):
@@ -215,9 +218,9 @@ class RealDatabase(Database):
         }
         self.restaurant.insert_one(restaurant)
 
-    def add_restaurants_rating(self, restaurant_name, restaurant_location, num_star_filled, comments, user):
+    def add_restaurants_rating(self, restaurant_name, restaurant_location, num_star_filled, comments):
         self.db.restaurant.update_one({"name": restaurant_name}, {"location": restaurant_location},
-                                      {"$push": {"user_Id": user, "rating": num_star_filled, "comment": comments}})
+                                      {"$push": {"rating": num_star_filled, "comment": comments}})
 
     def get_restaurants(self):
         restaurants = []

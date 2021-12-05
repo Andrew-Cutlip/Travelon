@@ -38,6 +38,7 @@
     ]
   },
   "devDependencies": {
+    "@mui/material": "^5.2.2",
     "react-google-login": "^5.2.2",
     "react-hook-form": "^7.19.5"
   }

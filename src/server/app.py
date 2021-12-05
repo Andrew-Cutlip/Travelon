@@ -85,18 +85,21 @@ def login():
 def rating():
     json = {
         "errors": [],
-        "restaurant": [],
+        "venue": [],
         "success": False,
     }
     print("Got a post Request!")
     if request.method == "POST":
         json_data = request.json
-        restaurant = json_data["restaurant"]
-        if main.database.display_restaurant(restaurant):
-            json["restaurant"].append(main.database.display_restaurant(restaurant))
+        print(json_data)
+        comment = json_data["comment"]
+        location = json_data["location"]
+        star = json_data["starRating"]
+        name = json_data["Name"]
+        if main.database.add_restaurants_rating(comment, location, star, name):
             json["success"] = True
         else:
-            error = "Incorrect restaurant name entered"
+            error = "Incorrect venue name entered"
             json["errors"].append(error)
     print(json)
     return jsonify(json)

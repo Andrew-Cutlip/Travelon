@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import '../StarRatings.css';
 import { FaStar } from "react-icons/fa";
+import { TextField} from "@material-ui/core";
+
 
 const colors = {
     orange: "#FFD700",
@@ -16,6 +18,7 @@ function StarRatings() {
     const [Comment, setComment] = useState("");
     const [Location, setLocation] = useState("");
     const [Name, setName] = useState("");
+    const [Star, setStar] = useState("");
 
     useEffect(() => {
         const requestOptions = {
@@ -26,16 +29,18 @@ function StarRatings() {
             body: JSON.stringify({
                 comment: Comment,
                 location: Location,
+                starRating: Star,
+                Name: Name,
                 }
             )
         };
         if (Submit) {
             setSubmit(false);
-            fetch("/make-post", requestOptions)
+            fetch("/rating", requestOptions)
                 .then(response => response.json())
                 .then(data => console.log(data))
         }
-    }, [Comment, Location, Submit]);
+    }, [Star, Comment, Location, Submit, Name]);
 
   const handleClick = value => {
     setCurrentValue(value)
@@ -65,14 +70,21 @@ function StarRatings() {
         setName(e.target.value);
     }
 
+    const handleStar = (e) => {
+        setStar(e.target.value);
+    }
+
   return (
     <div style={styles.container}>
-      <div style={styles.restaurant}>
+      <div style={styles.venue}>
           <label style={{color: 'white'}}>Venue:
-            <textarea placeholder="Name" style={styles.restaurants}  value={Name} onChange={handleName} required/>
+            <TextField required label="Venue" style={styles.venues} value={Name} onChange={handleName} color={"secondary"}/>
           </label>
           <label style={{color: 'white'}}>Location:
-            <textarea placeholder="City" style={styles.restaurants}  value={Location} onChange={handleLocation} required/>
+            <TextField required label="City" style={styles.venues}  value={Location} onChange={handleLocation} color="secondary"/>
+          </label>
+          <label style={{color: 'white'}}>Rating:
+            <TextField required label="Stars" style={styles.venues}  value={Star} onChange={handleStar} color="secondary"/>
           </label>
       </div>
       <div style={styles.stars}>
@@ -84,6 +96,8 @@ function StarRatings() {
               onClick={() => handleClick(index + 1)}
               onMouseOver={() => handleMouseOver(index + 1)}
               onMouseLeave={handleMouseLeave}
+              //value={Star}
+              //onChange={handleStar}
               color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
               style={{
                 marginRight: 30,
@@ -93,11 +107,12 @@ function StarRatings() {
           )
         })}
       </div>
-      <textarea
+      <TextField
         placeholder="Please share your own experience at this place"
+        required label="Comment"
         style={styles.textarea}
          value={Comment} onChange={handleComment}
-        required
+        color="secondary"
       />
         <input type="submit" onClick={handleSubmit} value="Post"/>
     </div>
@@ -115,23 +130,23 @@ const styles = {
     display: "flex",
     flexDirection: "row",
   },
-  restaurant: {
+  venue: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center"
   },
-  restaurants: {
+  venues: {
     border: "2px solid #a9a9a9",
-    borderRadius: 0,
+    borderRadius: 10,
     padding: 5,
     margin: " 20px 0",
-    minHeight: 60,
-    width: 200,
+    minHeight: 100,
+    width: 300,
     textAlign: "center",
   },
   textarea: {
     border: "2px solid #a9a9a9",
-    borderRadius: 0,
+    borderRadius: 10,
     padding: 50,
     margin: "20px 0",
     minHeight: 150,
