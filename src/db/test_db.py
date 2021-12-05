@@ -41,17 +41,23 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(not now_available2)
 
         friend = "Charles"
-        database.add_friend("Bob", friend)
+        database.add_friend("Bob",friend)
 
     def test_friends2(self):
         db.RealDatabase().add_friend("Bob", "Charles")
 
+    def test_get_locations(self):
+        name = "Buffalo"
+        database = db.RealDatabase()
+        db.RealDatabase.show_all_locations(database, name)
+
     def test_restaurant(self):
         database = db.RealDatabase()
-        # db.RealDatabase.display_restaurant(database, "China Taste1")
-        # print(db.RealDatabase.display_restaurant(database, "China Taste1"))
-        db.RealDatabase.add_restaurants_rating(database, "China Taste1", "Buffalo", 5, "bad!","Jac")
+        db.RealDatabase.display_restaurant(database, "China Taste1")
+        print(db.RealDatabase.display_restaurant(database, "China Taste1"))
+        # db.RealDatabase.add_restaurants_rating(database, "China Taste1", 5, "bad!", "Jac")
         # db.RealDatabase.add_restaurants(database, "Woo Chon")
+
 
 
 if __name__ == '__main__':

@@ -1,6 +1,10 @@
+from statistics import mean
+
 import bcrypt
 import pymongo
 import os
+
+from flask import jsonify
 
 
 class Database:
@@ -34,10 +38,19 @@ class Database:
     def check_user_password(self, username: str, password: str) -> bool:
         pass
 
+    def add_friend(self, username:str):
+        pass
+
+    def get_all_friends(self):
+        pass
+
+    def get_a_friend(self, username:str):
+        pass
+
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
 
-    def add_restaurants(self, restaurant_name, restaurant_location):
+    def add_restaurants(self, restaurant_name):
         pass
 
     def get_restaurants(self) -> list:
@@ -54,8 +67,7 @@ class Database:
 
     def get_posts_for_location(self, location: str):
         pass
-
-    def add_restaurants_rating(self, restaurant_name, restaurant_location, num_star_filled, comments):
+    def show_all_locations(self, location: str):
         pass
 
 
@@ -95,6 +107,18 @@ class DBStub(Database):
         hashed = user["password_hash"]
         return hashed == password
 
+    def add_friend(self, username:str, friend:str):
+        user = self.get_user(username)
+        if user is None:
+            return False
+        self.users.update({'username': username}, {'$push' : {'friends': friend}})
+
+    def get_all_friends(self):
+        return self.friends
+
+    def get_a_friend(self, username: str):
+        return self.friends
+
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user_comment = self.get_user(username)
         if num_star_filled <= 5:
@@ -132,6 +156,14 @@ class DBStub(Database):
         ]
         return posts
 
+    def get_all_posts(self):
+        posts = [
+            post for post in self.posts
+        ]
+        return posts
+
+
+
 
 class RealDatabase(Database):
     def __init__(self):
@@ -150,6 +182,7 @@ class RealDatabase(Database):
         # Collection (Table)
         self.users = self.db.users
         self.cities = self.db.cities
+        self.friends = self.db.friends
 
         self.posts = self.db.posts
         # add ratings function
@@ -194,6 +227,7 @@ class RealDatabase(Database):
 
     def is_username_available(self, username: str) -> bool:
         user = self.users.find_one(username)
+        print("user is:", user)
         if user is None:
             return True
         return False
@@ -203,6 +237,21 @@ class RealDatabase(Database):
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
         return hashed
 
+    def add_friend(self, username:str, friend:str):
+        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
+
+    def get_all_friends(self):
+        allfriends = []
+        for f in self.friends.find():
+            allfriends.append(f)
+        return allfriends
+
+    def get_a_friend(self,username:str):
+        allfriends = []
+        for f in self.friends.find({"username": username}):
+            allfriends.append(f)
+        return allfriends
+
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user = self.get_user(username)
         if user is None:
@@ -210,17 +259,16 @@ class RealDatabase(Database):
         if num_star_filled <= 5:
             return num_star_filled, comment
 
-    def add_restaurants(self, restaurant_name, restaurant_location):
+    def add_restaurants(self, restaurant_name):
         restaurant = {
             "name": restaurant_name,
-            "location": restaurant_location,
             "user_Id": []
         }
         self.restaurant.insert_one(restaurant)
 
-    def add_restaurants_rating(self, restaurant_name, restaurant_location, num_star_filled, comments):
-        self.db.restaurant.update_one({"name": restaurant_name}, {"location": restaurant_location},
-                                      {"$push": {"rating": num_star_filled, "comment": comments}})
+    def add_restaurants_rating(self, restaurant_name, num_star_filled, comments, user):
+        self.db.restaurant.update_one({"name": restaurant_name},
+                                      {"$push": {"user_Id": user, "rating": num_star_filled, "comment": comments}})
 
     def get_restaurants(self):
         restaurants = []
@@ -244,3 +292,45 @@ class RealDatabase(Database):
     def get_posts_for_location(self, location: str):
         posts = self.posts.find({"location": location})
         return posts
+
+    def get_all_posts(self):
+        posts = self.posts.find({})
+        print(posts)
+        ret = []
+        for post in posts:
+            new = {
+                "title": post["title"],
+                "summary": post["summary"],
+                "location": post["location"]
+            }
+            ret.append(new)
+        return ret
+
+    def change_username(self, username: str, newusername: str) -> bool:
+        if self.is_username_available(newusername):
+            self.users.update_one({"username": username}, {"$set": {"username": newusername}})
+            return True
+        return False
+
+    def change_password(self, username: str, newpassword: str) -> bool:
+        if self.is_username_available(newpassword):
+            self.users.update_one({"username": username}, {"$set": {"password_hash": newpassword}})
+            return True
+        return False
+
+    def show_all_locations(self, location: str):
+        list = []
+        all = []
+        for x in self.restaurant.find( {"location":{ "$eq" : [location]}}):
+            list.append(x)
+            print(list)
+        for i in list:
+            i['_id'] = 0
+        list = sorted(list, key=lambda x: mean(x['rating']))
+        for i in reversed(list):
+            newlist = []
+            newlist.append(i)
+            all.append(newlist)
+        print(all)
+        return all
+

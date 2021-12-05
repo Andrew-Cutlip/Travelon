@@ -67,7 +67,6 @@ function App() {
             path: "friendslist",
             key:7
         },
-        
         {
             onclick: handlePageSwitch,
             text: "StarRatings",
@@ -82,10 +81,10 @@ function App() {
         },
         {
             onclick: handlePageSwitch,
-            text: "Reviews",
-            path: "review",
+            text: "Rankings",
+            path:"rankings",
             key:9
-        }
+        },
     ];
     if (! loggedIn) {
         links.push(login);
