@@ -28,6 +28,7 @@ const Rankings = (props) => {
 
                 })
         }
+
     }, [Submit, Friend,props]);
 
     let handleSubmit = (e) => {

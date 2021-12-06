@@ -208,9 +208,35 @@ def rankings():
     if request.method == "POST":
         json_data = request.json
         location = json_data["location"]
-        print(location)
+        print(json_data)
         json = (main.database.show_all_locations(location))
 
     print(json)
     return jsonify(json)
 
+@app.route("/upload", methods=["POST"])
+def upload():
+    json = []
+    print("Got a photo upload request!")
+    if request.method == "POST":
+        json_data = request.json
+        print(json_data)
+        user = json_data["user"]
+        url = json_data["url"]
+        json = (main.database.add_photo(user, url))['photos']
+
+    print(json)
+    return jsonify(json)
+
+@app.route("/getphotos", methods=["POST"])
+def load():
+    json = []
+    print("Got a display photos request!")
+    if request.method == "POST":
+        json_data = request.json
+        user = json_data["user"]
+        print(json_data)
+        json = (main.database.get_photos(user))['photos']
+
+    print(json)
+    return jsonify(json)

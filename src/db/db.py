@@ -70,8 +70,16 @@ class Database:
     def get_posts_for_location(self, location: str):
 
         pass
+
     def show_all_locations(self, location: str):
         pass
+
+    def add_photo(self, user, photo):
+        pass
+
+    def get_photos(self, user):
+        pass
+
 
 
 class DBStub(Database):
@@ -184,6 +192,7 @@ class RealDatabase(Database):
         # add ratings function
         self.ratings = self.db.ratings
         self.restaurant = self.db.restaurant
+        self.photos = self.db.photos
 
     def add_city(self, cityname: str):
         city = {
@@ -316,4 +325,23 @@ class RealDatabase(Database):
             all.append(newlist)
         print(all)
         return all
+
+    def add_photo(self, user, photo):
+        photoarray = []
+        photoarray.append(photo)
+        if (self.photos.find( {"user":{ "$eq" : user}}).count() > 0):
+            self.db.photos.update_one({"user": user},
+                                      {"$push": {"photos": photo}})
+        else:
+            myPhotos = {
+                "user": user,
+                "photos": photoarray
+            }
+            self.photos.insert_one(myPhotos)
+        return self.photos.find_one({"user": user})
+
+    def get_photos(self, user):
+        return self.photos.find_one({"user": user})
+
+
 

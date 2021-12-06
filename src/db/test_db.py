@@ -58,7 +58,10 @@ class MyTestCase(unittest.TestCase):
         # db.RealDatabase.add_restaurants_rating(database, "China Taste1", 5, "bad!", "Jac")
         # db.RealDatabase.add_restaurants(database, "Woo Chon")
 
-
+    def test_add_photo(self):
+        database = db.RealDatabase()
+        res = (db.RealDatabase.add_photo(database, "john", "kjkk"))
+        print(res)
 
 if __name__ == '__main__':
     unittest.main()
