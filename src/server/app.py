@@ -85,17 +85,22 @@ def login():
 @app.route("/rating", methods=["POST"])
 def rating():
     json = {
-        "errors": [],
-        "restaurant": [],
-        "success": False,
+        "username": [],
+        "venue": [],
+        "location": [],
+        "stars": [],
+        "comment": [],
     }
     print("Got a post Request!")
     if request.method == "POST":
         json_data = request.json
-        restaurant = json_data["restaurant"]
-        if main.database.display_restaurant(restaurant):
-            json["restaurant"].append(main.database.display_restaurant(restaurant))
-            json["success"] = True
+        venue = json_data["venue"]
+        location = json_data["location"]
+        stars = json_data["stars"]
+        comment = json_data["comment"]
+        username = "bob"
+        if main.database.get_restaurants():
+            main.database.star_rating(venue, location, stars, comment, username)
         else:
             error = "Incorrect restaurant name entered"
             json["errors"].append(error)
