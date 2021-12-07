@@ -71,8 +71,8 @@ def login():
         password = json_data["password"]
         # TODO look up username and see if password matches
         if main.database.check_user_password(username, password):
-            new_user = models.User()
-            new_user.start_session(main.database.get_user(username))
+            # new_user = models.User()
+            # new_user.start_session(main.database.get_user(username))
             json["loggedIn"] = True
             json["success"] = True
         else:
