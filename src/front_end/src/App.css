@@ -83,11 +83,26 @@ h1{
   background-color: #A2D9cE;
 }
 
-Register{
+.Register{
 border: thin solid Black;
   padding: 2rem;
   margin: 2rem;
   display: flex;
+}
+
+#post-form {
+    background-color: deepskyblue;
+    text-align: center;
+    width: 90%;
+}
+
+#summary {
+    min-width: 100px;
+    width: 50%;
+}
+
+input {
+    border-bottom: 1px solid black;
 }
 
 

@@ -1,12 +1,26 @@
 import React from "react";
 
 const Post = (props) => {
+    let images = props.images;
+    if (images){
+        images = images.map((img) => {
+            return (<img src={img.src} alt={img.alt} />);
+        })
+    }
+    // Need rating component to add here
+    let ratings = props.ratings;
+    if (ratings){
+        ratings = ratings.map((rating) => {
+            return (<div className="rating">{rating.score}</div>);
+        })
+    }
     return (
         <div className="post">
             <h2>{props.title}</h2>
-            <h2>By: {props.author}</h2>
-            <p>{props.date}</p>
             <p>{props.summary}</p>
+            <p>{props.location}</p>
+            {images}
+            {ratings}
         </div>
     )
 };
