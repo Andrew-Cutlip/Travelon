@@ -163,8 +163,6 @@ class DBStub(Database):
         return posts
 
 
-
-
 class RealDatabase(Database):
     def __init__(self):
         super().__init__()
@@ -221,8 +219,14 @@ class RealDatabase(Database):
         return pass_check
 
     def get_user(self, username: str) -> dict:
-        user = self.users.find_one({"username": username})
+        user_cur = self.users.find_one({"username": username})
         print(f"Got user {username}\n")
+        user = {
+            "user_id": user_cur["user_id"],
+            "username": user_cur["username"],
+            "password_hash": user_cur["password_hash"],
+            "friends": user_cur["friends"]
+        }
         return user
 
     def is_username_available(self, username: str) -> bool:
