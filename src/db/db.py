@@ -166,6 +166,9 @@ class DBStub(Database):
         ]
         return posts
 
+    def get_all_posts(self):
+        return self.posts
+
 
 
 
@@ -298,6 +301,10 @@ class RealDatabase(Database):
     def get_posts_for_location(self, location: str):
         posts = self.posts.find({"location": location})
         return posts
+
+    def get_all_posts(self):
+        return self.posts.find({})
+
     def change_username(self, username: str, newusername: str) -> bool:
         if self.is_username_available(newusername):
             self.users.update_one({"username": username}, {"$set": {"username": newusername}})
