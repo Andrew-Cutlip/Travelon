@@ -85,6 +85,12 @@ function App() {
             path:"rankings",
             key:9
         },
+        {
+            onclick: handlePageSwitch,
+            text: "Upload",
+            path:"upload",
+            key:10
+        },
     ];
     if (! loggedIn) {
         links.push(login);

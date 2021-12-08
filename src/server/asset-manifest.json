@@ -10,7 +10,6 @@
     "index.html": "/index.html",
     "static/css/main.236be552.chunk.css.map": "/static/css/main.236be552.chunk.css.map",
     "static/js/2.071efe22.chunk.js.LICENSE.txt": "/static/js/2.071efe22.chunk.js.LICENSE.txt",
-
     "static/media/index.css": "/static/media/pic.c53d9838.jpg"
   },
   "entrypoints": [
@@ -18,6 +17,5 @@
     "static/js/2.071efe22.chunk.js",
     "static/css/main.236be552.chunk.css",
     "static/js/main.5bf41c73.chunk.js"
-
   ]
 }
