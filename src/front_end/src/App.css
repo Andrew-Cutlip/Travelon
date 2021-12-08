@@ -52,6 +52,13 @@ h1{
     font-size: 20px;
 }
 
+ul {
+    list-style: none;
+}
+li {
+    text-decoration: none;
+}
+
 .nav-links ul li::after{
     content: '';
     width: 0;
@@ -91,6 +98,7 @@ border: thin solid Black;
 }
 
 #post-form {
+    display: flex;
     background-color: deepskyblue;
     text-align: center;
     width: 90%;
@@ -105,7 +113,16 @@ input {
     border-bottom: 1px solid black;
 }
 
+.post {
+    background-color: dodgerblue;
+}
 
+.star {
+    background-color:whitesmoke;
+}
 
+h2 {
+    text-align: center;
+}
 
 
