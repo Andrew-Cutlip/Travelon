@@ -67,8 +67,7 @@ function App() {
             path: "friendslist",
             key:7
         },
-        
-                {
+        {
             onclick: handlePageSwitch,
             text: "StarRatings",
             path: "starRatings",
@@ -79,6 +78,18 @@ function App() {
             text: "Change",
             path:"change",
             key:8
+        },
+        {
+            onclick: handlePageSwitch,
+            text: "Rankings",
+            path:"rankings",
+            key:9
+        },
+        {
+            onclick: handlePageSwitch,
+            text: "Upload",
+            path:"upload",
+            key:10
         },
     ];
     if (! loggedIn) {

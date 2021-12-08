@@ -20,7 +20,6 @@ class MyTestCase(unittest.TestCase):
         now_available = database.is_username_available("Bob")
         self.assertTrue(not now_available)
 
-<<<<<<< HEAD
     def test_friends(self):
         database = db.RealDatabase()
         available = database.is_username_available("Bob")
@@ -46,15 +45,23 @@ class MyTestCase(unittest.TestCase):
 
     def test_friends2(self):
         db.RealDatabase().add_friend("Bob", "Charles")
-=======
+
+    def test_get_locations(self):
+        name = "Buffalo"
+        database = db.RealDatabase()
+        db.RealDatabase.show_all_locations(database, name)
+
     def test_restaurant(self):
         database = db.RealDatabase()
         db.RealDatabase.display_restaurant(database, "China Taste1")
         print(db.RealDatabase.display_restaurant(database, "China Taste1"))
         # db.RealDatabase.add_restaurants_rating(database, "China Taste1", 5, "bad!", "Jac")
         # db.RealDatabase.add_restaurants(database, "Woo Chon")
->>>>>>> develop
 
+    def test_add_photo(self):
+        database = db.RealDatabase()
+        res = (db.RealDatabase.add_photo(database, "john", "kjkk"))
+        print(res)
 
 if __name__ == '__main__':
     unittest.main()
