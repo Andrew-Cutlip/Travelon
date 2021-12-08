@@ -75,9 +75,9 @@ function StarRatings() {
 
   return (
 
-    <div style={styles_s.container}>
+    <div className={"star"}>
       <div style={styles_s.venue}>
-          <label style={{color: 'white'}}>Venue(required)
+          <label style={{color: 'black'}}>Venue(required)
             <TextField required
                        color={"secondary"}
                        //style={styles_s.venues}
@@ -86,7 +86,7 @@ function StarRatings() {
                        fullWidth={100}
             />
           </label>
-          <label style={{color: 'white'}}>Location(required)
+          <label style={{color: 'black'}}>Location(required)
             <TextField required
                        color={"secondary"}
                        //style={styles_s.venues}
@@ -96,7 +96,7 @@ function StarRatings() {
                        fullWidth={100}
             />
           </label>
-          <label style={{color: 'white'}}>Number of stars(1 to 5; required)
+          <label style={{color: 'black'}}>Number of stars(1 to 5; required)
             <TextField required
                        color={"secondary"}
                        //style={styles_s.venues}
@@ -127,7 +127,7 @@ function StarRatings() {
           )
         })}
       </div>
-        <form style={{color: 'white'}}>Comment(required)
+        <form style={{color: 'black'}}>Comment(required)
       <TextField
         placeholder="Please share your own experience at this place"
         required
