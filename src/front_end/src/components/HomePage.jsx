@@ -29,9 +29,8 @@ const HomePage = () => {
                     let posts = json.posts;
                     console.log(posts);
                     let postsDisplay = posts.map((p) => {
-                        console.log(p);
                         return (
-                            <Post title={p.title} summary={p.summary} location={p.location}/>
+                            <Post title={p.title} summary={p.summary} location={p.location} author={p.author}/>
                         )
                     });
                     setPosts(postsDisplay);

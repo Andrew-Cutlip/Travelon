@@ -1,5 +1,8 @@
 import os
-
+from flask.helpers import url_for
+from werkzeug.utils import redirect
+import secrets
+import string
 import main as main
 
 cwd = os.getcwd()
@@ -17,10 +20,22 @@ BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
 static = os.path.join(BASE_PATH, "static")
 print(static)
 
+app.secret_key = 'simple'.encode('utf8')
+
+
+def make_cookie():
+    size = 20
+    cookie = "".join(secrets.choice(string.ascii_letters + string.digits) for i in range(size))
+    return cookie
+
 
 @app.route('/')
 @app.route('/home')
 def home():
+    """user_id = request.cookies.get('sessioncookie')
+    if user_id:
+        user = main.database.get_user_by_id(user_id)
+        if user:"""
     return send_from_directory("./static", "index.html")
 
 
@@ -55,7 +70,7 @@ def register():
     return jsonify(json)
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST","GET"])
 def login():
     # got stuff!
     json = {
@@ -71,10 +86,20 @@ def login():
         password = json_data["password"]
         # TODO look up username and see if password matches
         if main.database.check_user_password(username, password):
-            new_user = models.User()
-            new_user.start_session(main.database.get_user(username))
+            # new_user = models.User()
+            # new_user.start_session(main.database.get_user(username))
             json["loggedIn"] = True
             json["success"] = True
+            user = main.database.get_user(username)
+            response = jsonify(json)
+            # make cookie
+            cookie = make_cookie()
+            # set cookie in db
+            main.database.set_user_cookie(username, cookie)
+            # set cookie in response
+            response.set_cookie('session-cookie', cookie)
+            print("Set cookie!")
+            return response
         else:
             error = "Invalid username / password"
             json["errors"].append(error)
@@ -84,27 +109,35 @@ def login():
 
 @app.route("/rating", methods=["POST"])
 def rating():
-    json = {
-        "username": [],
-        "venue": [],
-        "location": [],
-        "stars": [],
-        "comment": [],
-    }
-    print("Got a post Request!")
-    if request.method == "POST":
-        json_data = request.json
-        venue = json_data["Name"]
-        location = json_data["location"]
-        stars = int(json_data["starRating"])
-        comment = json_data["comment"]
-        username = "bob"
-        if main.database.get_restaurants(venue):
-            main.database.add_restaurants_rating(venue, stars, comment, username)
-        else:
-            main.database.add_restaurants(venue, location, stars, comment, username)
-    print(json)
-    return jsonify(json)
+
+    cookie = request.cookies.get('session-cookie')
+    user = None
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+    if user is not None:
+        json = {
+            "username": [],
+            "venue": [],
+            "location": [],
+            "stars": [],
+            "comment": [],
+        }
+        print("Got a post Request!")
+        if request.method == "POST":
+            json_data = request.json
+            venue = json_data["Name"]
+            location = json_data["location"]
+            stars = int(json_data["starRating"])
+            comment = json_data["comment"]
+            username = "bob"
+            if main.database.get_restaurants(venue):
+                main.database.add_restaurants_rating(venue, stars, comment, username)
+                return jsonify(json)
+            else:
+                main.database.add_restaurants(venue, location, stars, comment, username)
+                return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route("/static/<path:path>")
@@ -114,30 +147,46 @@ def send_static_file(path):
 
 @app.route("/friends", methods=["POST"])
 def friends():
-        # got stuff!
-    json = {
-        "friends": []
-    }
-    print("Add friend Request!")
-    if request.method == "POST":
-        json_data = request.json
-        username = json_data["username"]
-        friend = json_data["friend"]
-        # TODO look up username and see if password matches
-        if main.database.is_username_available(friend):
-            main.database.add_friend(username,friend)
-            json["friends"] = main.database.get_user(username)["friends"]
+    cookie = request.cookies.get('session-cookie')
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+        if user:
+            json = {
+                "errors": [],
+                "friends": []
+            }
+            print("Add friend Request!")
+            if request.method == "POST":
+                json_data = request.json
+                username = json_data["username"]
+                friend = json_data["friend"]
+                # TODO look up username and see if password matches
+                if main.database.is_username_available(friend):
+                    main.database.add_friend(username,friend)
+                    json["friends"] = main.database.get_user(username)["friends"]
+                else:
+                    error = "User does not exit"
+                    json["errors"].append(error)
+            print(json)
+            return jsonify(json)
         else:
-            error = "User does not exit"
-    print(json)
-    return jsonify(json)
+            return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
     
 
 @app.route("/make-post", methods=["POST"])
 def post():
+    authenticated = False
+    cookie = request.cookies.get('session-cookie')
+    user = None
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+        print(user)
+        if user is not None:
+            authenticated = True
     json = request.json
     # need to check authentication for user
-    authenticated = True
     response = {
         "error": False,
         "message": "Post added successfully"
@@ -151,11 +200,16 @@ def post():
         images = json.get("images")
         # check for ratings selected
         ratings = json.get("ratings")
+        author = None
+        if user is not None:
+            author = user["username"]
+            print(f"Author {author}")
 
         post = {
             "title": title,
             "summary": summary,
-            "location": location
+            "location": location,
+            "author": author
         }
         if images is not None:
             post["images"] = images
@@ -171,70 +225,85 @@ def post():
     else:
         response["error"] = True
         response["message"] = "Error: Not authenticated user"
-
     return jsonify(response)
 
 
 @app.route("/get-posts", methods=["GET"])
-def get_posts():
-    print("Got Request for posts")
-    # json = request.json
+def get_post():
+    # don't need login to see posts
     # get all posts at first
     posts = main.database.get_all_posts()
-    print(posts)
     response = {
-        "posts": posts
+        "posts": tuple(posts)
     }
     return jsonify(response)
 
 
 @app.route("/change", methods=["POST"])
 def usernameChange():
-    # got stuff!
-    json = {
-        "loggedIn": False ,
-        "errors": [],
-        "success": False,
-    }
-    print("Got a username change Request!")
-    if request.method == "POST":
-        json_data = request.json
-        username = json_data["username"]
-        new_username = json_data["newusername"]
-        password = json_data["password"]
-        # TODO look up username and see if password matches
-        if main.database.check_user_password(username, password) and new_username != "":
-            auth.changeuser(username, new_username)
+    cookie = request.cookies.get('session-cookie')
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+        if user:
+            json = {
+                "loggedIn": False ,
+                "errors": [],
+                "success": False,
+            }
+            print("Got a username change Request!")
+            if request.method == "POST":
+                json_data = request.json
+                username = json_data["username"]
+                new_username = json_data["newusername"]
+                password = json_data["password"]
+                # TODO look up username and see if password matches
+                if main.database.check_user_password(username, password) and new_username != "":
+                    auth.changeuser(username, new_username)
 
+                else:
+                    error = "Invalid username / password"
+                    json["errors"].append(error)
+            print(json)
+            return jsonify(json)
         else:
-            error = "Invalid username / password"
-            json["errors"].append(error)
-    print(json)
-    return jsonify(json)
+            return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
+    # got stuff!
 
 
 @app.route("/change", methods=["POST"])
 def passwordChange():
     # got stuff!
+    cookie = request.cookies.get('session-cookie')
     json = {
         "loggedIn": False ,
-        "errors": [],
-        "success": False,
+        "errors": [] ,
+        "success": False ,
     }
-    print("Got a password change Request!")
-    if request.method == "POST":
-        json_data = request.json
-        username = json_data["username"]
-        password = json_data["password"]
-        new_password = json_data["newpassword"]
-        # TODO look up username and see if password matches
-        if main.database.check_user_password(username, password) and new_password != "":
-            auth.changepassword(username, new_password)
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+        if user:
+            print("Got a password change Request!")
+            if request.method == "POST":
+                json_data = request.json
+                username = json_data["username"]
+                password = json_data["password"]
+                new_password = json_data["newpassword"]
+                # TODO look up username and see if password matches
+                if main.database.check_user_password(username, password) and new_password != "":
+                    auth.changepassword(username, new_password)
+                else:
+                    error = "Invalid username / password"
+                    json["errors"].append(error)
+            print(json)
+            return jsonify(json)
         else:
             error = "Invalid username / password"
             json["errors"].append(error)
     print(json)
     return jsonify(json)
+
 
 @app.route("/rankings", methods=["POST"])
 def rankings():
@@ -244,7 +313,7 @@ def rankings():
     if request.method == "POST":
         json_data = request.json
         location = json_data["location"]
-        print(json_data)
+        print(location)
         json = (main.database.show_all_locations(location))
 
     print(json)

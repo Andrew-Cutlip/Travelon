@@ -26,6 +26,9 @@ class Database:
     def get_user(self, username: str) -> dict:
         pass
 
+    def get_user_by_id(self, user_id: str)-> dict:
+        pass
+
     def is_username_available(self, username: str) -> bool:
         pass
 
@@ -104,6 +107,12 @@ class DBStub(Database):
                 return user
         return {}
 
+    def get_user_by_id(self, user_id:str) ->dict:
+        for user in self.users:
+            if user_id == user["user_id"]:
+                return user
+        return {}
+
     def is_username_available(self, username: str) -> bool:
         usernames = [user["username"] for user in self.users]
         return username not in usernames
@@ -174,8 +183,6 @@ class DBStub(Database):
         return posts
 
 
-
-
 class RealDatabase(Database):
     def __init__(self):
         super().__init__()
@@ -233,9 +240,33 @@ class RealDatabase(Database):
         return pass_check
 
     def get_user(self, username: str) -> dict:
-        user = self.users.find_one({"username": username})
+        user_cur = self.users.find_one({"username": username})
         print(f"Got user {username}\n")
+        user = {
+            "user_id": user_cur["user_id"],
+            "username": user_cur["username"],
+            "password_hash": user_cur["password_hash"],
+            "friends": user_cur["friends"]
+        }
         return user
+
+    def get_user_by_cookie(self, cookie: str) -> dict:
+        user_cur = self.users.find_one({"cookie": cookie})
+        user = {
+            "user_id": user_cur["user_id"] ,
+            "username": user_cur["username"] ,
+            "password_hash": user_cur["password_hash"] ,
+            "friends": user_cur["friends"]
+        }
+        return user
+
+    def set_user_cookie(self, username: str, cookie: str):
+        self.users.update_one(
+            {"username": username},
+            {
+                "$set": {"cookie": cookie}
+            }
+        )
 
     def is_username_available(self, username: str) -> bool:
         user = self.users.find_one(username)
@@ -313,11 +344,20 @@ class RealDatabase(Database):
         print(posts)
         ret = []
         for post in posts:
-            new = {
-                "title": post["title"],
-                "summary": post["summary"],
-                "location": post["location"]
-            }
+            if "author" in post:
+                author = post["author"]
+                new = {
+                    "title": post["title"] ,
+                    "summary": post["summary"] ,
+                    "location": post["location"] ,
+                    "author": post["author"] ,
+                }
+            else:
+                new = {
+                    "title": post["title"] ,
+                    "summary": post["summary"] ,
+                    "location": post["location"] ,
+                }
             ret.append(new)
         return ret
 
