@@ -252,12 +252,23 @@ def rankings():
 
 @app.route("/upload", methods=["POST"])
 def upload():
-    json = []
+    cookie = request.cookies.get('session-cookie')
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+        if user:
+            authenticated = True
     print("Got a photo upload request!")
+    json = request.json
+    response ={
+        "error": False,
+        "message": "Photo(s) added succesfully"
+    }
+    if authenticated:
+        photos = json.get("photos")
+
     if request.method == "POST":
         json_data = request.json
-        print(json_data)
-        user = json_data["user"]
+        user = main.database.get_user_by_cookie(cookie)
         url = json_data["url"]
         json = (main.database.add_photo(user, url))['photos']
 
@@ -266,11 +277,16 @@ def upload():
 
 @app.route("/getphotos", methods=["POST"])
 def load():
-    json = []
+    cookie = request.cookies.get('session-cookie')
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+        if user:
+            authenticated = True
+    json = request.json
     print("Got a display photos request!")
     if request.method == "POST":
         json_data = request.json
-        user = "john"
+        user = main.database.get_user_by_cookie(cookie)
         print(json_data)
         json = (main.database.get_photos(user))['photos']
 
