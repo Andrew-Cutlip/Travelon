@@ -339,8 +339,9 @@ def upload():
     if request.method == "POST":
         json_data = request.json
         user = main.database.get_user_by_cookie(cookie)
+        username = user["username"]
         url = json_data["url"]
-        json = (main.database.add_photo(user, url))['photos']
+        json = (main.database.add_photo(username, url))['photos']
 
     print(json)
     return jsonify(json)
@@ -358,8 +359,9 @@ def load():
     if request.method == "POST":
         json_data = request.json
         user = main.database.get_user_by_cookie(cookie)
+        username = user["username"]
         print(json_data)
-        json = (main.database.get_photos(user))['photos']
+        json = (main.database.get_photos(username))['photos']
 
     print(json)
     return jsonify(json)
