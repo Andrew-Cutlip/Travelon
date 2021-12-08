@@ -1,9 +1,8 @@
 import os
 from flask.helpers import url_for
 from werkzeug.utils import redirect
-
-from werkzeug.wrappers import response
-
+import secrets
+import string
 import main as main
 
 cwd = os.getcwd()
@@ -23,7 +22,12 @@ print(static)
 
 app.secret_key = 'simple'.encode('utf8')
 
+
 def make_cookie():
+    size = 20
+    cookie = "".join(secrets.choice(string.ascii_letters + string.digits) for i in range(size))
+    return cookie
+
 
 @app.route('/')
 @app.route('/home')
@@ -33,10 +37,6 @@ def home():
         user = main.database.get_user_by_id(user_id)
         if user:"""
     return send_from_directory("./static", "index.html")
-    """else:
-            return redirect(url_for('login'))
-    else:
-        return redirect(url_for('login'))"""
 
 
 @app.route('/about')
@@ -91,7 +91,12 @@ def login():
             json["success"] = True
             user = main.database.get_user(username)
             response = redirect(url_for("home"))
-            response.set_cookie('sessioncookie',user["user_id"])
+            # make cookie
+            cookie = make_cookie()
+            # set cookie in db
+            main.database.set_cookie(username, cookie)
+            # set cookie in response
+            response.set_cookie('session-cookie', cookie)
         else:
             error = "Invalid username / password"
             json["errors"].append(error)
@@ -102,10 +107,11 @@ def login():
 @app.route("/rating", methods=["POST"])
 def rating():
 
-    user_id = request.cookies.get('sessioncookie')
-    if user_id:
-        user = main.database.get_user_by_id(user_id)
-    if user:
+    cookie = request.cookies.get('session-cookie')
+    user = None
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+    if user is not None:
         json = {
             "username": [],
             "venue": [],
@@ -136,9 +142,9 @@ def send_static_file(path):
 
 @app.route("/friends", methods=["POST"])
 def friends():
-    user_id = request.cookies.get('sessioncookie')
-    if user_id:
-        user = main.database.get_user_by_id(user_id)
+    cookie = request.cookies.get('session-cookie')
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
         if user:
             json = {
                 "friends": []
@@ -165,9 +171,9 @@ def friends():
 @app.route("/make-post", methods=["POST"])
 def post():
     authenticated = False
-    user_id = request.cookies.get('session-cookie')
-    if user_id:
-        user = main.database.get_user_by_id(user_id)
+    cookie = request.cookies.get('session-cookie')
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
         if user:
             authenticated = True
     json = request.json
@@ -210,8 +216,8 @@ def post():
 @app.route("/get-posts", methods=["GET"])
 def get_post():
     cookie = request.cookies.get('session-cookie')
-    if user_id:
-        user = main.database.get_user_by_id(user_id)
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
         if user:
             json = request.json
             # get all posts at first
@@ -228,9 +234,9 @@ def get_post():
 
 @app.route("/change", methods=["POST"])
 def usernameChange():
-    user_id = request.cookies.get('sessioncookie')
-    if user_id:
-        user = main.database.get_user_by_id(user_id)
+    cookie = request.cookies.get('session-cookie')
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
         if user:
             json = {
                 "loggedIn": False ,
@@ -262,15 +268,15 @@ def usernameChange():
 @app.route("/change", methods=["POST"])
 def passwordChange():
     # got stuff!
-    user_id = request.cookies.get('sessioncookie')
-    if user_id:
-        user = main.database.get_user_by_id(user_id)
+    cookie = request.cookies.get('session-cookie')
+    json = {
+        "loggedIn": False ,
+        "errors": [] ,
+        "success": False ,
+    }
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
         if user:
-            json = {
-                "loggedIn": False ,
-                "errors": [],
-                "success": False,
-            }
             print("Got a password change Request!")
             if request.method == "POST":
                 json_data = request.json
@@ -290,6 +296,7 @@ def passwordChange():
             json["errors"].append(error)
     print(json)
     return jsonify(json)
+
 
 @app.route("/rankings", methods=["POST"])
 def rankings():
