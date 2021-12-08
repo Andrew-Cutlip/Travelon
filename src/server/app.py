@@ -15,6 +15,7 @@ app = Flask(__name__)
 
 from . import auth
 from . import models
+from . import validation
 
 BASE_PATH = os.path.join(os.path.dirname(__file__), "..")
 static = os.path.join(BASE_PATH, "static")
@@ -81,9 +82,9 @@ def login():
         username = json_data["username"]
         password = json_data["password"]
         # TODO look up username and see if password matches
-        if main.database.check_user_password(username , password):
-            new_user = models.User()
-            new_user.start_session(main.database.get_user(username))
+        if main.database.check_user_password(username, password):
+            # new_user = models.User()
+            # new_user.start_session(main.database.get_user(username))
             json["loggedIn"] = True
             json["success"] = True
             user = main.database.get_user(username)
@@ -98,29 +99,30 @@ def login():
 
 @app.route("/rating", methods=["POST"])
 def rating():
+
     user_id = request.cookies.get('sessioncookie')
     if user_id:
         user = main.database.get_user_by_id(user_id)
-        if user:
-            json = {
-            "errors": [],
-            "restaurant": [],
-            "success": False,
-            }
-            print("Got a post Request!")
-            if request.method == "POST":
-                json_data = request.json
-                restaurant = json_data["restaurant"]
-                if main.database.display_restaurant(restaurant):
-                    json["restaurant"].append(main.database.display_restaurant(restaurant))
-                    json["success"] = True
-                else:
-                    error = "Incorrect restaurant name entered"
-                    json["errors"].append(error)
-            print(json)
-            return jsonify(json)
-        else:
-            return redirect(url_for('login'))
+    if user:
+        json = {
+            "username": [],
+            "venue": [],
+            "location": [],
+            "stars": [],
+            "comment": [],
+        }
+        print("Got a post Request!")
+        if request.method == "POST":
+            json_data = request.json
+            venue = json_data["venue"]
+            location = json_data["location"]
+            stars = json_data["stars"]
+            comment = json_data["comment"]
+            username = "bob"
+            if main.database.get_restaurants():
+                main.database.star_rating(venue, location, stars, comment, username)
+            else:
+                return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
 
@@ -128,6 +130,7 @@ def rating():
 @app.route("/static/<path:path>")
 def send_static_file(path):
     return send_from_directory("./static", path)
+
 
 @app.route("/friends", methods=["POST"])
 def friends():
@@ -159,36 +162,47 @@ def friends():
 
 @app.route("/make-post", methods=["POST"])
 def post():
+    authenticated = False
     user_id = request.cookies.get('sessioncookie')
     if user_id:
         user = main.database.get_user_by_id(user_id)
         if user:
-            json = request.json
-            # need to check authentication for user
             authenticated = True
-            response = {
-                "error": False,
-                "message": "Post added successfully"
-            }
-            if authenticated:
-                title = json["title"]
-                summary = json["summary"]
-                location = json["location"]
-                post = {
-                    title: title,
-                    summary: summary,
-                    location: location
-                }
-                main.database.add_post(post)
-            else:
-                response["error"] = True
-                response["message"] = "Error: Not authenticated user"
+    json = request.json
+    # need to check authentication for user
+    response = {
+        "error": False,
+        "message": "Post added successfully"
+    }
+    if authenticated:
+        # need a way to get user_id
+        title = json["title"]
+        summary = json["summary"]
+        location = json["location"]
+        # check for images selected
+        images = json.get("images")
+        # check for ratings selected
+        ratings = json.get("ratings")
 
-            return jsonify(response)
+        post = {
+            "title": title,
+            "summary": summary,
+            "location": location
+        }
+        if images is not None:
+            post["images"] = images
+        if ratings is not None:
+            post["ratings"] = ratings
+
+        valid = validation.validate_post(post)
+        if valid:
+            main.database.add_post(post)
         else:
-            return redirect(url_for('login'))
+            response["error"] = True
+            response["message"] = "Error: Post not valid, ratings and images ccan only be used for one post."
     else:
-        return redirect(url_for('login'))
+        response["error"] = True
+        response["message"] = "Error: Not authenticated user"
 
 
 @app.route("/get-posts", methods=["GET"])
@@ -242,6 +256,7 @@ def usernameChange():
         return redirect(url_for('login'))
     # got stuff!
 
+
 @app.route("/change", methods=["POST"])
 def passwordChange():
     # got stuff!
@@ -269,7 +284,22 @@ def passwordChange():
             print(json)
             return jsonify(json)
         else:
-            return redirect(url_for('login'))
-    else:
-        return redirect(url_for('login'))
+            error = "Invalid username / password"
+            json["errors"].append(error)
+    print(json)
+    return jsonify(json)
+
+@app.route("/rankings", methods=["POST"])
+def rankings():
+    # got stuff!
+    json = []
+    print("Got a Ranking request!")
+    if request.method == "POST":
+        json_data = request.json
+        location = json_data["location"]
+        print(location)
+        json = (main.database.show_all_locations(location))
+
+    print(json)
+    return jsonify(json)
 

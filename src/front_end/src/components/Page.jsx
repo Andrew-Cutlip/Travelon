@@ -7,7 +7,8 @@ import About from "./About"
 import Contact from "./Contact";
 import Friendslist from "./Friendslist";
 import StarRatings from "./StarRatings";
-import Change from "./Change"
+import Change from "./Change";
+import Rankings from "./Rankings";
 
 const Page = (props) => {
     let pageContent;
@@ -34,6 +35,9 @@ const Page = (props) => {
     }
     else if (props.name === "change"){
         pageContent = <Change onclick={props.onclick}/>
+    }
+    else if (props.name === "rankings"){
+        pageContent = <Rankings onclick={props.onclick}/>
     }
     else {
         pageContent = <HomePage />
