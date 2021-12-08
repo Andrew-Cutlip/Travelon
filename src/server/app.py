@@ -177,9 +177,15 @@ def friends():
 
 @app.route("/make-post", methods=["POST"])
 def post():
+    authenticated = False
+    cookie = request.cookies.get('session-cookie')
+    user = None
+    if cookie:
+        user = main.database.get_user_by_cookie(cookie)
+        if user is not None:
+            authenticated = True
     json = request.json
     # need to check authentication for user
-    authenticated = True
     response = {
         "error": False,
         "message": "Post added successfully"
