@@ -202,6 +202,7 @@ def post():
         author = None
         if user is not None:
             author = user["username"]
+            print(f"Author {author}")
 
         post = {
             "title": title,
@@ -232,7 +233,7 @@ def get_post():
     # get all posts at first
     posts = main.database.get_all_posts()
     response = {
-        posts: posts
+        posts: tuple(posts)
     }
     return jsonify(response)
 
