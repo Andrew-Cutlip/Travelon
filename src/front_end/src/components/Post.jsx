@@ -14,9 +14,14 @@ const Post = (props) => {
             return (<div className="rating">{rating.score}</div>);
         })
     }
+    let author =  props.author;
+    if (author) {
+        author = <p>By: {author}</p>
+    }
     return (
         <div className="post">
             <h2>{props.title}</h2>
+            {author}
             <p>{props.summary}</p>
             <p>{props.location}</p>
             {images}

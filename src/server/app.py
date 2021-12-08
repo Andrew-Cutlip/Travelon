@@ -177,9 +177,10 @@ def friends():
 def post():
     authenticated = False
     cookie = request.cookies.get('session-cookie')
+    user = None
     if cookie:
         user = main.database.get_user_by_cookie(cookie)
-        if user:
+        if user is not None:
             authenticated = True
     json = request.json
     # need to check authentication for user
@@ -196,11 +197,15 @@ def post():
         images = json.get("images")
         # check for ratings selected
         ratings = json.get("ratings")
+        author = None
+        if user is not None:
+            author = user["username"]
 
         post = {
             "title": title,
             "summary": summary,
-            "location": location
+            "location": location,
+            "author": author
         }
         if images is not None:
             post["images"] = images

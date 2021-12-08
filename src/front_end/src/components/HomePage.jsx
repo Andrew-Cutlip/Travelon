@@ -30,7 +30,7 @@ const HomePage = () => {
                     console.log(posts);
                     let postsDisplay = posts.map((p) => {
                         return (
-                            <Post title={p.title} summary={p.summary} location={p.location}/>
+                            <Post title={p.title} summary={p.summary} location={p.location} author={p.author}/>
                         )
                     });
                     setPosts(postsDisplay);
