@@ -90,13 +90,15 @@ def login():
             json["loggedIn"] = True
             json["success"] = True
             user = main.database.get_user(username)
-            response = redirect(url_for("home"))
+            response = jsonify(json)
             # make cookie
             cookie = make_cookie()
             # set cookie in db
             main.database.set_user_cookie(username, cookie)
             # set cookie in response
             response.set_cookie('session-cookie', cookie)
+            print("Set cookie!")
+            return response
         else:
             error = "Invalid username / password"
             json["errors"].append(error)
@@ -129,6 +131,7 @@ def rating():
             username = "bob"
             if main.database.get_restaurants():
                 main.database.star_rating(venue, location, stars, comment, username)
+                return jsonify(json)
             else:
                 return redirect(url_for('login'))
     else:
@@ -147,6 +150,7 @@ def friends():
         user = main.database.get_user_by_cookie(cookie)
         if user:
             json = {
+                "errors": [],
                 "friends": []
             }
             print("Add friend Request!")
@@ -160,6 +164,7 @@ def friends():
                     json["friends"] = main.database.get_user(username)["friends"]
                 else:
                     error = "User does not exit"
+                    json["errors"].append(error)
             print(json)
             return jsonify(json)
         else:
@@ -211,25 +216,18 @@ def post():
     else:
         response["error"] = True
         response["message"] = "Error: Not authenticated user"
+    return jsonify(response)
 
 
 @app.route("/get-posts", methods=["GET"])
 def get_post():
-    cookie = request.cookies.get('session-cookie')
-    if cookie:
-        user = main.database.get_user_by_cookie(cookie)
-        if user:
-            json = request.json
-            # get all posts at first
-            posts = main.database.get_all_posts()
-            response = {
-                posts: posts
-            }
-            return jsonify(response)
-        else:
-            return redirect(url_for('login'))
-    else:
-        return redirect(url_for('login'))
+    # don't need login to see posts
+    # get all posts at first
+    posts = main.database.get_all_posts()
+    response = {
+        posts: posts
+    }
+    return jsonify(response)
 
 
 @app.route("/change", methods=["POST"])
