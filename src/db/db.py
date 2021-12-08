@@ -348,7 +348,7 @@ class RealDatabase(Database):
                 "title": post["title"],
                 "summary": post["summary"],
                 "location": post["location"],
-                "author": post["author"]
+                "author": post.get["author"]
             }
             ret.append(new)
         return ret
