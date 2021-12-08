@@ -344,12 +344,20 @@ class RealDatabase(Database):
         print(posts)
         ret = []
         for post in posts:
-            new = {
-                "title": post["title"],
-                "summary": post["summary"],
-                "location": post["location"],
-                "author": post.get["author"]
-            }
+            if "author" in post:
+                author = post["author"]
+                new = {
+                    "title": post["title"] ,
+                    "summary": post["summary"] ,
+                    "location": post["location"] ,
+                    "author": post["author"] ,
+                }
+            else:
+                new = {
+                    "title": post["title"] ,
+                    "summary": post["summary"] ,
+                    "location": post["location"] ,
+                }
             ret.append(new)
         return ret
 
