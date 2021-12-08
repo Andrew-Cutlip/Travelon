@@ -50,10 +50,13 @@ class Database:
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
 
-    def add_restaurants(self, restaurant_name):
+    def add_restaurants(self, venue_name, location, num_star_filled, comments, user):
         pass
 
-    def get_restaurants(self) -> list:
+    def get_restaurants(self, venue_name):
+        pass
+
+    def add_restaurants_rating(self, venue_name, num_star_filled, comments, user):
         pass
 
     def display_restaurant(self, restaurants: str):
@@ -139,7 +142,7 @@ class DBStub(Database):
         }
         self.restaurant.append(restaurant)
 
-    def get_restaurants(self) -> list:
+    def get_restaurants(self, venue_name):
         return self.restaurant
 
     def display_restaurant(self, restaurants: str):
@@ -268,23 +271,26 @@ class RealDatabase(Database):
         if num_star_filled <= 5:
             return num_star_filled, comment
 
-    def add_restaurants(self, restaurant_name):
+    def add_restaurants(self, venue_name, location, num_star_filled, comments, user):
         restaurant = {
-            "name": restaurant_name,
-            "user_Id": []
+            "name": venue_name,
+            "user_Id": [user],
+            "comment": [comments],
+            "rating": [num_star_filled],
+            "location": [location]
         }
         self.restaurant.insert_one(restaurant)
 
-    def add_restaurants_rating(self, venue_name, location, num_star_filled, comments, user):
+    def add_restaurants_rating(self, venue_name, num_star_filled, comments, user):
         self.db.restaurant.update_one({"name": venue_name},
-                                      {"$push": {"user_Id": user, "location": location, "rating": num_star_filled, "comment": comments}})
+                                      {"$push": {"user_Id": user, "rating": num_star_filled, "comment": comments}})
 
-    def get_restaurants(self):
+    def get_restaurants(self, venue_name):
         restaurants = []
         print("Getting restaurants")
-        for restaurant in self.restaurant.find():
-            restaurants.append(restaurant)
-        return restaurants
+        if self.restaurant.count_documents({"name": venue_name}) == 0:
+            return False
+        return True
 
     def display_restaurant(self, restaurants: str):
         get_restaurant = self.restaurant.find_one({"name": restaurants})

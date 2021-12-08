@@ -94,16 +94,15 @@ def rating():
     print("Got a post Request!")
     if request.method == "POST":
         json_data = request.json
-        venue = json_data["venue"]
+        venue = json_data["Name"]
         location = json_data["location"]
-        stars = json_data["stars"]
+        stars = int(json_data["starRating"])
         comment = json_data["comment"]
         username = "bob"
-        if main.database.get_restaurants():
-            main.database.star_rating(venue, location, stars, comment, username)
+        if main.database.get_restaurants(venue):
+            main.database.add_restaurants_rating(venue, stars, comment, username)
         else:
-            error = "Incorrect restaurant name entered"
-            json["errors"].append(error)
+            main.database.add_restaurants(venue, location, stars, comment, username)
     print(json)
     return jsonify(json)
 
@@ -271,7 +270,7 @@ def load():
     print("Got a display photos request!")
     if request.method == "POST":
         json_data = request.json
-        user = json_data["user"]
+        user = "john"
         print(json_data)
         json = (main.database.get_photos(user))['photos']
 
