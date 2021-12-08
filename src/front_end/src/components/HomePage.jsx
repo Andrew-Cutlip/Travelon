@@ -22,15 +22,25 @@ const HomePage = () => {
 
     useEffect(() => {
         fetch("/get-posts", requestOptions)
-                .then(response => response.json())
+                .then(response => {
+                    return response.json()
+                })
+                .then((json) => {
+                    let posts = json.posts;
+                    console.log(posts);
+                    let postsDisplay = posts.map((p) => {
+                        console.log(p);
+                        return (
+                            <Post title={p.title} summary={p.summary} location={p.location}/>
+                        )
+                    });
+                    setPosts(postsDisplay);
+                    return json
+                })
                 .then(data => console.log(data))
-                .then(data => setPosts(data.posts))
-    }, []);
 
-    let postsDisplay = Posts.map(post => {return (
-        <Post title={post.title} summary={post.summary} location={post.location}/>
-    )
-    })
+    }, [setPosts]);
+
     return (
 
         <div id="home">
@@ -53,7 +63,7 @@ const HomePage = () => {
             <p>If you love to travel,
                 Why not share your experience to the world?
             </p>
-            {postsDisplay}
+            {Posts}
             <PostForm />
         </div>
     );
