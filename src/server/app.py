@@ -44,7 +44,7 @@ def about():
     return "About"
 
 
-@app.route("/register", methods=["POST", "GET"])
+@app.route("/register", methods=["POST"])
 def register():
     # got stuff!
     print("Got a register request!")
@@ -77,6 +77,7 @@ def login():
         "loggedIn": False,
         "errors": [],
         "success": False,
+
     }
     print("Got a login Request!")
     if request.method == "POST":
@@ -124,15 +125,16 @@ def rating():
         print("Got a post Request!")
         if request.method == "POST":
             json_data = request.json
-            venue = json_data["venue"]
+            venue = json_data["Name"]
             location = json_data["location"]
-            stars = json_data["stars"]
+            stars = int(json_data["starRating"])
             comment = json_data["comment"]
             username = "bob"
-            if main.database.get_restaurants():
-                main.database.star_rating(venue, location, stars, comment, username)
+            if main.database.get_restaurants(venue):
+                main.database.add_restaurants_rating(venue, stars, comment, username)
                 return jsonify(json)
             else:
+                main.database.add_restaurants(venue, location, stars, comment, username)
                 return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
@@ -175,15 +177,9 @@ def friends():
 
 @app.route("/make-post", methods=["POST"])
 def post():
-    authenticated = False
-    cookie = request.cookies.get('session-cookie')
-    user = None
-    if cookie:
-        user = main.database.get_user_by_cookie(cookie)
-        if user is not None:
-            authenticated = True
     json = request.json
     # need to check authentication for user
+    authenticated = True
     response = {
         "error": False,
         "message": "Post added successfully"
@@ -315,3 +311,29 @@ def rankings():
     print(json)
     return jsonify(json)
 
+@app.route("/upload", methods=["POST"])
+def upload():
+    json = []
+    print("Got a photo upload request!")
+    if request.method == "POST":
+        json_data = request.json
+        print(json_data)
+        user = json_data["user"]
+        url = json_data["url"]
+        json = (main.database.add_photo(user, url))['photos']
+
+    print(json)
+    return jsonify(json)
+
+@app.route("/getphotos", methods=["POST"])
+def load():
+    json = []
+    print("Got a display photos request!")
+    if request.method == "POST":
+        json_data = request.json
+        user = "john"
+        print(json_data)
+        json = (main.database.get_photos(user))['photos']
+
+    print(json)
+    return jsonify(json)

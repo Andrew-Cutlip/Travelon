@@ -28,6 +28,7 @@ const Rankings = (props) => {
 
                 })
         }
+
     }, [Submit, Friend,props]);
 
     let handleSubmit = (e) => {
@@ -50,7 +51,7 @@ const Rankings = (props) => {
                 <input type="submit" name="submit" value="See Venue Rankings" onSubmit={handleSubmit}/>
 
             </form>
-            </center>
+
             <div> <h1> </h1>
                 {rankings.map(rank => (
 
@@ -121,6 +122,7 @@ const Rankings = (props) => {
                 ))}
 
             </div>
+            </center>
         </div>
 
     );
