@@ -30,9 +30,10 @@ function Login(props) {
     useEffect(() => {
        const requestOptions = {
            method: 'POST',
-           headers: {
-               "Content-Type": "application/json"
-           },
+           headers: new Headers({
+               "Content-Type": "application/json",
+               "Accept": "application/json"
+           }),
            body: JSON.stringify({
                username: Username,
                password: Password
@@ -56,6 +57,9 @@ function Login(props) {
                         console.log(success);
                         setPassword("");
                         setUsername("");
+                    })
+                    .catch(function(error){
+                        console.log("Fetch error " + error )
                     })
                 }
     }, [Submit, Password, Username, props]);

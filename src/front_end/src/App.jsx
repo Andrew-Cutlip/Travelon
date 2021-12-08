@@ -42,6 +42,21 @@ function App() {
             path: "account",
             key: 3
         };
+    
+    const change =         {
+        onclick: handlePageSwitch,
+        text: "Change",
+        path:"change",
+        key:8
+    };
+
+    const friendslist =         {
+        onclick: handlePageSwitch,
+        text: "Friendslist",
+        path: "friendslist",
+        key:7
+    };
+
     const links = [
         {
             onclick: handlePageSwitch,
@@ -67,8 +82,7 @@ function App() {
             path: "friendslist",
             key:7
         },
-        
-                {
+        {
             onclick: handlePageSwitch,
             text: "StarRatings",
             path: "starRatings",
@@ -76,9 +90,15 @@ function App() {
         },
         {
             onclick: handlePageSwitch,
-            text: "Change",
-            path:"change",
-            key:8
+            text: "Rankings",
+            path:"rankings",
+            key:9
+        },
+        {
+            onclick: handlePageSwitch,
+            text: "Upload",
+            path:"upload",
+            key:10
         },
     ];
     if (! loggedIn) {
@@ -87,6 +107,8 @@ function App() {
     }
     else {
         links.push(account);
+        links.push(friendslist)
+        links.push(change)
     }
   return (
       <>

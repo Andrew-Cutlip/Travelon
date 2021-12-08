@@ -1,6 +1,10 @@
+from statistics import mean
+
 import bcrypt
 import pymongo
 import os
+
+from flask import jsonify
 
 
 class Database:
@@ -20,6 +24,9 @@ class Database:
         pass
 
     def get_user(self, username: str) -> dict:
+        pass
+
+    def get_user_by_id(self, user_id: str)-> dict:
         pass
 
     def is_username_available(self, username: str) -> bool:
@@ -43,15 +50,16 @@ class Database:
     def get_a_friend(self, username:str):
         pass
 
-
-
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         pass
 
-    def add_restaurants(self, restaurant_name):
+    def add_restaurants(self, venue_name, location, num_star_filled, comments, user):
         pass
 
-    def get_restaurants(self) -> list:
+    def get_restaurants(self, venue_name):
+        pass
+
+    def add_restaurants_rating(self, venue_name, num_star_filled, comments, user):
         pass
 
     def display_restaurant(self, restaurants: str):
@@ -64,8 +72,17 @@ class Database:
         pass
 
     def get_posts_for_location(self, location: str):
-
         pass
+
+    def show_all_locations(self, location: str):
+        pass
+
+    def add_photo(self, user, photo):
+        pass
+
+    def get_photos(self, user):
+        pass
+
 
 
 class DBStub(Database):
@@ -90,6 +107,12 @@ class DBStub(Database):
                 return user
         return {}
 
+    def get_user_by_id(self, user_id:str) ->dict:
+        for user in self.users:
+            if user_id == user["user_id"]:
+                return user
+        return {}
+
     def is_username_available(self, username: str) -> bool:
         usernames = [user["username"] for user in self.users]
         return username not in usernames
@@ -108,13 +131,14 @@ class DBStub(Database):
         user = self.get_user(username)
         if user is None:
             return False
-        self.users.update({'username' : username}, {'$push' : {'friends': friend}})
+        self.users.update({'username': username}, {'$push' : {'friends': friend}})
 
     def get_all_friends(self):
         return self.friends
 
-    def get_a_friend(self, username:str):
+    def get_a_friend(self, username: str):
         return self.friends
+
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user_comment = self.get_user(username)
         if num_star_filled <= 5:
@@ -127,7 +151,7 @@ class DBStub(Database):
         }
         self.restaurant.append(restaurant)
 
-    def get_restaurants(self) -> list:
+    def get_restaurants(self, venue_name):
         return self.restaurant
 
     def display_restaurant(self, restaurants: str):
@@ -153,7 +177,10 @@ class DBStub(Database):
         return posts
 
     def get_all_posts(self):
-        return self.posts
+        posts = [
+            post for post in self.posts
+        ]
+        return posts
 
 
 class RealDatabase(Database):
@@ -179,6 +206,7 @@ class RealDatabase(Database):
         # add ratings function
         self.ratings = self.db.ratings
         self.restaurant = self.db.restaurant
+        self.photos = self.db.photos
 
     def add_city(self, cityname: str):
         city = {
@@ -212,9 +240,33 @@ class RealDatabase(Database):
         return pass_check
 
     def get_user(self, username: str) -> dict:
-        user = self.users.find_one({"username": username})
+        user_cur = self.users.find_one({"username": username})
         print(f"Got user {username}\n")
+        user = {
+            "user_id": user_cur["user_id"],
+            "username": user_cur["username"],
+            "password_hash": user_cur["password_hash"],
+            "friends": user_cur["friends"]
+        }
         return user
+
+    def get_user_by_cookie(self, cookie: str) -> dict:
+        user_cur = self.users.find_one({"cookie": cookie})
+        user = {
+            "user_id": user_cur["user_id"] ,
+            "username": user_cur["username"] ,
+            "password_hash": user_cur["password_hash"] ,
+            "friends": user_cur["friends"]
+        }
+        return user
+
+    def set_user_cookie(self, username: str, cookie: str):
+        self.users.update_one(
+            {"username": username},
+            {
+                "$set": {"cookie": cookie}
+            }
+        )
 
     def is_username_available(self, username: str) -> bool:
         user = self.users.find_one(username)
@@ -243,7 +295,6 @@ class RealDatabase(Database):
             allfriends.append(f)
         return allfriends
 
-
     def star_rating(self, num_star_filled: int, comment: str, username: str):
         user = self.get_user(username)
         if user is None:
@@ -251,23 +302,26 @@ class RealDatabase(Database):
         if num_star_filled <= 5:
             return num_star_filled, comment
 
-    def add_restaurants(self, restaurant_name):
+    def add_restaurants(self, venue_name, location, num_star_filled, comments, user):
         restaurant = {
-            "name": restaurant_name,
-            "user_Id": []
+            "name": venue_name,
+            "user_Id": [user],
+            "comment": [comments],
+            "rating": [num_star_filled],
+            "location": [location]
         }
         self.restaurant.insert_one(restaurant)
 
-    def add_restaurants_rating(self, restaurant_name, num_star_filled, comments, user):
-        self.db.restaurant.update_one({"name": restaurant_name},
+    def add_restaurants_rating(self, venue_name, num_star_filled, comments, user):
+        self.db.restaurant.update_one({"name": venue_name},
                                       {"$push": {"user_Id": user, "rating": num_star_filled, "comment": comments}})
 
-    def get_restaurants(self):
+    def get_restaurants(self, venue_name):
         restaurants = []
         print("Getting restaurants")
-        for restaurant in self.restaurant.find():
-            restaurants.append(restaurant)
-        return restaurants
+        if self.restaurant.count_documents({"name": venue_name}) == 0:
+            return False
+        return True
 
     def display_restaurant(self, restaurants: str):
         get_restaurant = self.restaurant.find_one({"name": restaurants})
@@ -286,7 +340,26 @@ class RealDatabase(Database):
         return posts
 
     def get_all_posts(self):
-        return self.posts.find({})
+        posts = self.posts.find({})
+        print(posts)
+        ret = []
+        for post in posts:
+            if "author" in post:
+                author = post["author"]
+                new = {
+                    "title": post["title"] ,
+                    "summary": post["summary"] ,
+                    "location": post["location"] ,
+                    "author": post["author"] ,
+                }
+            else:
+                new = {
+                    "title": post["title"] ,
+                    "summary": post["summary"] ,
+                    "location": post["location"] ,
+                }
+            ret.append(new)
+        return ret
 
     def change_username(self, username: str, newusername: str) -> bool:
         if self.is_username_available(newusername):
@@ -299,3 +372,39 @@ class RealDatabase(Database):
             self.users.update_one({"username": username}, {"$set": {"password_hash": newpassword}})
             return True
         return False
+
+    def show_all_locations(self, location: str):
+        list = []
+        all = []
+        for x in self.restaurant.find( {"location":{ "$eq" : [location]}}):
+            list.append(x)
+            print(list)
+        for i in list:
+            i['_id'] = 0
+        list = sorted(list, key=lambda x: mean(x['rating']))
+        for i in reversed(list):
+            newlist = []
+            newlist.append(i)
+            all.append(newlist)
+        print(all)
+        return all
+
+    def add_photo(self, user, photo):
+        photoarray = []
+        photoarray.append(photo)
+        if (self.photos.find( {"user":{ "$eq" : user}}).count() > 0):
+            self.db.photos.update_one({"user": user},
+                                      {"$push": {"photos": photo}})
+        else:
+            myPhotos = {
+                "user": user,
+                "photos": photoarray
+            }
+            self.photos.insert_one(myPhotos)
+        return self.photos.find_one({"user": user})
+
+    def get_photos(self, user):
+        return self.photos.find_one({"user": user})
+
+
+

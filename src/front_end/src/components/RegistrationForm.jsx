@@ -15,7 +15,8 @@ function RegistrationForm(props) {
        const requestOptions = {
            method: 'POST',
            headers: {
-               "Content-Type": "application/json"
+               "Content-Type": "application/json",
+               "Accept": "application/json"
            },
            body: JSON.stringify({
                username: Username,
@@ -26,7 +27,7 @@ function RegistrationForm(props) {
            if (Submit) {
                setSubmit(false);
                fetch("/register", requestOptions)
-                .then(response => response.json())
+                .then(response => response)
                 .then(data => {
                     console.log("Registered!");
                     console.log(data);
