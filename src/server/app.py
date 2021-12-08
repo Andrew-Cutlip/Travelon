@@ -233,7 +233,7 @@ def get_post():
     # get all posts at first
     posts = main.database.get_all_posts()
     response = {
-        posts: tuple(posts)
+        "posts": tuple(posts)
     }
     return jsonify(response)
 
