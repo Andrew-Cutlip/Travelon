@@ -94,7 +94,7 @@ def login():
             # make cookie
             cookie = make_cookie()
             # set cookie in db
-            main.database.set_cookie(username, cookie)
+            main.database.set_user_cookiecookie(username, cookie)
             # set cookie in response
             response.set_cookie('session-cookie', cookie)
         else:

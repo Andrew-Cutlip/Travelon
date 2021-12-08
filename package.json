@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@react-google-maps/api": "^2.7.0",
-    "react-google-maps": "^9.4.5"
-  }
-}
