@@ -129,7 +129,7 @@ def rating():
             location = json_data["location"]
             stars = int(json_data["starRating"])
             comment = json_data["comment"]
-            username = "bob"
+            username = user["username"]
             if main.database.get_restaurants(venue):
                 main.database.add_restaurants_rating(venue, stars, comment, username)
                 return jsonify(json)
@@ -319,6 +319,7 @@ def rankings():
     print(json)
     return jsonify(json)
 
+
 @app.route("/upload", methods=["POST"])
 def upload():
     json = []
@@ -332,6 +333,7 @@ def upload():
 
     print(json)
     return jsonify(json)
+
 
 @app.route("/getphotos", methods=["POST"])
 def load():
