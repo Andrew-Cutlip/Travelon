@@ -63,8 +63,15 @@ class MyTestCase(unittest.TestCase):
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 >>>>>>> Posts
 
+=======
+    def test_add_photo(self):
+        database = db.RealDatabase()
+        res = (db.RealDatabase.add_photo(database, "john", "kjkk"))
+        print(res)
+>>>>>>> develop
 
 if __name__ == '__main__':
     unittest.main()
