@@ -182,6 +182,7 @@ def post():
     user = None
     if cookie:
         user = main.database.get_user_by_cookie(cookie)
+        print(user)
         if user is not None:
             authenticated = True
     json = request.json
