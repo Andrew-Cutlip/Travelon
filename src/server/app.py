@@ -23,6 +23,8 @@ print(static)
 
 app.secret_key = 'simple'.encode('utf8')
 
+def make_cookie():
+
 @app.route('/')
 @app.route('/home')
 def home():
@@ -163,7 +165,7 @@ def friends():
 @app.route("/make-post", methods=["POST"])
 def post():
     authenticated = False
-    user_id = request.cookies.get('sessioncookie')
+    user_id = request.cookies.get('session-cookie')
     if user_id:
         user = main.database.get_user_by_id(user_id)
         if user:
@@ -207,7 +209,7 @@ def post():
 
 @app.route("/get-posts", methods=["GET"])
 def get_post():
-    user_id = request.cookies.get('sessioncookie')
+    cookie = request.cookies.get('session-cookie')
     if user_id:
         user = main.database.get_user_by_id(user_id)
         if user:

@@ -238,6 +238,24 @@ class RealDatabase(Database):
         }
         return user
 
+    def get_user_by_cookie(self, cookie: str) -> dict:
+        user_cur = self.users.find_one({"cookie": cookie})
+        user = {
+            "user_id": user_cur["user_id"] ,
+            "username": user_cur["username"] ,
+            "password_hash": user_cur["password_hash"] ,
+            "friends": user_cur["friends"]
+        }
+        return user
+
+    def set_user_cookie(self, username: str, cookie: str):
+        self.users.update_one(
+            {"username": username},
+            {
+                "$set": {"cookie": cookie}
+            }
+        )
+
     def is_username_available(self, username: str) -> bool:
         user = self.users.find_one(username)
         print("user is:", user)
