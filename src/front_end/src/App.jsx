@@ -56,6 +56,18 @@ function App() {
         path: "friendslist",
         key:7
     };
+    const upload= {
+        onclick: handlePageSwitch,
+        text: "Upload",
+        path:"upload",
+        key:10
+    };
+    const starRatings = {
+        onclick: handlePageSwitch,
+        text: "StarRatings",
+        path: "starRatings",
+        key:6
+    };
 
     const links = [
         {
@@ -78,27 +90,9 @@ function App() {
         },
         {
             onclick: handlePageSwitch,
-            text: "Friendslist",
-            path: "friendslist",
-            key:7
-        },
-        {
-            onclick: handlePageSwitch,
-            text: "StarRatings",
-            path: "starRatings",
-            key:6
-        },
-        {
-            onclick: handlePageSwitch,
             text: "Rankings",
             path:"rankings",
             key:9
-        },
-        {
-            onclick: handlePageSwitch,
-            text: "Upload",
-            path:"upload",
-            key:10
         },
     ];
     if (! loggedIn) {
@@ -109,6 +103,8 @@ function App() {
         links.push(account);
         links.push(friendslist)
         links.push(change)
+        links.push(upload)
+        links.push(starRatings)
     }
   return (
       <>
